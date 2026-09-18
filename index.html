@@ -15,6 +15,7 @@
 .overlay{position:fixed;inset:0;background:#042a4dcc;backdrop-filter:blur(5px);display:none;align-items:center;justify-content:center;padding:18px;z-index:1000}.overlay.show{display:flex}.login{width:390px;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 28px 80px #0006}.login h2{padding:18px;color:#fff;text-align:center;background:linear-gradient(#2780ce,#0b58a9);border-bottom:4px solid #f3cf28;font-size:17px}.loginbody{padding:20px}.field{margin-bottom:11px}.field label{display:block;font-weight:700;margin-bottom:4px;font-size:11.5px}.field input,.field textarea,.field select{width:100%;padding:8px 10px;border:1px solid #bfd0df;border-radius:9px;outline:0;background:#fbfdff}.field input:focus,.field textarea:focus,.field select:focus{border-color:#2e80cc;box-shadow:0 0 0 3px #2e80cc1b}.btn{width:100%;padding:10px;border:0;border-radius:9px;background:linear-gradient(#2b82d3,#0b58a9);color:#fff;font-weight:700;box-shadow:0 8px 18px #0b58a933}.err{display:none;background:#ffeded;color:#b71c1c;border:1px solid #efb7b7;border-radius:8px;padding:8px;margin-bottom:10px}.err.show{display:block}
 #Admin{display:none;min-height:100vh;background:linear-gradient(#eef5fb,#dde7f1)}.adminbar{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:14px 16px;color:#fff;background:linear-gradient(#1d78c8,#084681);border-bottom:4px solid #f3cf28;box-shadow:0 7px 18px #113b5f25}.admin-actions{display:flex;gap:7px}.admin-actions button{border:0;border-radius:8px;padding:7px 12px;font-weight:700}.white{background:#fff;color:#0b58a9}.danger{background:#c62828;color:#fff}.admin-tabs{display:flex;flex-wrap:wrap;background:#073f7b}.admin-tabs button{padding:11px 16px;border:0;border-top:3px solid transparent;background:transparent;color:#d4e4f7;font-weight:700}.admin-tabs button.active{background:#fff;color:#0b58a9;border-top-color:#f3cf28}.panel{display:none;padding:15px}.panel.active{display:block}.grid{display:flex;gap:10px}.formcol{width:390px;flex:none}.listcol{flex:1;min-width:0}.upload{display:block;border:2px dashed #b7c8d9;padding:14px;text-align:center;background:#f8fbff;border-radius:10px}.upload input{display:none}.upload .ico{font-size:25px;color:#0b58a9}.filename{margin-top:5px;color:#c00;font-weight:700;font-size:11px}.preview{margin-top:8px;max-height:190px;border:1px solid #bfd0df;border-radius:8px}.progress{height:8px;background:#e6edf4;border:1px solid #c7d4df;border-radius:8px;margin-top:7px;overflow:hidden;display:none}.progress.show{display:block}.progress i{display:block;height:100%;width:0;background:#2e7d32;transition:width .15s}.progress.show i{min-width:0}.progress.show:has(i[style*="width: 0%"]){background:repeating-linear-gradient(90deg,#e6edf4 0 10px,#dbe6ef 10px 20px)}.percent{font-size:10px;color:#2e7d32;font-weight:700;min-height:14px}.percent.uploading{color:#0b58a9}.percent.uploading:after{content:" • đang upload nền";font-weight:400}.urlbox{display:flex;gap:5px;margin-top:7px}.urlbox input{flex:1;min-width:0;padding:7px;border:1px solid #b9c9d7;border-radius:8px;background:#f8fbff;font-size:10px}.urlbox button{border:0;border-radius:8px;background:#0b58a9;color:#fff;padding:7px 10px;font-weight:700}.adminitem{display:flex;align-items:center;gap:10px;padding:9px;background:#fff;margin:5px;border:1px solid #e0e8f0;border-radius:9px}.thumb{width:52px;height:52px;flex:none;border-radius:7px;overflow:hidden;background:#0b58a9;color:#fff;display:flex;align-items:center;justify-content:center}.thumb img,.thumb video{width:100%;height:100%;object-fit:cover}.grow{flex:1;min-width:0}.grow b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:#0758a8}.del{background:#fdeaea;color:#b71c1c;border:1px solid #efc2c2;border-radius:7px;padding:5px 10px}.settings h3{padding:8px 12px;background:#eef4f9;color:#0b58a9;border-bottom:1px solid #c5d4e1}.inside{padding:12px}.row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.linkrow{display:grid;grid-template-columns:42px 1fr 2fr 38px;gap:6px;margin-bottom:6px}.linkrow input{width:100%;padding:6px 7px;border:1px solid #bdccda;border-radius:7px}.linkrow button,.add{border:0;border-radius:7px;background:#0b58a9;color:#fff;padding:6px 9px}.add{margin-top:4px}.toast{position:fixed;right:20px;bottom:20px;z-index:2000;background:#2e7d32;color:#fff;padding:11px 15px;border-radius:10px;box-shadow:0 12px 30px #0003;opacity:0;transform:translateY(20px);pointer-events:none;transition:.25s}.toast.show{opacity:1;transform:none}.toast.err{background:#c62828}
 @media(max-width:900px){#wrap{max-width:100%;margin:0;border-radius:0}.banner,.banner img{height:auto;min-height:90px}.main,.grid{display:block}.left,.right,.formcol{width:auto}.search{width:100%}.strip{height:auto;flex-wrap:wrap}.clock{width:190px}.search{order:3}.featured{grid-template-columns:1fr 1fr}.row2,.linkrow{grid-template-columns:1fr}.panel{padding:8px}}
+#pProgress,#pPercent,#dProgress,#dPercent,#pUrlBox,#dUrlBox{display:none!important}
 </style>
 </head>
 <body>
@@ -36,9 +37,9 @@
 <div id="loginOverlay" class="overlay"><div class="login"><h2>ĐĂNG NHẬP QUẢN TRỊ</h2><div class="loginbody"><div id="loginError" class="err"></div><form id="loginForm"><div class="field"><label>Tài khoản</label><input id="loginUser" required placeholder="admin" autocomplete="username"></div><div class="field"><label>Mật khẩu</label><input id="loginPass" type="password" required placeholder="Nhập mật khẩu" autocomplete="current-password"></div><button class="btn" type="submit">Đăng nhập</button></form><div style="margin-top:10px;text-align:center;color:#777;font-size:10.5px">Tài khoản quản trị: admin</div><button id="loginClose" class="btn" style="margin-top:8px;background:#fff;color:#0b58a9">Đóng</button></div></div></div>
 
 <div id="Admin"><div class="adminbar"><div><b style="font-size:15px">Bảng điều khiển quản trị</b><div style="font-size:11px;color:#dceafb">Firebase Realtime • upload → URL ngay</div></div><div class="admin-actions"><button class="white" id="viewSite">Xem trang</button><button class="danger" id="logout">Đăng xuất</button></div></div><div class="admin-tabs"><button class="active" data-panel="posts">Bài viết</button><button data-panel="notices">Thông báo</button><button data-panel="docs">Văn bản PDF</button><button data-panel="settings">Cài đặt</button></div>
-<div id="panel-posts" class="panel active"><div class="grid"><div class="formcol"><div class="box"><div class="head">➕ Đăng bài viết</div><div style="padding:12px"><form id="postForm"><div class="field"><label>Tiêu đề *</label><input id="pTitle" required></div><div class="row2"><div class="field"><label>Danh mục *</label><select id="pCat"><option>Tin tức</option><option>Sự kiện</option><option>Thông báo</option><option>Tuyển sinh</option></select></div><div class="field"><label>Ngày đăng *</label><input id="pDate" type="date" required></div></div><div class="field"><label>Ảnh / Video</label><label class="upload"><input id="pMedia" type="file" accept="image/*,video/*"><div class="ico">☁️</div><div>Chọn ảnh hoặc video</div><div id="pName" class="filename"></div></label><div id="pPreview"></div><div id="pProgress" class="progress"><i></i></div><div id="pPercent" class="percent">Chưa upload</div><div id="pUrlBox" class="urlbox hidden"><input id="pUrl" readonly><button type="button" id="pCopyUrl">Copy URL</button></div></div><div class="row2"><div class="field"><label>Icon</label><input id="pIcon" value="📰"></div><div class="field"><label>Màu nền</label><select id="pColor"><option value="0">Xanh dương</option><option value="1">Xanh ngọc</option><option value="2">Tím</option><option value="3">Cam</option><option value="4">Đỏ</option><option value="5">Cyan</option></select></div></div><div class="field"><label>Mô tả ngắn *</label><textarea id="pExcerpt" required></textarea></div><div class="field"><label>Nội dung chi tiết</label><textarea id="pContent"></textarea></div><button id="postSubmit" class="btn">Đăng bài</button></form></div></div></div><div class="listcol"><div class="box"><div class="head">Danh sách bài viết <span id="postCount">0</span></div><div id="adminPosts"></div></div></div></div></div>
+<div id="panel-posts" class="panel active"><div class="grid"><div class="formcol"><div class="box"><div class="head">➕ Đăng bài viết</div><div style="padding:12px"><form id="postForm"><div class="field"><label>Tiêu đề *</label><input id="pTitle" required></div><div class="row2"><div class="field"><label>Danh mục *</label><select id="pCat"><option>Tin tức</option><option>Sự kiện</option><option>Thông báo</option><option>Tuyển sinh</option></select></div><div class="field"><label>Ngày đăng *</label><input id="pDate" type="date" required></div></div><div class="field"><label>Ảnh / Video</label><label class="upload"><input id="pMedia" type="file" accept="image/*,video/*"><div class="ico">☁️</div><div>Chọn ảnh hoặc video</div><div id="pName" class="filename"></div></label><div id="pPreview"></div><div id="pProgress" class="progress"><i></i></div><div id="pPercent" class="percent"></div><div id="pUrlBox" class="urlbox hidden"><input id="pUrl" readonly><button type="button" id="pCopyUrl">Copy URL</button></div></div><div class="row2"><div class="field"><label>Icon</label><input id="pIcon" value="📰"></div><div class="field"><label>Màu nền</label><select id="pColor"><option value="0">Xanh dương</option><option value="1">Xanh ngọc</option><option value="2">Tím</option><option value="3">Cam</option><option value="4">Đỏ</option><option value="5">Cyan</option></select></div></div><div class="field"><label>Mô tả ngắn *</label><textarea id="pExcerpt" required></textarea></div><div class="field"><label>Nội dung chi tiết</label><textarea id="pContent"></textarea></div><button id="postSubmit" class="btn">Đăng bài</button></form></div></div></div><div class="listcol"><div class="box"><div class="head">Danh sách bài viết <span id="postCount">0</span></div><div id="adminPosts"></div></div></div></div></div>
 <div id="panel-notices" class="panel"><div class="grid"><div class="formcol"><div class="box"><div class="head">➕ Thêm thông báo</div><div style="padding:12px"><form id="noticeForm"><div class="field"><label>Nội dung *</label><textarea id="nText" required></textarea></div><div class="field"><label>Thứ tự</label><input id="nOrder" type="number" value="0"></div><button class="btn">Thêm</button></form></div></div></div><div class="listcol"><div class="box"><div class="head">Danh sách <span id="noticeCount">0</span></div><div id="adminNotices"></div></div></div></div></div>
-<div id="panel-docs" class="panel"><div class="grid"><div class="formcol"><div class="box"><div class="head">📤 Đăng văn bản PDF</div><div style="padding:12px"><form id="docForm"><div class="field"><label>PDF *</label><label class="upload"><input id="dFile" type="file" accept="application/pdf,.pdf"><div class="ico">📄</div><div>Chọn PDF</div><div id="dName" class="filename"></div></label><div id="dProgress" class="progress"><i></i></div><div id="dPercent" class="percent">Chưa upload</div><div id="dUrlBox" class="urlbox hidden"><input id="dUrl" readonly><button type="button" id="dCopyUrl">Copy URL</button></div></div><div class="field"><label>Số/ký hiệu *</label><input id="dCode" required></div><div class="field"><label>Tiêu đề *</label><input id="dTitle" required></div><div class="field"><label>Ngày ban hành</label><input id="dDate" type="date"></div><div class="field"><label>Mô tả</label><textarea id="dDesc"></textarea></div><button class="btn">Đăng PDF</button></form></div></div></div><div class="listcol"><div class="box"><div class="head">Danh sách <span id="docCount">0</span></div><div id="adminDocs"></div></div></div></div></div>
+<div id="panel-docs" class="panel"><div class="grid"><div class="formcol"><div class="box"><div class="head">📤 Đăng văn bản PDF</div><div style="padding:12px"><form id="docForm"><div class="field"><label>PDF *</label><label class="upload"><input id="dFile" type="file" accept="application/pdf,.pdf"><div class="ico">📄</div><div>Chọn PDF</div><div id="dName" class="filename"></div></label><div id="dProgress" class="progress"><i></i></div><div id="dPercent" class="percent"></div><div id="dUrlBox" class="urlbox hidden"><input id="dUrl" readonly><button type="button" id="dCopyUrl">Copy URL</button></div></div><div class="field"><label>Số/ký hiệu *</label><input id="dCode" required></div><div class="field"><label>Tiêu đề *</label><input id="dTitle" required></div><div class="field"><label>Ngày ban hành</label><input id="dDate" type="date"></div><div class="field"><label>Mô tả</label><textarea id="dDesc"></textarea></div><button class="btn">Đăng PDF</button></form></div></div></div><div class="listcol"><div class="box"><div class="head">Danh sách <span id="docCount">0</span></div><div id="adminDocs"></div></div></div></div></div>
 <div id="panel-settings" class="panel"><form id="settingsForm"><div class="settings"><h3>🖼️ Banner</h3><div class="inside"><div class="row2"><div class="field"><label>Tiêu đề</label><input id="sTitle"></div><div class="field"><label>Phụ đề</label><input id="sSubtitle"></div></div><div class="field"><label>Ảnh banner</label><label class="upload"><input id="sBanner" type="file" accept="image/*"><div class="ico">🖼️</div><div>Chọn ảnh banner — lưu trực tiếp vào Firebase Database dưới dạng Data URL</div><div id="sBannerName" class="filename"></div></label><img id="bannerPreview" class="preview" style="display:none"></div><button type="button" class="add" id="resetBanner">↩ Khôi phục banner mặc định</button><div class="field"><label>Favicon</label><label class="upload"><input id="sFavicon" type="file" accept="image/*,.ico,image/svg+xml"><div>Chọn favicon</div><div id="sFaviconName" class="filename"></div></label></div></div></div><div class="settings"><h3>📢 Marquee & Liên hệ</h3><div class="inside"><div class="field"><label>Marquee</label><textarea id="sMarquee"></textarea></div><div class="field"><label>Địa chỉ</label><input id="sAddress"></div><div class="row2"><div class="field"><label>Điện thoại</label><input id="sPhone"></div><div class="field"><label>Email</label><input id="sEmail"></div></div></div></div><div class="settings"><h3>🕒 Giờ làm việc</h3><div class="inside"><div class="row2"><div class="field"><label>Sáng</label><input id="sMorning"></div><div class="field"><label>Chiều</label><input id="sAfternoon"></div></div><div class="field"><label>Ghi chú</label><input id="sWorkNote"></div></div></div><div class="settings"><h3>▶ YouTube</h3><div class="inside"><div class="field"><label>Link video</label><input id="sYoutube"></div></div></div><div class="settings"><h3>🔗 Liên kết nhanh</h3><div class="inside"><div id="quickEdit"></div><button type="button" class="add" id="addQuick">+ Thêm</button></div></div><div class="settings"><h3>🎓 Dạy – Học</h3><div class="inside"><div id="serviceEdit"></div><button type="button" class="add" id="addService">+ Thêm</button></div></div><div class="settings"><h3>🌐 Website</h3><div class="inside"><div id="webEdit"></div><button type="button" class="add" id="addWeb">+ Thêm</button></div></div><div class="settings"><h3>🦶 Footer</h3><div class="inside"><div class="field"><label>Tên trường</label><input id="sFooterName"></div><div class="field"><label>Người chịu trách nhiệm</label><input id="sResponsible"></div></div></div><button class="btn">💾 Lưu cài đặt</button></form></div></div>
 </div>
 <div id="Toast" class="toast"></div>
@@ -47,7 +48,6 @@ import{initializeApp}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-ap
 import{getAnalytics}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
 import{getAuth,onAuthStateChanged,signInWithEmailAndPassword,signOut,setPersistence,inMemoryPersistence}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
 import{getDatabase,ref,onValue,push,set,remove,update,increment,onDisconnect}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
-import{getStorage,ref as storageRef,uploadBytesResumable,getDownloadURL,deleteObject}from"https://www.gstatic.com/firebasejs/12.19.0/firebase-storage.js";
 /*
   QUAN TRỌNG:
   - Username giao diện: admin
@@ -56,84 +56,92 @@ import{getStorage,ref as storageRef,uploadBytesResumable,getDownloadURL,deleteOb
     với mật khẩu quản trị của bạn.
 */
 const firebaseConfig={apiKey:"AIzaSyCDQsJ_NrGK5ouRLS7vFr55OBZQ0nKhHSk",authDomain:"vietnam-life-game.firebaseapp.com",databaseURL:"https://vietnam-life-game-default-rtdb.asia-southeast1.firebasedatabase.app",projectId:"vietnam-life-game",storageBucket:"vietnam-life-game.firebasestorage.app",messagingSenderId:"134954120781",appId:"1:134954120781:web:dcd0fd82b63b7779140e04",measurementId:"G-LG8BF2J66J"};
-const app=initializeApp(firebaseConfig);try{getAnalytics(app)}catch{}const auth=getAuth(app),db=getDatabase(app),storage=getStorage(app);const ADMIN_USERNAME="admin",ADMIN_EMAIL="admin@thcs-chaodau.edu.vn";
+const app=initializeApp(firebaseConfig);try{getAnalytics(app)}catch{}const auth=getAuth(app),db=getDatabase(app);const ADMIN_USERNAME="admin",ADMIN_EMAIL="admin@thcs-chaodau.edu.vn";
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],esc=v=>String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]));
 const today=()=>new Date().toISOString().slice(0,10),fmt=d=>d?new Date(d+"T00:00:00").toLocaleDateString("vi-VN"):"",num=n=>(Number(n)||0).toLocaleString("vi-VN");
 let posts=[],notices=[],docs=[],settings={},searchText="",mediaFile=null,dFile=null,sid=sessionStorage.getItem("chaodau_sid")||crypto.randomUUID();sessionStorage.setItem("chaodau_sid",sid);
 const DEFAULT_BANNER="https://storage-edu.vnpt.vn/edu-lci/8428/DUY/banner%20moi.gif";
 function toast(t,err=false){const x=$("#Toast");x.textContent=(err?"⚠️ ":"✅ ")+t;x.className="toast show"+(err?" err":"");clearTimeout(x._t);x._t=setTimeout(()=>x.className="toast",4200)}
 function setAdmin(v){$("#Admin").style.display=v?"block":"none";$("#wrap").style.display=v?"none":"block"}
-function media(p,preview=false){const u=p.mediaUrl||"";if(!u)return `<div class="ph bg${Number(p.color)||0}">${esc(p.icon||"📰")}</div>`;return(p.mediaType||"").startsWith("video/")?`<video src="${esc(u)}" ${preview?"muted":"controls"} playsinline></video>`:`<img src="${esc(u)}" alt="">`}
+function media(p,preview=false){const u=p.mediaUrl||"";if(!u)return `<div class="ph bg${Number(p.color)||0}">${esc(p.icon||"📰")}</div>`;return(p.mediaType||"").startsWith("video/")?`<video src="${esc(u)}" ${preview?"muted":"controls"} playsinline preload="metadata"></video>`:`<img src="${esc(u)}" loading="lazy" alt="">`}
 function empty(t){return`<div style="padding:16px;text-align:center;color:#888">${t}</div>`}
 function render(){const a=searchText?posts.filter(p=>`${p.title} ${p.excerpt} ${p.content} ${p.cat}`.toLowerCase().includes(searchText.toLowerCase())):posts;$("#featured").innerHTML=a.length?a.slice(0,3).map(p=>`<div class="feature"><div class="media">${media(p,true)}</div><a href="#" class="title" data-id="${esc(p.id)}">${esc(p.title)}</a><div class="meta">📅 ${esc(fmt(p.date))}</div></div>`).join(""):empty("Chưa có bài viết.");[["Tin tức","#news"],["Sự kiện","#events"],["Thông báo","#announcements"],["Tuyển sinh","#admissions"]].forEach(([cat,id])=>{const list=a.filter(p=>p.cat===cat),box=$(id);if(!list.length){box.innerHTML=empty("Chưa có bài viết.");return}const f=list[0];box.innerHTML=`<div class="lead"><div class="media">${media(f,true)}</div><div><h3><a href="#" data-id="${esc(f.id)}">${esc(f.title)}</a></h3><p>${esc(f.excerpt||"")}</p></div></div><ul class="list">${list.slice(1,5).map(p=>`<li><a href="#" data-id="${esc(p.id)}">${esc(p.title)}</a></li>`).join("")}</ul>`});$$('[data-id]').forEach(a=>a.onclick=e=>{e.preventDefault();const p=posts.find(x=>x.id===a.dataset.id);if(p){const w=open("","_blank");w.document.write(`<meta charset="utf-8"><title>${esc(p.title)}</title><style>body{font-family:Arial;max-width:900px;margin:30px auto;padding:0 15px;line-height:1.7}h1{color:#0b58a9}img,video{max-width:100%}</style><h1>${esc(p.title)}</h1><div>${esc(p.cat)} — ${esc(fmt(p.date))}</div>${p.mediaUrl?media(p):""}<p>${esc(p.content||p.excerpt).replace(/\n/g,"<br>")}</p>`)} });renderAdmin()}
 function applySettings(s){const d={bannerTitle:"THCS Chao Đâu",bannerSubtitle:"Cổng thông tin điện tử",bannerBg:"",siteIcon:"",marquee:"Chào mừng bạn đến với cổng thông tin điện tử Trường THCS Chao Đâu!",address:"123 Đường Ước Mơ, P. Bình Thạnh, TP.HCM",phone:"(028) 1234 5678",email:"info@chaodau.edu.vn",morning:"7:00 – 11:30",afternoon:"13:30 – 17:00",workNote:"(Từ thứ 2 đến thứ 6)",youtube:"",quickLinks:[],services:[],webLinks:[],footerName:"TRƯỜNG THCS CHAO ĐÂU",responsible:"Ban Giám hiệu",...s};$("#marquee").textContent="📢 "+d.marquee;$("#address").textContent=d.address;$("#phone").textContent=d.phone;$("#email").textContent=d.email;$("#footerName").textContent=d.footerName;$("#responsible").textContent=d.responsible;$("#work").innerHTML=`<p><b>Sáng:</b> ${esc(d.morning)}</p><p><b>Chiều:</b> ${esc(d.afternoon)}</p><p class="note">${esc(d.workNote)}</p>`;$("#bannerImage").src=d.bannerBg||DEFAULT_BANNER;if(d.bannerBg){$("#bannerPreview").src=d.bannerBg;$("#bannerPreview").style.display="block"}if(d.siteIcon)$("#favicon").href=d.siteIcon;const y=d.youtube||"",id=y.includes("/embed/")?y.split("/embed/")[1].split(/[?&]/)[0]:(y.match(/[?&]v=([^&]+)/)||[])[1];if(id)$("#yt").src=`https://www.youtube.com/embed/${id}`;$("#quick").innerHTML=(d.quickLinks||[]).map(x=>`<a href="${esc(x.url)}" target="_blank"><i class="${esc(x.icon||"fas fa-link")}"></i>${esc(x.text)}</a>`).join("");$("#services").innerHTML=(d.services||[]).map(x=>`<a href="${esc(x.url)}" target="_blank"><i class="${esc(x.icon||"fas fa-link")}"></i>${esc(x.text)}</a>`).join("");$("#webLinks").innerHTML='<option value="">-- Chọn liên kết website --</option>'+(d.webLinks||[]).map(x=>`<option value="${esc(x.url)}">${esc(x.text)}</option>`).join("");fillSettings(d)}
 function fillSettings(s){$("#sTitle").value=s.bannerTitle||"";$("#sSubtitle").value=s.bannerSubtitle||"";$("#sMarquee").value=s.marquee||"";$("#sAddress").value=s.address||"";$("#sPhone").value=s.phone||"";$("#sEmail").value=s.email||"";$("#sMorning").value=s.morning||"";$("#sAfternoon").value=s.afternoon||"";$("#sWorkNote").value=s.workNote||"";$("#sYoutube").value=s.youtube||"";$("#sFooterName").value=s.footerName||"";$("#sResponsible").value=s.responsible||"";fillLinks("quickEdit",s.quickLinks||[]);fillLinks("serviceEdit",s.services||[]);fillLinks("webEdit",s.webLinks||[],true)}
 function fillLinks(id,arr,web=false){const box=$("#"+id);box.innerHTML="";(arr||[]).forEach(x=>addLink(id,x,web))}function addLink(id,x={},web=false){const r=document.createElement("div");r.className="linkrow";if(web)r.style.gridTemplateColumns="1fr 2fr 38px";r.innerHTML=web?`<input class="text" value="${esc(x.text||"")}" placeholder="Tên"><input class="url" value="${esc(x.url||"")}" placeholder="https://..."><button type="button">✕</button>`:`<input class="icon" value="${esc(x.icon||"fas fa-link")}" placeholder="fas fa-link"><input class="text" value="${esc(x.text||"")}" placeholder="Tên"><input class="url" value="${esc(x.url||"")}" placeholder="https://..."><button type="button">✕</button>`;r.querySelector("button").onclick=()=>r.remove();$("#"+id).appendChild(r)}
 function readLinks(id){return $$("#"+id+" .linkrow").map(r=>({icon:r.querySelector(".icon")?.value.trim()||"fas fa-link",text:r.querySelector(".text").value.trim(),url:r.querySelector(".url").value.trim()})).filter(x=>x.text)}function readWeb(id){return $$("#"+id+" .linkrow").map(r=>({text:r.querySelector(".text").value.trim(),url:r.querySelector(".url").value.trim()})).filter(x=>x.text)}
-function renderAdmin(){$("#postCount").textContent=posts.length;$("#noticeCount").textContent=notices.length;$("#docCount").textContent=docs.length;$("#adminPosts").innerHTML=posts.length?posts.map(p=>`<div class="adminitem"><div class="thumb">${media(p,true)}</div><div class="grow"><b>${esc(p.title)}</b><small>📁 ${esc(p.cat)} • ${esc(fmt(p.date))}</small></div><button class="del" data-p="${esc(p.id)}">Xóa</button></div>`).join(""):empty("Chưa có bài viết.");$("#adminNotices").innerHTML=notices.length?notices.map(n=>`<div class="adminitem"><div class="grow"><b>${esc(n.text)}</b><small>Thứ tự: ${n.order||0}</small></div><button class="del" data-n="${esc(n.id)}">Xóa</button></div>`).join(""):empty("Chưa có thông báo.");$("#adminDocs").innerHTML=docs.length?docs.map(d=>`<div class="adminitem"><div class="thumb">📄</div><div class="grow"><b>${esc(d.code)} — ${esc(d.title)}</b><small>${esc(fmt(d.date))}</small></div><a href="${esc(d.fileUrl)}" target="_blank" class="white" style="padding:5px 8px;background:#0b58a9;color:#fff;border-radius:7px">Xem</a><button class="del" data-d="${esc(d.id)}">Xóa</button></div>`).join(""):empty("Chưa có văn bản.");$$('[data-p]').forEach(b=>b.onclick=()=>delPost(b.dataset.p));$$('[data-n]').forEach(b=>b.onclick=()=>delNotice(b.dataset.n));$$('[data-d]').forEach(b=>b.onclick=()=>delDoc(b.dataset.d))}
-async function fileToDataURL(file){return await new Promise((resolve,reject)=>{const r=new FileReader();r.onload=()=>resolve(String(r.result||""));r.onerror=()=>reject(new Error("Không đọc được file."));r.readAsDataURL(file)})}
-async function compressImage(file){if(!file||!file.type.startsWith("image/")||/gif|svg\+xml/i.test(file.type))return file;return await new Promise(resolve=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{URL.revokeObjectURL(u);let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height,max=1600;if(w>max){h=Math.round(h*max/w);w=max}const c=document.createElement("canvas");c.width=w;c.height=h;c.getContext("2d").drawImage(img,0,0,w,h);c.toBlob(b=>resolve(b?new File([b],file.name.replace(/\.[^.]+$/i,"")+".jpg",{type:"image/jpeg"}):file),"image/jpeg",.82)};img.onerror=()=>{URL.revokeObjectURL(u);resolve(file)};img.src=u})}
-async function bannerDataURL(file,max=1800000){let f=file;if(f.size>350000)f=await compressImage(f);if(f.size>max)throw new Error("Banner quá lớn. Hãy chọn ảnh nhỏ hơn 1.8 MB.");return await fileToDataURL(f)}
-function resetUploadUI(id,pct){const b=$("#"+id),p=$("#"+pct);if(b){b.classList.remove("show");b.querySelector("i").style.width="0%"}if(p)p.textContent="0%"}
-async function upload(file,folder,barId,pctId){
-  if(!file) throw new Error("Chưa chọn file.");
-  resetUploadUI(barId,pctId);
-  const bar=$("#"+barId), pct=$("#"+pctId);
-  bar?.classList.add("show");
-  if(pct){pct.classList.add("uploading");pct.textContent="0%"}
-
-  // Nén ảnh trước khi upload; video/PDF giữ nguyên.
-  const f=await compressImage(file);
-  const safe=(f.name||file.name||"file.bin").replace(/[^a-zA-Z0-9._-]/g,"_");
-  const key=`${folder}/${Date.now()}_${crypto.randomUUID()}_${safe}`;
-
-  try{
-    const task=uploadBytesResumable(
-      storageRef(storage,key),
-      f,
-      {contentType:f.type||"application/octet-stream",cacheControl:"public,max-age=31536000"}
-    );
-
-    return await new Promise((resolve,reject)=>{
-      let done=false;
-      task.on("state_changed", snap=>{
-        const n=snap.totalBytes ? Math.round(snap.bytesTransferred/snap.totalBytes*100) : 0;
-        if(bar) bar.querySelector("i").style.width=n+"%";
-        if(pct) pct.textContent=n+"%";
-      }, err=>{
-        if(done)return;
-        done=true;
-        reject(err);
-      }, async()=>{
-        if(done)return;
-        try{
-          const url=await getDownloadURL(task.snapshot.ref);
-          done=true;
-          if(bar)bar.querySelector("i").style.width="100%";
-          if(pct){pct.classList.remove("uploading");pct.textContent="100%"}
-          resolve({url,path:key,type:f.type,name:file.name,mode:"storage"});
-        }catch(err){done=true;reject(err)}
-      });
-    });
-  }catch(storageError){
-    // Fallback: ảnh/file nhỏ vẫn có thể lưu thành Data URL.
-    const maxFallback = 4 * 1024 * 1024;
-    if(f.size <= maxFallback){
-      const data = await fileToDataURL(f);
-      if(bar)bar.querySelector("i").style.width="100%";
-      if(pct){pct.classList.remove("uploading");pct.textContent="100%"}
-      return {url:data,path:"",type:f.type||file.type,name:file.name,mode:"dataurl"};
-    }
-    let msg="Upload thất bại.";
-    if(storageError?.code==="storage/unauthorized") msg="Firebase Storage từ chối upload. Hãy kiểm tra Storage Rules.";
-    else if(storageError?.code==="storage/unauthenticated") msg="Phiên đăng nhập Firebase đã hết.";
-    else if(storageError?.message) msg += " "+storageError.message;
-    if(pct)pct.textContent="Lỗi";
-    throw new Error(msg);
-  }
+function renderAdmin(){$("#postCount").textContent=posts.length;$("#noticeCount").textContent=notices.length;$("#docCount").textContent=docs.length;$("#adminPosts").innerHTML=posts.length?posts.map(p=>`<div class="adminitem"><div class="thumb">${media(p,true)}</div><div class="grow"><b>${esc(p.title)}</b><small>📁 ${esc(p.cat)} • ${esc(fmt(p.date))}${p.mediaPending?' • ⏳ đang xử lý media':(p.mediaError?' • ⚠ media lỗi':'')}</small></div><button class="del" data-p="${esc(p.id)}">Xóa</button></div>`).join(""):empty("Chưa có bài viết.");$("#adminNotices").innerHTML=notices.length?notices.map(n=>`<div class="adminitem"><div class="grow"><b>${esc(n.text)}</b><small>Thứ tự: ${n.order||0}</small></div><button class="del" data-n="${esc(n.id)}">Xóa</button></div>`).join(""):empty("Chưa có thông báo.");$("#adminDocs").innerHTML=docs.length?docs.map(d=>`<div class="adminitem"><div class="thumb">📄</div><div class="grow"><b>${esc(d.code)} — ${esc(d.title)}</b><small>${esc(fmt(d.date))}</small></div><a href="${esc(d.fileUrl)}" target="_blank" class="white" style="padding:5px 8px;background:#0b58a9;color:#fff;border-radius:7px">Xem</a><button class="del" data-d="${esc(d.id)}">Xóa</button></div>`).join(""):empty("Chưa có văn bản.");$$('[data-p]').forEach(b=>b.onclick=()=>delPost(b.dataset.p));$$('[data-n]').forEach(b=>b.onclick=()=>delNotice(b.dataset.n));$$('[data-d]').forEach(b=>b.onclick=()=>delDoc(b.dataset.d))}
+async function fileToDataURL(file){
+  return await new Promise((resolve,reject)=>{
+    const r=new FileReader();
+    r.onload=()=>resolve(String(r.result||""));
+    r.onerror=()=>reject(new Error("Không đọc được file."));
+    r.readAsDataURL(file);
+  });
 }
-async function delStorage(p){if(p)try{await deleteObject(storageRef(storage,p))}catch{}}
-async function delPost(id){if(!confirm("Xóa bài viết này?"))return;const p=posts.find(x=>x.id===id);try{await remove(ref(db,"posts/"+id));await delStorage(p?.storagePath);toast("Đã xóa bài viết")}catch(e){toast(e.message,true)}}async function delNotice(id){if(!confirm("Xóa thông báo này?"))return;try{await remove(ref(db,"notices/"+id));toast("Đã xóa thông báo")}catch(e){toast(e.message,true)}}async function delDoc(id){if(!confirm("Xóa văn bản này?"))return;const d=docs.find(x=>x.id===id);try{await remove(ref(db,"documents/"+id));await delStorage(d?.storagePath);toast("Đã xóa văn bản")}catch(e){toast(e.message,true)}}
+
+async function compressImage(file){
+  if(!file || !file.type.startsWith("image/") || /gif|svg\+xml/i.test(file.type)) return file;
+  return await new Promise(resolve=>{
+    const img=new Image();
+    const u=URL.createObjectURL(file);
+    img.onload=()=>{
+      URL.revokeObjectURL(u);
+      let w=img.naturalWidth||img.width, h=img.naturalHeight||img.height;
+      const max=1400;
+      if(w>max){h=Math.round(h*max/w);w=max;}
+      const c=document.createElement("canvas");
+      c.width=w;c.height=h;
+      c.getContext("2d").drawImage(img,0,0,w,h);
+      c.toBlob(b=>resolve(b?new File([b],file.name.replace(/\.[^.]+$/i,".jpg"),{type:"image/jpeg"}):file),"image/jpeg",.78);
+    };
+    img.onerror=()=>{URL.revokeObjectURL(u);resolve(file)};
+    img.src=u;
+  });
+}
+
+async function makeMediaData(file){
+  if(!file) return null;
+  let f=file;
+  if(file.type.startsWith("image/")) f=await compressImage(file);
+
+  // Realtime Database có giới hạn chuỗi 10 MB. Base64 lớn hơn file gốc,
+  // vì vậy giữ ngưỡng an toàn để bài vẫn ghi được trên Spark/RTDB.
+  const maxBytes=file.type.startsWith("image/") ? 900*1024 : 6500*1024;
+  if(f.size>maxBytes){
+    throw new Error(file.type.startsWith("image/")
+      ? "Ảnh quá lớn. Hãy chọn ảnh nhỏ hơn 900 KB."
+      : "File/video quá lớn cho chế độ Firebase miễn phí. Hãy chọn file dưới khoảng 6.5 MB.");
+  }
+  const url=await fileToDataURL(f);
+  return {url,type:f.type||file.type,name:file.name,size:f.size};
+}
+
+function setMediaPreview(file){
+  const box=$("#pPreview");box.innerHTML="";
+  if(!file) return;
+  const local=URL.createObjectURL(file);
+  if(file.type.startsWith("video/")) box.innerHTML=`<video class="preview" controls playsinline preload="metadata" src="${local}"></video>`;
+  else if(file.type.startsWith("image/")) box.innerHTML=`<img class="preview" loading="lazy" src="${local}" alt="">`;
+}
+
+function startMediaPreparation(file){
+  $("#pUrlBox").classList.add("hidden");$("#pUrl").value="";
+  if(!file){mediaJob=null;return;}
+  const id=crypto.randomUUID();
+  const promise=makeMediaData(file);
+  mediaJob={id,file,promise};
+  promise.catch(err=>{ if(mediaJob?.id===id) toast(err.message,true); });
+}
+
+function startDocPreparation(file){
+  $("#dUrlBox").classList.add("hidden");$("#dUrl").value="";
+  if(!file){docJob=null;return;}
+  const id=crypto.randomUUID();
+  const promise=makeMediaData(file);
+  docJob={id,file,promise};
+  promise.catch(err=>{ if(docJob?.id===id) toast(err.message,true); });
+}
 
 $("#loginOpen").onclick=e=>{e.preventDefault();$("#loginOverlay").classList.add("show");$("#loginUser").value="";$("#loginPass").value="";$("#loginError").classList.remove("show");$("#loginUser").focus()};
 $("#loginClose").onclick=()=>$("#loginOverlay").classList.remove("show");
@@ -250,8 +258,24 @@ async function selectDocFile(file){
   });
 }
 
-$("#pMedia").onchange=e=>{mediaFile=e.target.files[0]||null;selectMediaFile(mediaFile)};
-$("#dFile").onchange=e=>{dFile=e.target.files[0]||null;selectDocFile(dFile)};
+$("#pMedia").onchange=e=>{
+  mediaFile=e.target.files[0]||null;
+  $("#pName").textContent=mediaFile?mediaFile.name:"";
+  setMediaPreview(mediaFile);
+  startMediaPreparation(mediaFile);
+};
+$("#dFile").onchange=e=>{
+  dFile=e.target.files[0]||null;
+  $("#dName").textContent=dFile?dFile.name:"";
+  if(dFile && dFile.type!=="application/pdf" && !dFile.name.toLowerCase().endsWith(".pdf")){
+    toast("Chỉ nhận file PDF.",true);
+    dFile=null;
+    $("#dName").textContent="";
+    startDocPreparation(null);
+    return;
+  }
+  startDocPreparation(dFile);
+};
 
 $("#postForm").onsubmit=async e=>{
   e.preventDefault();
@@ -259,87 +283,81 @@ $("#postForm").onsubmit=async e=>{
 
   const title=$("#pTitle").value.trim();
   const excerpt=$("#pExcerpt").value.trim();
-  if(!title||!excerpt||!$("#pDate").value)return toast("Vui lòng điền Tiêu đề, Ngày đăng và Mô tả ngắn.",true);
+  const date=$("#pDate").value;
+  if(!title||!excerpt||!date)return toast("Vui lòng điền Tiêu đề, Ngày đăng và Mô tả ngắn.",true);
 
-  const b=$("#postSubmit");
-  b.disabled=true;b.textContent="Đang đăng...";
-
-  // LƯU BÀI TRƯỚC: không chờ media upload.
+  // ĐĂNG NGAY: không chờ đọc Base64. Nếu có media, nó sẽ tự cập nhật vào bài sau.
   const job=mediaJob;
-  let initialMedia=pendingMedia;
-  if(mediaUploadState!=="ready") initialMedia={url:"",path:"",type:job?.file?.type||"",name:job?.file?.name||"",mode:"pending"};
+  const id=push(ref(db,"posts")).key;
+  const base={
+    id,title,cat:$("#pCat").value,date,
+    icon:$("#pIcon").value.trim()||"📰",color:Number($("#pColor").value)||0,
+    excerpt,content:$("#pContent").value.trim()||excerpt,
+    mediaUrl:"",mediaType:job?.file?.type||"",fileName:job?.file?.name||"",
+    mediaPending:!!job,createdAt:Date.now()
+  };
 
   try{
-    const id=push(ref(db,"posts")).key;
-    await set(ref(db,"posts/"+id),{
-      id,title,cat:$("#pCat").value,date:$("#pDate").value,
-      icon:$("#pIcon").value.trim()||"📰",color:Number($("#pColor").value)||0,
-      excerpt,content:$("#pContent").value.trim()||excerpt,
-      mediaUrl:initialMedia.url||"",mediaType:initialMedia.type||"",
-      storagePath:initialMedia.path||"",fileName:initialMedia.name||"",
-      mediaPending:mediaUploadState!=="ready",createdAt:Date.now()
-    });
+    await set(ref(db,"posts/"+id),base);
+    toast("Đăng bài thành công!");
 
-    // Upload đang chạy sẽ tự gắn URL vào đúng bài vừa tạo.
-    if(job?.promise && mediaUploadState!=="ready") {
+    // Chuẩn bị media chạy nền. Không khóa nút và không có thanh tiến độ.
+    if(job){
       job.promise.then(result=>update(ref(db,"posts/"+id),{
-        mediaUrl:result.url,mediaType:result.type||job.file.type||"",
-        storagePath:result.path||"",fileName:result.name||job.file.name||"",mediaPending:false
-      })).catch(err=>{
-        update(ref(db,"posts/"+id),{mediaPending:false,mediaError:err.message}).catch(()=>{});
-      });
+        mediaUrl:result.url,mediaType:result.type,fileName:result.name,mediaPending:false
+      })).catch(err=>update(ref(db,"posts/"+id),{
+        mediaPending:false,mediaError:err.message
+      }).catch(()=>{}));
     }
 
     e.target.reset();
     $("#pDate").value=today();
-    mediaFile=null;mediaUploadState="none";mediaJob=null;
-    pendingMedia={url:"",path:"",type:"",name:"",mode:""};
-    $("#pPreview").innerHTML="";$("#pName").textContent="";$("#pUrl").value="";$("#pUrlBox").classList.add("hidden");
-    resetUploadUI("pProgress","pPercent");
-    toast(job&&initialMedia.mode==="pending"?"Đăng bài thành công. Ảnh/video sẽ tự gắn vào bài sau khi upload xong.":"Đăng bài thành công!");
+    mediaFile=null;mediaJob=null;
+    $("#pPreview").innerHTML="";$("#pName").textContent="";
+    $("#pUrl").value="";$("#pUrlBox").classList.add("hidden");
   }catch(err){
     toast("Đăng bài lỗi: "+(err?.message||err),true);
-  }finally{b.disabled=false;b.textContent="Đăng bài"}
+  }
 };
-
 $("#noticeForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{const id=push(ref(db,"notices")).key;await set(ref(db,"notices/"+id),{id,text:$("#nText").value.trim(),order:Number($("#nOrder").value)||0,createdAt:Date.now()});e.target.reset();$("#nOrder").value=0;toast("Đã thêm thông báo")}catch(err){toast(err.message,true)}};
 $("#docForm").onsubmit=async e=>{
   e.preventDefault();
   if(!auth.currentUser)return toast("Chưa đăng nhập",true);
   if(!dFile)return toast("Chưa chọn PDF",true);
+
   const code=$("#dCode").value.trim(), title=$("#dTitle").value.trim();
   if(!code||!title)return toast("Vui lòng nhập số/ký hiệu và tiêu đề.",true);
 
-  const b=$("#docSubmit");b.disabled=true;b.textContent="Đang đăng...";
+  // Đăng văn bản trước; PDF được mã hóa Base64 và gắn vào document ở nền.
   const job=docJob;
-  const initial= dUploadState==="ready" ? pendingDoc : {url:"",path:"",type:"application/pdf",name:dFile.name,mode:"pending"};
+  const id=push(ref(db,"documents")).key;
+  const base={
+    id,code,title,date:$("#dDate").value||"",description:$("#dDesc").value.trim(),
+    fileUrl:"",fileName:dFile.name,filePending:!!job,createdAt:Date.now()
+  };
 
   try{
-    const id=push(ref(db,"documents")).key;
-    await set(ref(db,"documents/"+id),{
-      id,code,title,date:$("#dDate").value||"",description:$("#dDesc").value.trim(),
-      fileUrl:initial.url||"",fileName:dFile.name,storagePath:initial.path||"",
-      filePending:dUploadState!=="ready",createdAt:Date.now()
-    });
+    await set(ref(db,"documents/"+id),base);
+    toast("Đăng văn bản thành công!");
 
-    if(job?.promise && dUploadState!=="ready") {
+    if(job){
       job.promise.then(result=>update(ref(db,"documents/"+id),{
-        fileUrl:result.url,fileName:result.name||job.file.name||"",
-        storagePath:result.path||"",filePending:false
-      })).catch(err=>{
-        update(ref(db,"documents/"+id),{filePending:false,fileError:err.message}).catch(()=>{});
-      });
+        fileUrl:result.url,fileName:result.name,filePending:false
+      })).catch(err=>update(ref(db,"documents/"+id),{
+        filePending:false,fileError:err.message
+      }).catch(()=>{}));
     }
 
-    e.target.reset();$("#dDate").value=today();dFile=null;dUploadState="none";docJob=null;
-    pendingDoc={url:"",path:"",type:"",name:"",mode:""};
-    $("#dName").textContent="";$("#dUrl").value="";$("#dUrlBox").classList.add("hidden");resetUploadUI("dProgress","dPercent");
-    toast(initial.mode==="pending"?"Đăng văn bản thành công. PDF sẽ tự gắn URL sau khi upload xong.":"Đăng văn bản thành công!");
-  }catch(err){toast("Đăng PDF lỗi: "+(err?.message||err),true)}
-  finally{b.disabled=false;b.textContent="Đăng PDF"}
+    e.target.reset();
+    $("#dDate").value=today();
+    dFile=null;docJob=null;
+    $("#dName").textContent="";$("#dUrl").value="";$("#dUrlBox").classList.add("hidden");
+  }catch(err){
+    toast("Đăng PDF lỗi: "+(err?.message||err),true);
+  }
 };
 $("#settingsForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);const b=e.submitter;b.disabled=true;try{let bannerBg=settings.bannerBg||"",siteIcon=settings.siteIcon||"";if($("#sBanner").files[0])bannerBg=await bannerDataURL($("#sBanner").files[0]);if($("#sFavicon").files[0])siteIcon=await bannerDataURL($("#sFavicon").files[0],700000);await set(ref(db,"settings/site"),{bannerTitle:$("#sTitle").value.trim(),bannerSubtitle:$("#sSubtitle").value.trim(),bannerBg,siteIcon,marquee:$("#sMarquee").value.trim(),address:$("#sAddress").value.trim(),phone:$("#sPhone").value.trim(),email:$("#sEmail").value.trim(),morning:$("#sMorning").value.trim(),afternoon:$("#sAfternoon").value.trim(),workNote:$("#sWorkNote").value.trim(),youtube:$("#sYoutube").value.trim(),quickLinks:readLinks("quickEdit"),services:readLinks("serviceEdit"),webLinks:readWeb("webEdit"),footerName:$("#sFooterName").value.trim(),responsible:$("#sResponsible").value.trim()});toast("Đã lưu. Banner mới đã cập nhật cho mọi người.")}catch(err){toast(err.message,true)}finally{b.disabled=false}};
-$("#resetBanner").onclick=async()=>{if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{await update(ref(db,"settings/site"),{bannerBg:""});toast("Đã khôi phục banner mặc định.")}catch(e){toast(e.message,true)}};$("#addQuick").onclick=()=>addLink("quickEdit");$("#addService").onclick=()=>addLink("serviceEdit");$("#addWeb").onclick=()=>addLink("webEdit",{},true);$("#webLinks").onchange=e=>{if(e.target.value)open(e.target.value,"_blank")};$("#searchBtn").onclick=()=>{searchText=$("#search").value.trim();render()};$("#search").onkeydown=e=>{if(e.key==="Enter"){searchText=e.target.value.trim();render()}};$("#pCopyUrl").onclick=async()=>{const v=$("#pUrl").value;if(!v)return;(navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>toast("Đã copy URL ảnh/video")).catch(()=>{})};$("#dCopyUrl").onclick=async()=>{const v=$("#dUrl").value;if(!v)return;(navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>toast("Đã copy URL PDF")).catch(()=>{})};$$('.admin-tabs button').forEach(b=>b.onclick=()=>{$$('.admin-tabs button').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#panel-'+b.dataset.panel).classList.add('active')});
+$("#resetBanner").onclick=async()=>{if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{await update(ref(db,"settings/site"),{bannerBg:""});toast("Đã khôi phục banner mặc định.")}catch(e){toast(e.message,true)}};$("#addQuick").onclick=()=>addLink("quickEdit");$("#addService").onclick=()=>addLink("serviceEdit");$("#addWeb").onclick=()=>addLink("webEdit",{},true);$("#webLinks").onchange=e=>{if(e.target.value)open(e.target.value,"_blank")};$("#searchBtn").onclick=()=>{searchText=$("#search").value.trim();render()};$("#search").onkeydown=e=>{if(e.key==="Enter"){searchText=e.target.value.trim();render()}};$$('.admin-tabs button').forEach(b=>b.onclick=()=>{$$('.admin-tabs button').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#panel-'+b.dataset.panel).classList.add('active')});
 function clock(){const d=new Date(),days=['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],p=n=>String(n).padStart(2,'0');$("#clock").textContent=`${days[d.getDay()]}, ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} - ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`}clock();setInterval(clock,1000);
 function realtime(){onValue(ref(db,'posts'),s=>{const v=s.val()||{};posts=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));render()});onValue(ref(db,'notices'),s=>{const v=s.val()||{};notices=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(a.order||0)-(b.order||0)||(b.createdAt||0)-(a.createdAt||0));$("#noticeList").innerHTML=notices.length?notices.map(n=>`<p>${esc(n.text)}</p>`).join(''):empty('Chưa có thông báo.');renderAdmin()});onValue(ref(db,'documents'),s=>{const v=s.val()||{};docs=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));$("#documents").innerHTML=docs.length?docs.slice(0,5).map(d=>`<div class="doc"><span class="code">${esc(d.code)}</span><a href="${esc(d.fileUrl)}" target="_blank">${esc(d.title)}</a><small>${esc(fmt(d.date))}</small><div class="actions"><a href="${esc(d.fileUrl)}" target="_blank">Xem</a><a href="${esc(d.fileUrl)}" download>Tải</a></div></div>`).join(''):empty('Chưa có văn bản.');renderAdmin()});onValue(ref(db,'settings/site'),s=>{settings=s.val()||{};applySettings(settings)});onValue(ref(db,'stats'),s=>{const x=s.val()||{},d=x.days||{},t=today(),ago=new Date(Date.now()-6*86400000).toISOString().slice(0,10);$("#total").textContent=num(x.total||0);$("#today").textContent=num(d[t]||0);$("#week").textContent=num(Object.entries(d).filter(([k])=>k>=ago&&k<=t).reduce((a,[,v])=>a+(Number(v)||0),0))});onValue(ref(db,'presence'),s=>{const now=Date.now(),v=s.val()||{};$("#online").textContent=num(Object.values(v).filter(x=>now-(x.lastSeen||0)<90000).length)})}
 (async()=>{
