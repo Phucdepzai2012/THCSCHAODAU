@@ -3,268 +3,447 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+
 <title>THCS Chao Đâu — Cổng thông tin điện tử</title>
 
-<link id="favicon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='48' fill='%230b4ea2'/%3E%3Ctext x='50' y='63' text-anchor='middle' font-size='42' fill='white' font-family='Arial' font-weight='700'%3EC%C4%90%3C/text%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.14.0/css/all.css">
-
 <style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font:12px/1.5 Arial,Tahoma,sans-serif;color:#222;background:radial-gradient(circle at 10% 0,#edf7ff,transparent 32%),linear-gradient(#f1f6fb,#dce6f0);min-height:100vh}
-a{text-decoration:none;color:#0758a8}
-a:hover{text-decoration:underline;color:#c00}
-button,input,select,textarea{font:inherit}
-img,video{display:block;max-width:100%}
-button{cursor:pointer}
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+}
+
+html{
+  scroll-behavior:smooth;
+}
+
+body{
+  font-family:Arial,Tahoma,sans-serif;
+  font-size:12px;
+  line-height:1.55;
+  color:#1d2733;
+  background:
+    radial-gradient(circle at 10% 0,#e7f3ff,transparent 28%),
+    radial-gradient(circle at 90% 10%,#eef6ff,transparent 25%),
+    linear-gradient(135deg,#eef4f9,#d9e5f0);
+  min-height:100vh;
+}
+
+a{
+  text-decoration:none;
+  color:#0758a8;
+}
+
+a:hover{
+  color:#0a75d1;
+}
+
+button,
+input,
+select,
+textarea{
+  font:inherit;
+}
+
+button{
+  cursor:pointer;
+}
+
+img,
+video,
+iframe{
+  display:block;
+  max-width:100%;
+}
+
+.hidden{
+  display:none!important;
+}
+
+
+/* =========================
+   MAIN WRAPPER
+========================= */
 
 #wrap{
   width:1263px;
-  max-width:calc(100vw - 16px);
-  margin:14px auto;
+  max-width:calc(100vw - 20px);
+  margin:16px auto;
   background:#fff;
-  border:1px solid #c4d1df;
-  border-radius:14px;
+  border:1px solid #c9d6e2;
+  border-radius:18px;
   overflow:hidden;
-  box-shadow:0 18px 50px #153b5d1c
+  box-shadow:
+    0 20px 55px rgba(17,51,79,.12),
+    0 4px 14px rgba(17,51,79,.06);
 }
+
+
+/* =========================
+   TOP
+========================= */
 
 .top{
-  height:38px;
-  background:#f5f9fd;
-  border-bottom:1px solid #d5e0ea;
+  height:42px;
   display:flex;
-  justify-content:flex-end
-}
-.top a{
-  padding:0 13px;
-  display:flex;
+  justify-content:flex-end;
   align-items:center;
-  gap:6px;
-  border-left:1px solid #d5e0ea;
-  font-size:11px;
-  font-weight:700
+  background:
+    linear-gradient(180deg,#fafdff,#eef4f9);
+  border-bottom:1px solid #d7e2ec;
 }
 
-.banner{
-  height:145px;
-  overflow:hidden;
-  border-bottom:4px solid #f3cf28;
-  background:#fff
+.top a{
+  height:100%;
+  display:flex;
+  align-items:center;
+  padding:0 18px;
+  font-weight:700;
+  font-size:11px;
+  color:#0b58a9;
+  border-left:1px solid #d7e2ec;
+  transition:.2s;
 }
+
+.top a:hover{
+  background:#e8f3ff;
+  color:#06467f;
+}
+
+
+/* =========================
+   BANNER
+========================= */
+
+.banner{
+  height:155px;
+  overflow:hidden;
+  background:#edf4fa;
+  border-bottom:4px solid #e9c525;
+}
+
 .banner img{
   width:100%;
-  height:145px;
-  object-fit:cover
+  height:155px;
+  object-fit:cover;
 }
+
+
+/* =========================
+   NAV
+========================= */
 
 .nav{
   display:flex;
   flex-wrap:wrap;
-  background:linear-gradient(#217dcd,#0a5dac 55%,#063c76)
+  background:
+    linear-gradient(180deg,#267fd0 0%,#0a5ba9 55%,#063b71 100%);
+  list-style:none;
 }
-.nav>li{position:relative;list-style:none}
+
+.nav>li{
+  position:relative;
+}
+
 .nav>li>a{
   display:block;
+  padding:12px 14px;
   color:#fff;
-  font-weight:700;
   font-size:10.5px;
-  padding:11px 13px;
-  border-right:1px solid #062e5e55;
-  text-transform:uppercase
+  font-weight:700;
+  text-transform:uppercase;
+  border-right:1px solid rgba(0,0,0,.16);
+  transition:.18s;
 }
+
 .nav>li>a:hover,
 .nav>li.on>a{
-  background:linear-gradient(#ffe66b,#f4c720);
-  color:#073f7b;
-  text-decoration:none
+  background:
+    linear-gradient(180deg,#ffe777,#f2c822);
+  color:#093e75;
 }
+
 .nav ul{
   display:none;
   position:absolute;
   top:100%;
   left:0;
-  min-width:220px;
+  min-width:225px;
+  z-index:100;
+  list-style:none;
   background:#fff;
-  border:1px solid #0b4ea2;
-  z-index:50;
-  padding:0;
-  list-style:none
-}
-.nav li:hover>ul{display:block}
-.nav ul a{
-  display:block;
-  padding:8px 11px;
-  border-bottom:1px dotted #ccd7e3;
-  color:#333
-}
-.nav ul a:hover{
-  background:#eaf4fd;
-  color:#c00
+  border:1px solid #0b58a9;
+  box-shadow:0 12px 30px rgba(0,0,0,.16);
 }
 
+.nav li:hover>ul{
+  display:block;
+}
+
+.nav ul a{
+  display:block;
+  padding:9px 12px;
+  color:#28343f;
+  border-bottom:1px dotted #d7e0e8;
+}
+
+.nav ul a:hover{
+  background:#edf6ff;
+  color:#0b58a9;
+}
+
+
+/* =========================
+   STRIP
+========================= */
+
 .strip{
-  height:40px;
+  min-height:42px;
   display:flex;
   background:#fff;
-  border-bottom:1px solid #d1dce7
+  border-bottom:1px solid #d6e0e9;
 }
+
 .clock{
-  width:230px;
+  width:235px;
   flex:none;
-  background:#0b58a9;
-  color:#fff;
-  padding:0 11px;
   display:flex;
   align-items:center;
-  gap:7px;
+  padding:0 13px;
+  color:#fff;
   font-weight:700;
-  border-right:3px solid #f3cf28
+  background:
+    linear-gradient(180deg,#0f68c1,#0a4f98);
+  border-right:3px solid #e9c525;
 }
+
 .marquee{
   flex:1;
   overflow:hidden;
-  white-space:nowrap;
-  color:#c00;
-  font-weight:700;
   display:flex;
-  align-items:center
-}
-.marquee span{
-  padding-left:100%;
-  animation:mq 28s linear infinite
-}
-@keyframes mq{
-  to{transform:translateX(-100%)}
-}
-.search{
-  width:270px;
-  display:flex;
-  gap:5px;
   align-items:center;
-  padding:0 7px;
-  background:#f2f6fa
-}
-.search input{
-  flex:1;
-  padding:7px 9px;
-  border:1px solid #c5d3e0;
-  border-radius:8px
-}
-.search button{
-  padding:7px 12px;
-  border:0;
-  border-radius:8px;
-  background:#0b58a9;
-  color:#fff
-}
-
-.main{
-  display:flex;
-  gap:10px;
-  padding:12px;
-  background:transparent
-}
-.left{width:220px;flex:none}
-.mid{flex:1;min-width:0}
-.right{width:270px;flex:none}
-
-.box,.tab,.settings{
-  background:#fff;
-  border:1px solid #c8d4df;
-  border-radius:10px;
-  overflow:hidden;
-  margin-bottom:10px;
-  box-shadow:0 9px 24px #21476612
-}
-
-.head{
-  background:linear-gradient(#2b80ca,#0b58a9 58%,#073e78);
-  border-bottom:3px solid #f3cf28;
-  color:#fff;
-  padding:9px 11px;
-  font-size:11px;
-  font-weight:700;
-  text-transform:uppercase
-}
-.head.red{
-  background:linear-gradient(#e64a45,#bd2d29,#8e1b18)
-}
-
-.notice,.work,.quick,.services,.docs,.body{padding:9px}
-
-.notice{
-  height:116px;
-  overflow:auto
-}
-.notice p{
-  padding:4px 0 4px 14px;
-  position:relative
-}
-.notice p:before{
-  content:'◆';
+  white-space:nowrap;
   color:#c62828;
-  position:absolute;
-  left:0;
-  font-size:9px
-}
-.work p{padding:2px 0}
-.work .note{
-  color:#888;
-  font-style:italic
+  font-weight:700;
 }
 
-.quick a,.services a{
+.marquee span{
+  display:inline-block;
+  padding-left:100%;
+  animation:mq 28s linear infinite;
+}
+
+@keyframes mq{
+  to{
+    transform:translateX(-100%);
+  }
+}
+
+.search{
+  width:300px;
   display:flex;
   gap:7px;
   align-items:center;
-  padding:8px 9px;
-  border-bottom:1px dotted #ccd7e0;
+  padding:5px 8px;
+  background:#f4f8fb;
+}
+
+.search input{
+  flex:1;
+  height:34px;
+  padding:0 11px;
+  border:1px solid #bfcedb;
+  border-radius:9px;
+  outline:none;
+  background:#fff;
+  transition:.2s;
+}
+
+.search input:focus{
+  border-color:#2f80cc;
+  box-shadow:0 0 0 4px rgba(47,128,204,.10);
+}
+
+.search button{
+  height:34px;
+  padding:0 14px;
+  border:1px solid #084b8f;
+  border-radius:9px;
+  color:#fff;
   font-weight:700;
-  font-size:11px
+  background:
+    linear-gradient(180deg,#217bd0,#0a58a7);
+  box-shadow:
+    0 4px 10px rgba(10,88,167,.20);
+  transition:.2s;
 }
-.quick a:hover,.services a:hover{
-  background:#eef6fd;
-  text-decoration:none
+
+.search button:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 7px 16px rgba(10,88,167,.26);
 }
-.quick i,.services i{
-  width:18px;
-  text-align:center
+
+.search button:active{
+  transform:translateY(0);
 }
+
+
+/* =========================
+   LAYOUT
+========================= */
+
+.main{
+  display:flex;
+  gap:11px;
+  padding:13px;
+}
+
+.left{
+  width:220px;
+  flex:none;
+}
+
+.mid{
+  flex:1;
+  min-width:0;
+}
+
+.right{
+  width:270px;
+  flex:none;
+}
+
+
+/* =========================
+   BOX
+========================= */
+
+.box,
+.tab,
+.settings{
+  margin-bottom:11px;
+  background:#fff;
+  border:1px solid #ccd8e3;
+  border-radius:11px;
+  overflow:hidden;
+  box-shadow:
+    0 8px 25px rgba(30,72,105,.07);
+}
+
+.head{
+  padding:10px 12px;
+  color:#fff;
+  font-size:11px;
+  font-weight:700;
+  text-transform:uppercase;
+  background:
+    linear-gradient(180deg,#2a82cd,#0b58a8 58%,#073d77);
+  border-bottom:3px solid #e9c525;
+}
+
+.head.red{
+  background:
+    linear-gradient(180deg,#e54c48,#bd302c 58%,#8b1c1b);
+}
+
+
+/* =========================
+   LEFT CONTENT
+========================= */
+
+.notice{
+  height:124px;
+  overflow:auto;
+  padding:10px;
+}
+
+.notice p{
+  position:relative;
+  padding:6px 5px 6px 13px;
+  border-bottom:1px dotted #d9e0e6;
+}
+
+.notice p:before{
+  content:"";
+  position:absolute;
+  left:0;
+  top:12px;
+  width:5px;
+  height:5px;
+  border-radius:50%;
+  background:#cf2e2e;
+}
+
+.work{
+  padding:10px;
+}
+
+.work p{
+  padding:3px 0;
+}
+
+.work .note{
+  color:#8a929b;
+  font-style:italic;
+}
+
+.quick a,
+.services a{
+  display:flex;
+  align-items:center;
+  padding:9px 10px;
+  color:#30404e;
+  font-weight:700;
+  border-bottom:1px dotted #d8e0e7;
+  transition:.18s;
+}
+
+.quick a:hover,
+.services a:hover{
+  background:#edf6ff;
+  color:#0758a8;
+}
+
+
+/* =========================
+   FEATURED
+========================= */
 
 .featured{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:2px;
-  background:#c5d2df
+  background:#cbd7e2;
 }
+
 .feature{
+  padding:10px;
   background:#fff;
-  padding:9px;
-  transition:.2s
+  transition:.2s;
 }
+
 .feature:hover{
   transform:translateY(-2px);
-  box-shadow:0 10px 25px #194d771a
+  box-shadow:0 12px 28px rgba(25,77,119,.11);
 }
 
 .media{
-  height:112px;
-  border:1px solid #c6d2df;
-  background:#f3f6f9;
+  height:115px;
   padding:2px;
   overflow:hidden;
-  border-radius:7px
+  background:#eef3f7;
+  border:1px solid #ccd8e2;
+  border-radius:8px;
 }
-.media img,.media video{
-  width:100%;
-  height:100%;
-  object-fit:cover
-}
+
+.media img,
+.media video,
 .media iframe{
   width:100%;
   height:100%;
+  object-fit:cover;
   border:0;
-  border-radius:5px
 }
 
 .ph{
@@ -272,491 +451,875 @@ button{cursor:pointer}
   display:flex;
   align-items:center;
   justify-content:center;
-  color:#fff;
-  font-size:38px
+  color:#6b7a88;
+  font-size:12px;
+  font-weight:700;
+  background:
+    linear-gradient(135deg,#f3f7fa,#e4ebf1);
 }
-.bg0{background:linear-gradient(#2b82d3,#0b4ea2)}
-.bg1{background:linear-gradient(#27b1a3,#00695c)}
-.bg2{background:linear-gradient(#b14bc4,#6a1b9a)}
-.bg3{background:linear-gradient(#ff9e22,#e65100)}
-.bg4{background:linear-gradient(#ec4542,#b71c1c)}
-.bg5{background:linear-gradient(#36c1fb,#0277bd)}
 
 .title{
   display:block;
-  margin-top:6px;
+  margin-top:7px;
   font-size:11.5px;
   font-weight:700;
-  line-height:1.35
+  line-height:1.4;
 }
+
 .meta{
+  margin-top:5px;
+  color:#8b949d;
   font-size:10px;
-  color:#888;
   font-style:italic;
-  margin-top:5px
+}
+
+
+/* =========================
+   ARTICLE LIST
+========================= */
+
+.body{
+  padding:10px;
 }
 
 .lead{
   display:flex;
-  gap:10px;
-  padding-bottom:9px;
-  border-bottom:1px dotted #ccd5de
-}
-.lead .media{
-  width:130px;
-  height:90px;
-  flex:none
-}
-.lead h3{
-  font-size:13px;
-  margin-bottom:5px
-}
-.lead p{
-  font-size:11.5px;
-  color:#555
+  gap:11px;
+  padding-bottom:10px;
+  border-bottom:1px dotted #d5dde5;
 }
 
-.list{padding-top:3px}
-.list li{
-  list-style:none;
-  padding:6px 0;
-  border-bottom:1px dotted #ddd
+.lead .media{
+  width:135px;
+  height:92px;
+  flex:none;
 }
+
+.lead h3{
+  margin-bottom:5px;
+  font-size:13px;
+}
+
+.lead p{
+  color:#5e6872;
+  font-size:11.5px;
+}
+
+.list{
+  padding-top:4px;
+  list-style:none;
+}
+
+.list li{
+  padding:7px 0;
+  border-bottom:1px dotted #d6dde4;
+}
+
 .list li:before{
-  content:'▶';
-  color:#c62828;
-  font-size:8px;
-  margin-right:5px
+  content:"";
+  display:inline-block;
+  width:5px;
+  height:5px;
+  margin:0 7px 1px 1px;
+  border-radius:50%;
+  background:#cf2e2e;
+}
+
+
+/* =========================
+   DOCUMENTS
+========================= */
+
+.docs{
+  padding:8px;
 }
 
 .doc{
   padding:9px;
-  border-bottom:1px dotted #ccd7df
+  border-bottom:1px dotted #d3dce4;
 }
+
 .code{
   display:inline-block;
-  padding:2px 6px;
-  background:#c62828;
+  padding:3px 7px;
   color:#fff;
-  font-size:10px;
   font-weight:700;
-  border-radius:2px
+  font-size:10px;
+  border-radius:4px;
+  background:#bd302c;
 }
+
 .doc a{
   display:block;
+  margin-top:5px;
   font-weight:700;
-  margin-top:4px
 }
+
 .doc small{
   display:block;
-  color:#888;
-  font-style:italic
+  margin-top:2px;
+  color:#8a939c;
 }
 
 .actions{
   display:flex;
-  gap:13px;
-  margin-top:5px;
-  font-size:11px
+  gap:12px;
+  margin-top:6px;
 }
 
-.yt{padding:8px}
+.actions a{
+  font-size:11px;
+  font-weight:700;
+}
+
+
+/* =========================
+   YOUTUBE / WEBSITE
+========================= */
+
+.yt{
+  padding:9px;
+}
+
 .yt iframe{
   width:100%;
-  height:150px;
-  border:1px solid #c2d1df;
-  border-radius:7px
+  height:152px;
+  border:1px solid #c8d5e0;
+  border-radius:8px;
 }
 
-.web{padding:8px}
+.web{
+  padding:9px;
+}
+
 .web select{
   width:100%;
-  padding:7px;
-  border:1px solid #c0cedb;
-  border-radius:8px
+  height:36px;
+  padding:0 10px;
+  border:1px solid #bfcedb;
+  border-radius:8px;
+  outline:none;
+  background:#fff;
 }
 
-.stats{padding:7px 10px}
+
+/* =========================
+   STATS
+========================= */
+
+.stats{
+  padding:8px 10px;
+  list-style:none;
+}
+
 .stats li{
   display:flex;
+  align-items:center;
   justify-content:space-between;
-  padding:5px 0;
-  border-bottom:1px dotted #ddd
-}
-.stats li{list-style:none}
-.stats b{
-  background:#ffc107;
-  color:#0b4ea2;
-  padding:2px 8px;
-  border:1px solid #a87a00;
-  border-radius:3px
+  padding:6px 0;
+  border-bottom:1px dotted #d5dde4;
 }
 
-.footer{
-  background:linear-gradient(#0b5eae,#06386d);
-  border-top:4px solid #f3cf28;
-  color:#fff;
+.stats b{
+  min-width:42px;
   text-align:center;
-  padding:18px;
-  line-height:1.9
+  padding:3px 8px;
+  color:#124c88;
+  border:1px solid #d6ae14;
+  border-radius:5px;
+  background:#ffe46e;
 }
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.footer{
+  padding:19px;
+  text-align:center;
+  line-height:1.9;
+  color:#fff;
+  background:
+    linear-gradient(180deg,#0b5eae,#073c72);
+  border-top:4px solid #e9c525;
+}
+
 .footer .name{
-  font:bold 15px 'Times New Roman',serif;
-  letter-spacing:1px
+  margin-bottom:2px;
+  font:700 16px "Times New Roman",serif;
+  letter-spacing:1px;
 }
+
+
+/* =========================
+   LOGIN
+========================= */
 
 .overlay{
   position:fixed;
   inset:0;
-  background:#042a4dcc;
-  backdrop-filter:blur(5px);
+  z-index:1000;
   display:none;
   align-items:center;
   justify-content:center;
-  padding:18px;
-  z-index:1000
+  padding:20px;
+  background:rgba(4,42,76,.78);
+  backdrop-filter:blur(5px);
 }
-.overlay.show{display:flex}
+
+.overlay.show{
+  display:flex;
+}
 
 .login{
-  width:390px;
+  width:410px;
   background:#fff;
-  border-radius:16px;
+  border-radius:17px;
   overflow:hidden;
-  box-shadow:0 28px 80px #0006
+  box-shadow:
+    0 28px 80px rgba(0,0,0,.30);
 }
+
 .login h2{
-  padding:18px;
+  padding:19px;
   color:#fff;
   text-align:center;
-  background:linear-gradient(#2780ce,#0b58a9);
-  border-bottom:4px solid #f3cf28;
-  font-size:17px
+  font-size:17px;
+  background:
+    linear-gradient(180deg,#2b83cf,#0b58a9);
+  border-bottom:4px solid #e9c525;
 }
-.loginbody{padding:20px}
 
-.field{margin-bottom:11px}
+.loginbody{
+  padding:21px;
+}
+
+.field{
+  margin-bottom:12px;
+}
+
 .field label{
   display:block;
+  margin-bottom:5px;
+  color:#24313d;
   font-weight:700;
-  margin-bottom:4px;
-  font-size:11.5px
+  font-size:11.5px;
 }
-.field input,.field textarea,.field select{
+
+.field input,
+.field textarea,
+.field select{
   width:100%;
+  min-height:37px;
   padding:8px 10px;
-  border:1px solid #bfd0df;
+  border:1px solid #c0cfdb;
   border-radius:9px;
-  outline:0;
-  background:#fbfdff
+  outline:none;
+  color:#25313c;
+  background:#fbfdff;
+  transition:.2s;
 }
-.field input:focus,.field textarea:focus,.field select:focus{
-  border-color:#2e80cc;
-  box-shadow:0 0 0 3px #2e80cc1b
+
+.field textarea{
+  min-height:84px;
+  resize:vertical;
 }
+
+.field input:focus,
+.field textarea:focus,
+.field select:focus{
+  border-color:#2c7eca;
+  box-shadow:
+    0 0 0 4px rgba(44,126,202,.10);
+  background:#fff;
+}
+
+
+/* =========================
+   BUTTONS
+========================= */
 
 .btn{
   width:100%;
-  padding:10px;
-  border:0;
+  min-height:40px;
+  padding:9px 14px;
+  border:1px solid #074a8a;
   border-radius:9px;
-  background:linear-gradient(#2b82d3,#0b58a9);
   color:#fff;
   font-weight:700;
-  box-shadow:0 8px 18px #0b58a933
+  background:
+    linear-gradient(180deg,#2d85d4 0%,#0c5aa9 100%);
+  box-shadow:
+    0 5px 13px rgba(11,88,169,.20);
+  transition:.2s;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  box-shadow:
+    0 8px 18px rgba(11,88,169,.27);
+}
+
+.btn:active{
+  transform:translateY(0);
+}
+
+.btn:disabled{
+  opacity:.65;
+  cursor:not-allowed;
+  transform:none;
+}
+
+.btn.secondary{
+  color:#0b58a9;
+  background:#fff;
+  border:1px solid #a9c3da;
+}
+
+.btn.secondary:hover{
+  background:#edf6ff;
+}
+
+.btn.danger{
+  color:#fff;
+  border-color:#a91f1f;
+  background:
+    linear-gradient(180deg,#df4747,#bb2525);
+}
+
+.btn.small{
+  width:auto;
+  min-height:34px;
+  padding:6px 11px;
 }
 
 .err{
   display:none;
-  background:#ffeded;
-  color:#b71c1c;
-  border:1px solid #efb7b7;
+  margin-bottom:11px;
+  padding:9px;
+  color:#a51d1d;
+  border:1px solid #edbaba;
   border-radius:8px;
-  padding:8px;
-  margin-bottom:10px
+  background:#fff0f0;
 }
-.err.show{display:block}
+
+.err.show{
+  display:block;
+}
+
+
+/* =========================
+   ADMIN
+========================= */
 
 #Admin{
   display:none;
   min-height:100vh;
-  background:linear-gradient(#eef5fb,#dde7f1)
+  background:
+    linear-gradient(135deg,#edf4fa,#dce7f1);
 }
+
 .adminbar{
   display:flex;
   align-items:center;
   justify-content:space-between;
   gap:12px;
   flex-wrap:wrap;
-  padding:14px 16px;
+  padding:16px 18px;
   color:#fff;
-  background:linear-gradient(#1d78c8,#084681);
-  border-bottom:4px solid #f3cf28;
-  box-shadow:0 7px 18px #113b5f25
+  background:
+    linear-gradient(180deg,#1e79c9,#08457f);
+  border-bottom:4px solid #e9c525;
+  box-shadow:0 7px 20px rgba(17,59,95,.14);
 }
+
+.adminbar b{
+  font-size:16px;
+}
+
+.admin-subtitle{
+  margin-top:2px;
+  color:#d9eafb;
+  font-size:11px;
+}
+
 .admin-actions{
   display:flex;
-  gap:7px
+  gap:8px;
 }
+
 .admin-actions button{
-  border:0;
-  border-radius:8px;
-  padding:7px 12px;
-  font-weight:700
+  min-height:36px;
+  padding:7px 13px;
+  border-radius:9px;
+  font-weight:700;
+  transition:.2s;
 }
+
+.admin-actions button:hover{
+  transform:translateY(-1px);
+}
+
 .white{
+  color:#0b58a9;
   background:#fff;
-  color:#0b58a9
-}
-.danger{
-  background:#c62828;
-  color:#fff
+  border:1px solid #d6e1ea;
 }
 
 .admin-tabs{
   display:flex;
   flex-wrap:wrap;
-  background:#073f7b
+  background:#073f7b;
 }
+
 .admin-tabs button{
-  padding:11px 16px;
+  padding:12px 18px;
+  color:#d8e8f8;
+  font-weight:700;
   border:0;
   border-top:3px solid transparent;
   background:transparent;
-  color:#d4e4f7;
-  font-weight:700
+  transition:.18s;
 }
+
+.admin-tabs button:hover{
+  color:#fff;
+  background:rgba(255,255,255,.07);
+}
+
 .admin-tabs button.active{
-  background:#fff;
   color:#0b58a9;
-  border-top-color:#f3cf28
+  background:#fff;
+  border-top-color:#e9c525;
 }
 
 .panel{
   display:none;
-  padding:15px
+  padding:15px;
 }
-.panel.active{display:block}
+
+.panel.active{
+  display:block;
+}
+
+
+/* =========================
+   ADMIN FORM GRID
+========================= */
 
 .grid{
   display:flex;
-  gap:10px
-}
-.formcol{
-  width:390px;
-  flex:none
-}
-.listcol{
-  flex:1;
-  min-width:0
+  gap:11px;
 }
 
+.formcol{
+  width:405px;
+  flex:none;
+}
+
+.listcol{
+  flex:1;
+  min-width:0;
+}
+
+.row2{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+
+
+/* =========================
+   URL BOX
+========================= */
+
 .url-help{
-  margin-top:6px;
-  padding:8px 9px;
-  background:#eef6fd;
-  border:1px solid #c9dced;
-  border-radius:7px;
-  color:#555;
+  margin-top:7px;
+  padding:9px 10px;
+  color:#566370;
   font-size:10.5px;
-  line-height:1.5
+  line-height:1.6;
+  background:#eef6fd;
+  border:1px solid #c7d9e8;
+  border-radius:8px;
+}
+
+.url-help strong{
+  color:#0b58a9;
 }
 
 .url-status{
+  min-height:18px;
   margin-top:6px;
-  font-size:10.5px;
   color:#0b58a9;
-  font-weight:700
-}
-
-.preview{
-  margin-top:8px;
-  max-height:220px;
-  width:100%;
-  object-fit:contain;
-  border:1px solid #bfd0df;
-  border-radius:8px;
-  background:#f7faff
-}
-
-.upload{
-  display:block;
-  border:2px dashed #b7c8d9;
-  padding:14px;
-  text-align:center;
-  background:#f8fbff;
-  border-radius:10px
-}
-.upload input{display:none}
-.upload .ico{
-  font-size:25px;
-  color:#0b58a9
-}
-.filename{
-  margin-top:5px;
-  color:#c00;
+  font-size:10.5px;
   font-weight:700;
-  font-size:11px
 }
+
+.media-preview{
+  margin-top:8px;
+  width:100%;
+  max-height:230px;
+  min-height:30px;
+  border:1px solid #bfd0df;
+  border-radius:9px;
+  overflow:hidden;
+  background:#f7fafc;
+}
+
+.media-preview img,
+.media-preview video,
+.media-preview iframe{
+  width:100%;
+  max-height:230px;
+  object-fit:contain;
+  border:0;
+  background:#f3f6f9;
+}
+
+.drive-preview{
+  height:230px;
+}
+
+
+/* =========================
+   ADMIN ITEMS
+========================= */
 
 .adminitem{
   display:flex;
   align-items:center;
   gap:10px;
-  padding:9px;
+  margin:6px;
+  padding:10px;
   background:#fff;
-  margin:5px;
-  border:1px solid #e0e8f0;
-  border-radius:9px
+  border:1px solid #dde6ed;
+  border-radius:10px;
+  transition:.18s;
 }
+
+.adminitem:hover{
+  border-color:#bdd3e6;
+  box-shadow:0 5px 16px rgba(24,69,103,.07);
+}
+
 .thumb{
-  width:52px;
-  height:52px;
+  width:58px;
+  height:58px;
   flex:none;
-  border-radius:7px;
-  overflow:hidden;
-  background:#0b58a9;
-  color:#fff;
   display:flex;
   align-items:center;
-  justify-content:center
+  justify-content:center;
+  overflow:hidden;
+  border-radius:8px;
+  color:#687988;
+  font-size:10px;
+  font-weight:700;
+  border:1px solid #d4dee6;
+  background:#eef3f7;
 }
-.thumb img,.thumb video,.thumb iframe{
+
+.thumb img,
+.thumb video,
+.thumb iframe{
   width:100%;
   height:100%;
   object-fit:cover;
-  border:0
+  border:0;
 }
+
 .grow{
   flex:1;
-  min-width:0
+  min-width:0;
 }
+
 .grow b{
   display:block;
-  white-space:nowrap;
   overflow:hidden;
+  white-space:nowrap;
   text-overflow:ellipsis;
-  color:#0758a8
+  color:#0758a8;
 }
+
+.grow small{
+  display:block;
+  margin-top:2px;
+  color:#87919b;
+}
+
 .del{
-  background:#fdeaea;
-  color:#b71c1c;
-  border:1px solid #efc2c2;
-  border-radius:7px;
-  padding:5px 10px
+  min-height:34px;
+  padding:6px 10px;
+  border-radius:8px;
+  color:#b31e1e;
+  font-weight:700;
+  border:1px solid #efc3c3;
+  background:#fff1f1;
+  transition:.18s;
+}
+
+.del:hover{
+  color:#fff;
+  background:#c62828;
+  border-color:#c62828;
+}
+
+
+/* =========================
+   SETTINGS
+========================= */
+
+.settings{
+  margin-bottom:12px;
 }
 
 .settings h3{
-  padding:8px 12px;
-  background:#eef4f9;
+  padding:10px 12px;
   color:#0b58a9;
-  border-bottom:1px solid #c5d4e1
+  font-size:12px;
+  background:#eef5fa;
+  border-bottom:1px solid #ccd9e3;
 }
-.inside{padding:12px}
 
-.row2{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px
+.inside{
+  padding:13px;
 }
+
+.upload{
+  display:block;
+  padding:15px;
+  text-align:center;
+  border:2px dashed #b5c8da;
+  border-radius:10px;
+  color:#62717f;
+  background:#f8fbfe;
+  transition:.2s;
+}
+
+.upload:hover{
+  border-color:#5b9bd2;
+  background:#f2f8fd;
+}
+
+.upload input{
+  display:none;
+}
+
+.filename{
+  margin-top:5px;
+  color:#c62828;
+  font-size:11px;
+  font-weight:700;
+}
+
+.add{
+  min-height:34px;
+  padding:6px 11px;
+  border:1px solid #0a4f91;
+  border-radius:8px;
+  color:#fff;
+  font-weight:700;
+  background:
+    linear-gradient(180deg,#2a81ce,#0b58a8);
+  transition:.18s;
+}
+
+.add:hover{
+  transform:translateY(-1px);
+}
+
+.preview-banner{
+  width:100%;
+  max-height:200px;
+  margin-top:8px;
+  object-fit:contain;
+  border:1px solid #c4d2df;
+  border-radius:8px;
+  background:#f4f7fa;
+}
+
+
+/* =========================
+   LINK ROW
+========================= */
 
 .linkrow{
   display:grid;
-  grid-template-columns:42px 1fr 2fr 38px;
-  gap:6px;
-  margin-bottom:6px
+  grid-template-columns:42px 1fr 2fr 40px;
+  gap:7px;
+  margin-bottom:7px;
 }
+
 .linkrow.webrow{
-  grid-template-columns:1fr 2fr 38px
+  grid-template-columns:1fr 2fr 40px;
 }
+
 .linkrow input{
   width:100%;
-  padding:6px 7px;
-  border:1px solid #bdccda;
-  border-radius:7px
-}
-.linkrow button,.add{
-  border:0;
+  min-height:34px;
+  padding:7px;
+  border:1px solid #becdd9;
   border-radius:7px;
-  background:#0b58a9;
-  color:#fff;
-  padding:6px 9px
+  outline:none;
 }
-.add{margin-top:4px}
+
+.linkrow button{
+  border:0;
+  border-radius:8px;
+  color:#b42020;
+  background:#fff0f0;
+  border:1px solid #ecc2c2;
+  font-weight:700;
+}
+
+.linkrow button:hover{
+  color:#fff;
+  background:#c62828;
+}
+
+
+/* =========================
+   TOAST
+========================= */
 
 .toast{
   position:fixed;
   right:20px;
   bottom:20px;
   z-index:2000;
-  background:#2e7d32;
-  color:#fff;
+  max-width:390px;
   padding:11px 15px;
+  color:#fff;
   border-radius:10px;
-  box-shadow:0 12px 30px #0003;
+  background:#2d7d32;
+  box-shadow:0 13px 30px rgba(0,0,0,.18);
   opacity:0;
-  transform:translateY(20px);
+  transform:translateY(16px);
   pointer-events:none;
-  transition:.25s
+  transition:.25s;
 }
+
 .toast.show{
   opacity:1;
-  transform:none
+  transform:none;
 }
-.toast.err{background:#c62828}
+
+.toast.err{
+  background:#c62828;
+}
+
+
+/* =========================
+   MOBILE
+========================= */
 
 @media(max-width:900px){
+
   #wrap{
     max-width:100%;
     margin:0;
-    border-radius:0
+    border-radius:0;
   }
 
-  .banner,.banner img{
+  .banner{
     height:auto;
-    min-height:90px
   }
 
-  .main,.grid{display:block}
-  .left,.right,.formcol{width:auto}
+  .banner img{
+    height:auto;
+    min-height:90px;
+  }
 
-  .search{
-    width:100%
+  .main,
+  .grid{
+    display:block;
+  }
+
+  .left,
+  .right,
+  .formcol{
+    width:auto;
   }
 
   .strip{
-    height:auto;
-    flex-wrap:wrap
+    flex-wrap:wrap;
   }
 
-  .clock{width:190px}
+  .clock{
+    width:100%;
+    min-height:38px;
+  }
 
-  .search{order:3}
+  .search{
+    width:100%;
+    order:3;
+  }
 
   .featured{
-    grid-template-columns:1fr 1fr
+    grid-template-columns:1fr 1fr;
   }
 
-  .row2,.linkrow,.linkrow.webrow{
-    grid-template-columns:1fr
+  .row2,
+  .linkrow,
+  .linkrow.webrow{
+    grid-template-columns:1fr;
   }
 
-  .panel{padding:8px}
+  .panel{
+    padding:8px;
+  }
+
+  .admin-actions{
+    width:100%;
+  }
+
+  .admin-actions button{
+    flex:1;
+  }
+
+}
+
+@media(max-width:560px){
+
+  .featured{
+    grid-template-columns:1fr;
+  }
+
+  .lead{
+    display:block;
+  }
+
+  .lead .media{
+    width:100%;
+    height:150px;
+    margin-bottom:9px;
+  }
+
+  .adminitem{
+    flex-wrap:wrap;
+  }
+
+  .adminitem .del{
+    width:100%;
+  }
+
 }
 </style>
 </head>
+
 
 <body>
 
 <div id="wrap">
 
+  <!-- TOP -->
   <div class="top">
-    <a href="#" id="loginOpen">
-      <i class="fas fa-sign-in-alt"></i>
-      Đăng nhập
-    </a>
+    <a href="#" id="loginOpen">Đăng nhập quản trị</a>
   </div>
 
+
+  <!-- BANNER -->
   <div class="banner">
     <img
       id="bannerImage"
@@ -764,13 +1327,17 @@ button{cursor:pointer}
       alt="Banner trường">
   </div>
 
+
+  <!-- MENU -->
   <ul class="nav">
+
     <li class="on">
       <a href="#">Trang chủ</a>
     </li>
 
     <li>
-      <a href="#">Giới thiệu ▾</a>
+      <a href="#">Giới thiệu</a>
+
       <ul>
         <li><a href="#">Ban giám hiệu</a></li>
         <li><a href="#">Các đoàn thể</a></li>
@@ -783,249 +1350,405 @@ button{cursor:pointer}
     <li><a href="#">Hoạt động giáo dục</a></li>
     <li><a href="#">Tài nguyên</a></li>
     <li><a href="#">Phòng truyền thống</a></li>
+
   </ul>
 
+
+  <!-- STRIP -->
   <div class="strip">
 
     <div class="clock">
-      <i class="far fa-clock"></i>
       <span id="clock">Đang tải...</span>
     </div>
 
     <div class="marquee">
       <span id="marquee">
-        📢 Chào mừng bạn đến với cổng thông tin điện tử Trường THCS Chao Đâu!
+        Chào mừng bạn đến với cổng thông tin điện tử Trường THCS Chao Đâu!
       </span>
     </div>
 
     <div class="search">
-      <input id="search" placeholder="Tìm bài viết...">
+      <input
+        id="search"
+        placeholder="Tìm bài viết...">
+
       <button id="searchBtn">
-        <i class="fas fa-search"></i>
+        Tìm kiếm
       </button>
     </div>
 
   </div>
 
+
+  <!-- MAIN -->
   <div class="main">
+
 
     <!-- LEFT -->
     <aside class="left">
 
       <div class="box">
-        <div class="head">📢 Thông báo</div>
+
+        <div class="head">
+          Thông báo
+        </div>
+
         <div id="noticeList" class="notice"></div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">🕒 Giờ làm việc</div>
+
+        <div class="head">
+          Giờ làm việc
+        </div>
+
         <div id="work" class="work"></div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">🔗 Liên kết nhanh</div>
+
+        <div class="head">
+          Liên kết nhanh
+        </div>
+
         <div id="quick" class="quick"></div>
+
       </div>
 
     </aside>
+
 
     <!-- CENTER -->
     <main class="mid">
 
       <div class="box">
-        <div class="head red">⭐ Tin nổi bật</div>
+
+        <div class="head red">
+          Tin nổi bật
+        </div>
+
         <div id="featured" class="featured"></div>
+
       </div>
 
+
       <div class="tab">
-        <div class="head">Tin tức</div>
+
+        <div class="head">
+          Tin tức
+        </div>
+
         <div id="news" class="body"></div>
+
       </div>
 
+
       <div class="tab">
-        <div class="head red">Sự kiện</div>
+
+        <div class="head red">
+          Sự kiện
+        </div>
+
         <div id="events" class="body"></div>
+
       </div>
 
+
       <div class="tab">
-        <div class="head">Thông báo</div>
+
+        <div class="head">
+          Thông báo
+        </div>
+
         <div id="announcements" class="body"></div>
+
       </div>
 
+
       <div class="tab">
-        <div class="head">Tuyển sinh</div>
+
+        <div class="head">
+          Tuyển sinh
+        </div>
+
         <div id="admissions" class="body"></div>
+
       </div>
 
     </main>
+
 
     <!-- RIGHT -->
     <aside class="right">
 
       <div class="box">
-        <div class="head">📄 Văn bản mới</div>
+
+        <div class="head">
+          Văn bản mới
+        </div>
+
         <div id="documents" class="docs"></div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">🎓 Thông tin Dạy – Học</div>
+
+        <div class="head">
+          Thông tin Dạy - Học
+        </div>
+
         <div id="services" class="services"></div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">▶ Video</div>
+
+        <div class="head">
+          Video
+        </div>
+
         <div class="yt">
+
           <iframe
             id="yt"
             src="https://www.youtube.com/embed/5QeuPIu3y3Q"
             allowfullscreen>
           </iframe>
+
         </div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">🌐 Liên kết website</div>
+
+        <div class="head">
+          Liên kết website
+        </div>
+
         <div class="web">
+
           <select id="webLinks">
-            <option value="">-- Chọn liên kết website --</option>
+
+            <option value="">
+              Chọn liên kết website
+            </option>
+
           </select>
+
         </div>
+
       </div>
 
+
       <div class="box">
-        <div class="head">📊 Thống kê</div>
+
+        <div class="head">
+          Thống kê
+        </div>
+
         <ul class="stats">
+
           <li>
             <span>Đang online</span>
             <b id="online">0</b>
           </li>
+
           <li>
             <span>Hôm nay</span>
             <b id="today">0</b>
           </li>
+
           <li>
             <span>Trong tuần</span>
             <b id="week">0</b>
           </li>
+
           <li>
             <span>Tất cả</span>
             <b id="total">0</b>
           </li>
+
         </ul>
+
       </div>
 
     </aside>
 
   </div>
 
+
+  <!-- FOOTER -->
   <footer class="footer">
-    <div class="name" id="footerName">TRƯỜNG THCS CHAO ĐÂU</div>
+
+    <div
+      class="name"
+      id="footerName">
+      TRƯỜNG THCS CHAO ĐÂU
+    </div>
 
     <div>
       <b>Địa chỉ:</b>
-      <span id="address">123 Đường Ước Mơ, P. Bình Thạnh, TP.HCM</span>
+      <span id="address">
+        123 Đường Ước Mơ, P. Bình Thạnh, TP.HCM
+      </span>
     </div>
 
     <div>
       <b>Điện thoại:</b>
-      <span id="phone">(028) 1234 5678</span>
+      <span id="phone">
+        (028) 1234 5678
+      </span>
+
       —
+
       <b>Email:</b>
-      <span id="email">info@chaodau.edu.vn</span>
+
+      <span id="email">
+        info@chaodau.edu.vn
+      </span>
     </div>
 
     <div>
       <b>Chịu trách nhiệm nội dung:</b>
-      <span id="responsible">Ban Giám hiệu</span>
+
+      <span id="responsible">
+        Ban Giám hiệu
+      </span>
     </div>
+
   </footer>
 
 </div>
 
 
+
 <!-- LOGIN -->
-<div id="loginOverlay" class="overlay">
+<div
+  id="loginOverlay"
+  class="overlay">
 
   <div class="login">
 
-    <h2>ĐĂNG NHẬP QUẢN TRỊ</h2>
+    <h2>
+      ĐĂNG NHẬP QUẢN TRỊ
+    </h2>
 
     <div class="loginbody">
 
-      <div id="loginError" class="err"></div>
+      <div
+        id="loginError"
+        class="err">
+      </div>
 
       <form id="loginForm">
 
         <div class="field">
+
           <label>Tài khoản</label>
+
           <input
             id="loginUser"
             required
-            placeholder="admin"
-            autocomplete="username">
+            autocomplete="username"
+            placeholder="admin">
+
         </div>
 
         <div class="field">
+
           <label>Mật khẩu</label>
+
           <input
             id="loginPass"
             type="password"
             required
-            placeholder="Nhập mật khẩu"
-            autocomplete="current-password">
+            autocomplete="current-password"
+            placeholder="Nhập mật khẩu">
+
         </div>
 
-        <button class="btn" type="submit">
+        <button
+          class="btn"
+          type="submit">
           Đăng nhập
         </button>
 
       </form>
 
-      <div style="margin-top:10px;text-align:center;color:#777;font-size:10.5px">
+      <div
+        style="
+          margin-top:10px;
+          text-align:center;
+          color:#7b858e;
+          font-size:10.5px">
         Tài khoản quản trị: admin
       </div>
 
       <button
         id="loginClose"
-        class="btn"
-        style="margin-top:8px;background:#fff;color:#0b58a9">
+        class="btn secondary"
+        style="margin-top:8px">
         Đóng
       </button>
 
     </div>
+
   </div>
+
 </div>
+
 
 
 <!-- ADMIN -->
 <div id="Admin">
 
+  <!-- ADMIN BAR -->
   <div class="adminbar">
 
     <div>
-      <b style="font-size:15px">
+
+      <b>
         Bảng điều khiển quản trị
       </b>
 
-      <div style="font-size:11px;color:#dceafb">
-        Firebase Realtime • chỉ lưu URL media
+      <div class="admin-subtitle">
+        Firebase Realtime Database - Firebase chỉ lưu dữ liệu và URL
       </div>
+
     </div>
 
     <div class="admin-actions">
-      <button class="white" id="viewSite">
+
+      <button
+        class="white"
+        id="viewSite">
         Xem trang
       </button>
 
-      <button class="danger" id="logout">
+      <button
+        class="btn danger small"
+        id="logout">
         Đăng xuất
       </button>
+
     </div>
 
   </div>
 
+
+  <!-- ADMIN TABS -->
   <div class="admin-tabs">
-    <button class="active" data-panel="posts">
+
+    <button
+      class="active"
+      data-panel="posts">
       Bài viết
     </button>
 
@@ -1040,136 +1763,203 @@ button{cursor:pointer}
     <button data-panel="settings">
       Cài đặt
     </button>
+
   </div>
 
 
-  <!-- POSTS -->
-  <div id="panel-posts" class="panel active">
+
+  <!-- POSTS PANEL -->
+  <div
+    id="panel-posts"
+    class="panel active">
 
     <div class="grid">
 
+
+      <!-- POST FORM -->
       <div class="formcol">
 
         <div class="box">
 
           <div class="head">
-            ➕ Đăng bài viết
+            Đăng bài viết
           </div>
 
-          <div style="padding:12px">
+          <div style="padding:13px">
 
             <form id="postForm">
 
+
               <div class="field">
-                <label>Tiêu đề *</label>
-                <input id="pTitle" required>
+
+                <label>
+                  Tiêu đề *
+                </label>
+
+                <input
+                  id="pTitle"
+                  required>
+
               </div>
+
 
               <div class="row2">
 
                 <div class="field">
-                  <label>Danh mục *</label>
+
+                  <label>
+                    Danh mục *
+                  </label>
 
                   <select id="pCat">
+
                     <option>Tin tức</option>
                     <option>Sự kiện</option>
                     <option>Thông báo</option>
                     <option>Tuyển sinh</option>
+
                   </select>
+
                 </div>
 
+
                 <div class="field">
-                  <label>Ngày đăng *</label>
-                  <input id="pDate" type="date" required>
+
+                  <label>
+                    Ngày đăng *
+                  </label>
+
+                  <input
+                    id="pDate"
+                    type="date"
+                    required>
+
                 </div>
 
               </div>
 
 
-              <!-- GOOGLE URL -->
+              <!-- MEDIA URL -->
               <div class="field">
 
-                <label>Ảnh / Video từ Google *</label>
+                <label>
+                  URL ảnh / video
+                </label>
 
                 <input
                   id="pMediaUrl"
-                  type="url"
-                  placeholder="Dán URL Google Drive / URL media...">
+                  type="text"
+                  placeholder="Dán link Google Drive hoặc URL trực tiếp...">
 
                 <div class="url-help">
-                  Upload file lên Google Drive → Chia sẻ →
-                  <b>Anyone with the link</b> → <b>Viewer</b> →
-                  Copy link → dán URL vào đây.
+
+                  Upload file lên Google Drive,
+                  chọn <strong>Chia sẻ</strong>,
+                  chọn <strong>Anyone with the link</strong>,
+                  quyền <strong>Viewer</strong>,
+                  sau đó Copy link và dán vào đây.
+
+                  <br>
+
+                  Có thể dán dạng:
+                  <strong>
+                    drive.google.com/file/d/...
+                  </strong>
+
                 </div>
 
-                <div style="margin-top:7px">
+
+                <div
+                  class="field"
+                  style="margin-top:8px;margin-bottom:0">
+
+                  <label>
+                    Loại media
+                  </label>
 
                   <select id="pMediaType">
-                    <option value="image/*">Ảnh</option>
-                    <option value="video/*">Video</option>
+
+                    <option value="image">
+                      Ảnh
+                    </option>
+
+                    <option value="video">
+                      Video
+                    </option>
+
                   </select>
 
                 </div>
 
-                <div id="pUrlStatus" class="url-status"></div>
 
-                <div id="pPreview"></div>
-
-              </div>
-
-
-              <div class="row2">
-
-                <div class="field">
-                  <label>Icon</label>
-                  <input id="pIcon" value="📰">
+                <div
+                  id="pUrlStatus"
+                  class="url-status">
                 </div>
 
-                <div class="field">
-                  <label>Màu nền</label>
 
-                  <select id="pColor">
-                    <option value="0">Xanh dương</option>
-                    <option value="1">Xanh ngọc</option>
-                    <option value="2">Tím</option>
-                    <option value="3">Cam</option>
-                    <option value="4">Đỏ</option>
-                    <option value="5">Cyan</option>
-                  </select>
+                <div
+                  id="pPreview"
+                  class="media-preview">
                 </div>
 
               </div>
 
 
               <div class="field">
-                <label>Mô tả ngắn *</label>
-                <textarea id="pExcerpt" required></textarea>
+
+                <label>
+                  Mô tả ngắn *
+                </label>
+
+                <textarea
+                  id="pExcerpt"
+                  required>
+                </textarea>
+
               </div>
+
 
               <div class="field">
-                <label>Nội dung chi tiết</label>
-                <textarea id="pContent"></textarea>
+
+                <label>
+                  Nội dung chi tiết
+                </label>
+
+                <textarea
+                  id="pContent">
+                </textarea>
+
               </div>
 
-              <button id="postSubmit" class="btn">
+
+              <button
+                id="postSubmit"
+                class="btn"
+                type="submit">
                 Đăng bài
               </button>
 
             </form>
 
           </div>
+
         </div>
 
       </div>
 
 
+
+      <!-- POST LIST -->
       <div class="listcol">
 
         <div class="box">
 
           <div class="head">
-            Danh sách bài viết
-            <span id="postCount">0</span>
+            Danh sách bài viết -
+            <span id="postCount">
+              0
+            </span>
           </div>
 
           <div id="adminPosts"></div>
@@ -1183,40 +1973,65 @@ button{cursor:pointer}
   </div>
 
 
-  <!-- NOTICES -->
-  <div id="panel-notices" class="panel">
+
+  <!-- NOTICE PANEL -->
+  <div
+    id="panel-notices"
+    class="panel">
 
     <div class="grid">
+
 
       <div class="formcol">
 
         <div class="box">
 
           <div class="head">
-            ➕ Thêm thông báo
+            Thêm thông báo
           </div>
 
-          <div style="padding:12px">
+          <div style="padding:13px">
 
             <form id="noticeForm">
 
               <div class="field">
-                <label>Nội dung *</label>
-                <textarea id="nText" required></textarea>
+
+                <label>
+                  Nội dung *
+                </label>
+
+                <textarea
+                  id="nText"
+                  required>
+                </textarea>
+
               </div>
+
 
               <div class="field">
-                <label>Thứ tự</label>
-                <input id="nOrder" type="number" value="0">
+
+                <label>
+                  Thứ tự
+                </label>
+
+                <input
+                  id="nOrder"
+                  type="number"
+                  value="0">
+
               </div>
 
-              <button class="btn">
-                Thêm
+
+              <button
+                class="btn"
+                type="submit">
+                Thêm thông báo
               </button>
 
             </form>
 
           </div>
+
         </div>
 
       </div>
@@ -1227,8 +2042,10 @@ button{cursor:pointer}
         <div class="box">
 
           <div class="head">
-            Danh sách
-            <span id="noticeCount">0</span>
+            Danh sách -
+            <span id="noticeCount">
+              0
+            </span>
           </div>
 
           <div id="adminNotices"></div>
@@ -1242,69 +2059,113 @@ button{cursor:pointer}
   </div>
 
 
-  <!-- DOCUMENTS -->
-  <div id="panel-docs" class="panel">
+
+  <!-- PDF PANEL -->
+  <div
+    id="panel-docs"
+    class="panel">
 
     <div class="grid">
+
 
       <div class="formcol">
 
         <div class="box">
 
           <div class="head">
-            📤 Đăng văn bản PDF
+            Đăng văn bản PDF
           </div>
 
-          <div style="padding:12px">
+          <div style="padding:13px">
 
             <form id="docForm">
 
+
               <div class="field">
 
-                <label>URL PDF *</label>
+                <label>
+                  URL PDF *
+                </label>
 
                 <input
                   id="dUrl"
-                  type="url"
+                  type="text"
                   required
                   placeholder="Dán link Google Drive PDF...">
 
                 <div class="url-help">
-                  Upload PDF lên Google Drive → Chia sẻ →
-                  <b>Anyone with the link</b> → <b>Viewer</b> →
-                  Copy link → dán vào đây.
+
+                  Upload PDF lên Google Drive,
+                  chọn <strong>Chia sẻ</strong>,
+                  chọn <strong>Anyone with the link</strong>,
+                  quyền <strong>Viewer</strong>,
+                  sau đó Copy link và dán vào đây.
+
                 </div>
 
               </div>
 
 
               <div class="field">
-                <label>Số/ký hiệu *</label>
-                <input id="dCode" required>
+
+                <label>
+                  Số/ký hiệu *
+                </label>
+
+                <input
+                  id="dCode"
+                  required>
+
               </div>
 
-              <div class="field">
-                <label>Tiêu đề *</label>
-                <input id="dTitle" required>
-              </div>
 
               <div class="field">
-                <label>Ngày ban hành</label>
-                <input id="dDate" type="date">
+
+                <label>
+                  Tiêu đề *
+                </label>
+
+                <input
+                  id="dTitle"
+                  required>
+
               </div>
 
+
               <div class="field">
-                <label>Mô tả</label>
+
+                <label>
+                  Ngày ban hành
+                </label>
+
+                <input
+                  id="dDate"
+                  type="date">
+
+              </div>
+
+
+              <div class="field">
+
+                <label>
+                  Mô tả
+                </label>
+
                 <textarea id="dDesc"></textarea>
+
               </div>
 
-              <button class="btn">
+
+              <button
+                class="btn"
+                type="submit">
                 Đăng PDF
               </button>
 
             </form>
 
           </div>
+
         </div>
 
       </div>
@@ -1315,8 +2176,10 @@ button{cursor:pointer}
         <div class="box">
 
           <div class="head">
-            Danh sách
-            <span id="docCount">0</span>
+            Danh sách PDF -
+            <span id="docCount">
+              0
+            </span>
           </div>
 
           <div id="adminDocs"></div>
@@ -1330,28 +2193,45 @@ button{cursor:pointer}
   </div>
 
 
-  <!-- SETTINGS -->
-  <div id="panel-settings" class="panel">
+
+  <!-- SETTINGS PANEL -->
+  <div
+    id="panel-settings"
+    class="panel">
 
     <form id="settingsForm">
 
 
+      <!-- BANNER -->
       <div class="settings">
 
-        <h3>🖼️ Banner</h3>
+        <h3>
+          Banner
+        </h3>
 
         <div class="inside">
 
           <div class="row2">
 
             <div class="field">
-              <label>Tiêu đề</label>
+
+              <label>
+                Tiêu đề
+              </label>
+
               <input id="sTitle">
+
             </div>
 
+
             <div class="field">
-              <label>Phụ đề</label>
+
+              <label>
+                Phụ đề
+              </label>
+
               <input id="sSubtitle">
+
             </div>
 
           </div>
@@ -1359,32 +2239,27 @@ button{cursor:pointer}
 
           <div class="field">
 
-            <label>Ảnh banner</label>
-
-            <label class="upload">
-
-              <input
-                id="sBanner"
-                type="file"
-                accept="image/*">
-
-              <div class="ico">🖼️</div>
-
-              <div>
-                Chọn ảnh banner
-              </div>
-
-              <div
-                id="sBannerName"
-                class="filename">
-              </div>
-
+            <label>
+              URL ảnh banner
             </label>
+
+            <input
+              id="sBannerUrl"
+              type="text"
+              placeholder="Dán URL banner...">
+
+            <div class="url-help">
+
+              Khuyến nghị đưa ảnh banner lên Google Drive hoặc
+              dùng một URL ảnh trực tiếp để Firebase chỉ lưu URL.
+
+            </div>
 
             <img
               id="bannerPreview"
-              class="preview"
-              style="display:none">
+              class="preview-banner"
+              style="display:none"
+              alt="Banner preview">
 
           </div>
 
@@ -1393,32 +2268,21 @@ button{cursor:pointer}
             type="button"
             class="add"
             id="resetBanner">
-            ↩ Khôi phục banner mặc định
+            Khôi phục banner mặc định
           </button>
 
 
-          <div class="field">
+          <div class="field" style="margin-top:13px">
 
-            <label>Favicon</label>
-
-            <label class="upload">
-
-              <input
-                id="sFavicon"
-                type="file"
-                accept="image/*,.ico,image/svg+xml">
-
-              <div>
-                Chọn favicon
-              </div>
-
-              <div
-                id="sFaviconName"
-                class="filename">
-              </div>
-
+            <label>
+              Favicon URL
             </label>
 
+            <input
+              id="sFaviconUrl"
+              type="text"
+              placeholder="Dán URL favicon...">
+
           </div>
 
         </div>
@@ -1426,32 +2290,59 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- CONTACT -->
       <div class="settings">
 
-        <h3>📢 Marquee & Liên hệ</h3>
+        <h3>
+          Marquee và thông tin liên hệ
+        </h3>
 
         <div class="inside">
 
           <div class="field">
-            <label>Marquee</label>
+
+            <label>
+              Marquee
+            </label>
+
             <textarea id="sMarquee"></textarea>
+
           </div>
 
+
           <div class="field">
-            <label>Địa chỉ</label>
+
+            <label>
+              Địa chỉ
+            </label>
+
             <input id="sAddress">
+
           </div>
+
 
           <div class="row2">
 
             <div class="field">
-              <label>Điện thoại</label>
+
+              <label>
+                Điện thoại
+              </label>
+
               <input id="sPhone">
+
             </div>
 
+
             <div class="field">
-              <label>Email</label>
+
+              <label>
+                Email
+              </label>
+
               <input id="sEmail">
+
             </div>
 
           </div>
@@ -1461,29 +2352,50 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- WORK TIME -->
       <div class="settings">
 
-        <h3>🕒 Giờ làm việc</h3>
+        <h3>
+          Giờ làm việc
+        </h3>
 
         <div class="inside">
 
           <div class="row2">
 
             <div class="field">
-              <label>Sáng</label>
+
+              <label>
+                Sáng
+              </label>
+
               <input id="sMorning">
+
             </div>
 
+
             <div class="field">
-              <label>Chiều</label>
+
+              <label>
+                Chiều
+              </label>
+
               <input id="sAfternoon">
+
             </div>
 
           </div>
 
+
           <div class="field">
-            <label>Ghi chú</label>
+
+            <label>
+              Ghi chú
+            </label>
+
             <input id="sWorkNote">
+
           </div>
 
         </div>
@@ -1491,15 +2403,24 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- YOUTUBE -->
       <div class="settings">
 
-        <h3>▶ YouTube</h3>
+        <h3>
+          YouTube
+        </h3>
 
         <div class="inside">
 
           <div class="field">
-            <label>Link video</label>
+
+            <label>
+              Link video
+            </label>
+
             <input id="sYoutube">
+
           </div>
 
         </div>
@@ -1507,9 +2428,13 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- QUICK -->
       <div class="settings">
 
-        <h3>🔗 Liên kết nhanh</h3>
+        <h3>
+          Liên kết nhanh
+        </h3>
 
         <div class="inside">
 
@@ -1519,7 +2444,7 @@ button{cursor:pointer}
             type="button"
             class="add"
             id="addQuick">
-            + Thêm
+            Thêm liên kết
           </button>
 
         </div>
@@ -1527,9 +2452,13 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- SERVICES -->
       <div class="settings">
 
-        <h3>🎓 Dạy – Học</h3>
+        <h3>
+          Dạy - Học
+        </h3>
 
         <div class="inside">
 
@@ -1539,7 +2468,7 @@ button{cursor:pointer}
             type="button"
             class="add"
             id="addService">
-            + Thêm
+            Thêm liên kết
           </button>
 
         </div>
@@ -1547,9 +2476,13 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- WEBSITE -->
       <div class="settings">
 
-        <h3>🌐 Website</h3>
+        <h3>
+          Website
+        </h3>
 
         <div class="inside">
 
@@ -1559,7 +2492,7 @@ button{cursor:pointer}
             type="button"
             class="add"
             id="addWeb">
-            + Thêm
+            Thêm website
           </button>
 
         </div>
@@ -1567,20 +2500,35 @@ button{cursor:pointer}
       </div>
 
 
+
+      <!-- FOOTER -->
       <div class="settings">
 
-        <h3>🦶 Footer</h3>
+        <h3>
+          Footer
+        </h3>
 
         <div class="inside">
 
           <div class="field">
-            <label>Tên trường</label>
+
+            <label>
+              Tên trường
+            </label>
+
             <input id="sFooterName">
+
           </div>
 
+
           <div class="field">
-            <label>Người chịu trách nhiệm</label>
+
+            <label>
+              Người chịu trách nhiệm
+            </label>
+
             <input id="sResponsible">
+
           </div>
 
         </div>
@@ -1588,8 +2536,11 @@ button{cursor:pointer}
       </div>
 
 
-      <button class="btn">
-        💾 Lưu cài đặt
+
+      <button
+        class="btn"
+        type="submit">
+        Lưu cài đặt
       </button>
 
     </form>
@@ -1602,15 +2553,27 @@ button{cursor:pointer}
 <div id="Toast" class="toast"></div>
 
 
+
 <script type="module">
+
+
+/* =========================
+   FIREBASE IMPORT
+========================= */
 
 import {
   initializeApp
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-app.js";
+
 
 import {
   getAnalytics
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-analytics.js";
+
 
 import {
   getAuth,
@@ -1619,7 +2582,10 @@ import {
   signOut,
   setPersistence,
   inMemoryPersistence
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-auth.js";
+
 
 import {
   getDatabase,
@@ -1631,67 +2597,117 @@ import {
   update,
   increment,
   onDisconnect
-} from "https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
+}
+from
+"https://www.gstatic.com/firebasejs/12.19.0/firebase-database.js";
 
 
 /* =========================
-   FIREBASE
+   FIREBASE CONFIG
 ========================= */
 
 const firebaseConfig = {
-  apiKey: "AIzaSyCDQsJ_NrGK5ouRLS7vFr55OBZQ0nKhHSk",
-  authDomain: "vietnam-life-game.firebaseapp.com",
-  databaseURL: "https://vietnam-life-game-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "vietnam-life-game",
-  storageBucket: "vietnam-life-game.firebasestorage.app",
-  messagingSenderId: "134954120781",
-  appId: "1:134954120781:web:dcd0fd82b63b7779140e04",
-  measurementId: "G-LG8BF2J66J"
+
+  apiKey:
+    "AIzaSyCDQsJ_NrGK5ouRLS7vFr55OBZQ0nKhHSk",
+
+  authDomain:
+    "vietnam-life-game.firebaseapp.com",
+
+  databaseURL:
+    "https://vietnam-life-game-default-rtdb.asia-southeast1.firebasedatabase.app",
+
+  projectId:
+    "vietnam-life-game",
+
+  storageBucket:
+    "vietnam-life-game.firebasestorage.app",
+
+  messagingSenderId:
+    "134954120781",
+
+  appId:
+    "1:134954120781:web:dcd0fd82b63b7779140e04",
+
+  measurementId:
+    "G-LG8BF2J66J"
 };
 
-const app = initializeApp(firebaseConfig);
+
+const app =
+  initializeApp(firebaseConfig);
+
 
 try{
   getAnalytics(app);
 }catch{}
 
-const auth = getAuth(app);
-const db = getDatabase(app);
 
-const ADMIN_USERNAME = "admin";
-const ADMIN_EMAIL = "admin@thcs-chaodau.edu.vn";
+const auth =
+  getAuth(app);
+
+const db =
+  getDatabase(app);
+
+
+const ADMIN_USERNAME =
+  "admin";
+
+const ADMIN_EMAIL =
+  "admin@thcs-chaodau.edu.vn";
 
 
 /* =========================
    HELPERS
 ========================= */
 
-const $ = s => document.querySelector(s);
+const $ =
+  selector =>
+    document.querySelector(selector);
 
-const $$ = s => [...document.querySelectorAll(s)];
 
-const esc = v =>
-  String(v ?? "").replace(
-    /[&<>"']/g,
-    m => ({
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-    }[m])
-  );
+const $$ =
+  selector =>
+    [...document.querySelectorAll(selector)];
 
-const today = () =>
-  new Date().toISOString().slice(0,10);
 
-const fmt = d =>
-  d
-    ? new Date(d+"T00:00:00").toLocaleDateString("vi-VN")
-    : "";
+const esc =
+  value =>
+    String(value ?? "")
+      .replace(
+        /[&<>"']/g,
+        m =>
+          ({
+            "&":"&amp;",
+            "<":"&lt;",
+            ">":"&gt;",
+            '"':"&quot;",
+            "'":"&#39;"
+          }[m])
+      );
 
-const num = n =>
-  (Number(n)||0).toLocaleString("vi-VN");
+
+const today =
+  () =>
+    new Date()
+      .toISOString()
+      .slice(0,10);
+
+
+const fmt =
+  date =>
+    date
+      ? new Date(
+          date+"T00:00:00"
+        )
+        .toLocaleDateString("vi-VN")
+      : "";
+
+
+const num =
+  value =>
+    (Number(value)||0)
+      .toLocaleString("vi-VN");
 
 
 /* =========================
@@ -1704,11 +2720,19 @@ let docs = [];
 let settings = {};
 let searchText = "";
 
+
 let sid =
-  sessionStorage.getItem("chaodau_sid") ||
+  sessionStorage.getItem(
+    "chaodau_sid"
+  ) ||
   crypto.randomUUID();
 
-sessionStorage.setItem("chaodau_sid",sid);
+
+sessionStorage.setItem(
+  "chaodau_sid",
+  sid
+);
+
 
 const DEFAULT_BANNER =
   "https://storage-edu.vnpt.vn/edu-lci/8428/DUY/banner%20moi.gif";
@@ -1718,23 +2742,33 @@ const DEFAULT_BANNER =
    TOAST
 ========================= */
 
-function toast(text,err=false){
+function toast(
+  message,
+  error=false
+){
 
-  const x = $("#Toast");
+  const box =
+    $("#Toast");
 
-  x.textContent =
-    (err ? "⚠️ " : "✅ ") + text;
+  box.textContent =
+    message;
 
-  x.className =
+  box.className =
     "toast show" +
-    (err ? " err" : "");
+    (error ? " err" : "");
 
-  clearTimeout(x._t);
-
-  x._t = setTimeout(
-    () => x.className = "toast",
-    4200
+  clearTimeout(
+    box._timer
   );
+
+  box._timer =
+    setTimeout(
+      () => {
+        box.className =
+          "toast";
+      },
+      4200
+    );
 }
 
 
@@ -1742,23 +2776,96 @@ function toast(text,err=false){
    ADMIN VIEW
 ========================= */
 
-function setAdmin(v){
+function setAdmin(
+  value
+){
 
   $("#Admin").style.display =
-    v ? "block" : "none";
+    value
+      ? "block"
+      : "none";
+
 
   $("#wrap").style.display =
-    v ? "none" : "block";
+    value
+      ? "none"
+      : "block";
 }
 
 
 /* =========================
-   GOOGLE DRIVE URL
+   URL NORMALIZE
 ========================= */
 
-function getDriveId(url){
+function normalizeUrl(
+  value
+){
 
-  if(!url) return "";
+  let url =
+    String(value || "")
+      .trim();
+
+
+  if(!url){
+    return "";
+  }
+
+
+  if(
+    !/^https?:\/\//i.test(url)
+  ){
+
+    url =
+      "https://" + url;
+
+  }
+
+
+  return url;
+}
+
+
+/* =========================
+   URL VALIDATE
+========================= */
+
+function validUrl(
+  value
+){
+
+  try{
+
+    const url =
+      new URL(
+        normalizeUrl(value)
+      );
+
+
+    return (
+      url.protocol === "http:" ||
+      url.protocol === "https:"
+    );
+
+  }catch{
+
+    return false;
+
+  }
+}
+
+
+/* =========================
+   DRIVE ID
+========================= */
+
+function getDriveId(
+  url
+){
+
+  if(!url){
+    return "";
+  }
+
 
   const patterns = [
 
@@ -1770,49 +2877,112 @@ function getDriveId(url){
 
   ];
 
-  for(const re of patterns){
 
-    const m = url.match(re);
+  for(
+    const regex
+    of patterns
+  ){
 
-    if(m) return m[1];
+    const match =
+      url.match(regex);
+
+
+    if(match){
+
+      return match[1];
+
+    }
 
   }
+
 
   return "";
 }
 
 
 /* =========================
-   MEDIA RENDER
+   CONVERT GOOGLE DRIVE
 ========================= */
 
-function media(p,preview=false){
+function drivePreviewUrl(
+  url
+){
 
-  const u = p.mediaUrl || "";
+  const id =
+    getDriveId(url);
 
-  if(!u){
+
+  if(!id){
+    return "";
+  }
+
+
+  return
+    "https://drive.google.com/file/d/"
+    + id +
+    "/preview";
+}
+
+
+function driveImageUrl(
+  url
+){
+
+  const id =
+    getDriveId(url);
+
+
+  if(!id){
+    return "";
+  }
+
+
+  return
+    "https://drive.google.com/thumbnail?id="
+    + id +
+    "&sz=w1600";
+}
+
+
+/* =========================
+   MEDIA
+========================= */
+
+function media(
+  post,
+  preview=false
+){
+
+  const url =
+    normalizeUrl(
+      post.mediaUrl || ""
+    );
+
+
+  if(!url){
 
     return `
-      <div class="ph bg${Number(p.color)||0}">
-        ${esc(p.icon || "📰")}
+      <div class="ph">
+        Không có ảnh
       </div>
     `;
 
   }
 
-  const driveId = getDriveId(u);
 
-  const type = p.mediaType || "";
+  if(
+    post.mediaType === "video"
+  ){
 
-  /* VIDEO */
+    const drive =
+      drivePreviewUrl(url);
 
-  if(type.startsWith("video/")){
 
-    if(driveId){
+    if(drive){
 
       return `
         <iframe
-          src="https://drive.google.com/file/d/${driveId}/preview"
+          src="${esc(drive)}"
           allow="autoplay"
           loading="lazy">
         </iframe>
@@ -1820,31 +2990,26 @@ function media(p,preview=false){
 
     }
 
+
     return `
       <video
-        src="${esc(u)}"
+        src="${esc(url)}"
         ${preview ? "muted" : "controls"}
         playsinline
         preload="metadata">
       </video>
     `;
-  }
-
-
-  /* IMAGE */
-
-  let imageUrl = u;
-
-  if(driveId){
-
-    imageUrl =
-      `https://drive.google.com/thumbnail?id=${driveId}&sz=w1600`;
 
   }
+
+
+  const driveImage =
+    driveImageUrl(url);
+
 
   return `
     <img
-      src="${esc(imageUrl)}"
+      src="${esc(driveImage || url)}"
       loading="lazy"
       alt="">
   `;
@@ -1855,14 +3020,19 @@ function media(p,preview=false){
    EMPTY
 ========================= */
 
-function empty(t){
+function empty(
+  text
+){
 
   return `
-    <div style="padding:16px;text-align:center;color:#888">
-      ${esc(t)}
+    <div
+      style="
+        padding:18px;
+        text-align:center;
+        color:#8b959e">
+      ${esc(text)}
     </div>
   `;
-
 }
 
 
@@ -1872,40 +3042,64 @@ function empty(t){
 
 function render(){
 
-  const a = searchText
-    ? posts.filter(p =>
-        `${p.title} ${p.excerpt} ${p.content} ${p.cat}`
-          .toLowerCase()
-          .includes(searchText.toLowerCase())
-      )
-    : posts;
+  const filtered =
+    searchText
+
+      ? posts.filter(
+          post =>
+            (
+              post.title +
+              " " +
+              post.excerpt +
+              " " +
+              post.content +
+              " " +
+              post.cat
+            )
+            .toLowerCase()
+            .includes(
+              searchText.toLowerCase()
+            )
+        )
+
+      : posts;
 
 
   /* FEATURED */
 
   $("#featured").innerHTML =
-    a.length
-      ? a.slice(0,3).map(p => `
-          <div class="feature">
+    filtered.length
 
-            <div class="media">
-              ${media(p,true)}
-            </div>
+      ? filtered
+          .slice(0,3)
+          .map(
+            post =>
+              `
+              <div class="feature">
 
-            <a
-              href="#"
-              class="title"
-              data-id="${esc(p.id)}">
-              ${esc(p.title)}
-            </a>
+                <div class="media">
+                  ${media(post,true)}
+                </div>
 
-            <div class="meta">
-              📅 ${esc(fmt(p.date))}
-            </div>
+                <a
+                  href="#"
+                  class="title"
+                  data-id="${esc(post.id)}">
+                  ${esc(post.title)}
+                </a>
 
-          </div>
-        `).join("")
-      : empty("Chưa có bài viết.");
+                <div class="meta">
+                  ${esc(fmt(post.date))}
+                </div>
+
+              </div>
+              `
+          )
+          .join("")
+
+      : empty(
+          "Chưa có bài viết."
+        );
 
 
   /* CATEGORIES */
@@ -1915,180 +3109,270 @@ function render(){
     ["Sự kiện","#events"],
     ["Thông báo","#announcements"],
     ["Tuyển sinh","#admissions"]
-  ].forEach(([cat,id]) => {
+  ]
+  .forEach(
+    ([category, selector]) => {
 
-    const list =
-      a.filter(p => p.cat === cat);
-
-    const box = $(id);
-
-    if(!list.length){
-
-      box.innerHTML =
-        empty("Chưa có bài viết.");
-
-      return;
-    }
-
-    const f = list[0];
-
-    box.innerHTML = `
-      <div class="lead">
-
-        <div class="media">
-          ${media(f,true)}
-        </div>
-
-        <div>
-
-          <h3>
-            <a
-              href="#"
-              data-id="${esc(f.id)}">
-              ${esc(f.title)}
-            </a>
-          </h3>
-
-          <p>
-            ${esc(f.excerpt || "")}
-          </p>
-
-        </div>
-
-      </div>
-
-      <ul class="list">
-        ${
-          list.slice(1,5).map(p => `
-            <li>
-              <a
-                href="#"
-                data-id="${esc(p.id)}">
-                ${esc(p.title)}
-              </a>
-            </li>
-          `).join("")
-        }
-      </ul>
-    `;
-
-  });
-
-
-  /* ARTICLE CLICK */
-
-  $$("[data-id]").forEach(a => {
-
-    a.onclick = e => {
-
-      e.preventDefault();
-
-      const p =
-        posts.find(
-          x => x.id === a.dataset.id
+      const list =
+        filtered.filter(
+          post =>
+            post.cat === category
         );
 
-      if(!p) return;
 
-      const w =
-        window.open("","_blank");
+      const box =
+        $(selector);
 
-      if(!w){
 
-        toast(
-          "Trình duyệt đang chặn cửa sổ mới.",
-          true
-        );
+      if(!list.length){
+
+        box.innerHTML =
+          empty(
+            "Chưa có bài viết."
+          );
 
         return;
       }
 
-      const content =
-        esc(p.content || p.excerpt)
-          .replace(/\n/g,"<br>");
 
-      w.document.write(`
-        <meta charset="utf-8">
+      const first =
+        list[0];
 
-        <title>
-          ${esc(p.title)}
-        </title>
 
-        <style>
-          body{
-            font-family:Arial;
-            max-width:900px;
-            margin:30px auto;
-            padding:0 15px;
-            line-height:1.7
-          }
+      box.innerHTML = `
 
-          h1{
-            color:#0b58a9
-          }
+        <div class="lead">
 
-          img,
-          video,
-          iframe{
-            max-width:100%;
-          }
+          <div class="media">
+            ${media(first,true)}
+          </div>
 
-          iframe{
-            width:100%;
-            height:500px;
-            border:0;
-          }
+          <div>
 
-          .article-media{
-            margin:20px 0;
-          }
-        </style>
+            <h3>
 
-        <h1>${esc(p.title)}</h1>
+              <a
+                href="#"
+                data-id="${esc(first.id)}">
 
-        <div>
-          ${esc(p.cat)}
-          —
-          ${esc(fmt(p.date))}
+                ${esc(first.title)}
+
+              </a>
+
+            </h3>
+
+            <p>
+              ${esc(first.excerpt || "")}
+            </p>
+
+          </div>
+
         </div>
 
-        <div class="article-media">
-          ${p.mediaUrl ? media(p) : ""}
-        </div>
 
-        <p>
-          ${content}
-        </p>
-      `);
+        <ul class="list">
 
-      w.document.close();
+          ${
+            list
+              .slice(1,5)
+              .map(
+                post =>
+                  `
+                  <li>
 
-    };
+                    <a
+                      href="#"
+                      data-id="${esc(post.id)}">
+                      ${esc(post.title)}
+                    </a>
 
-  });
+                  </li>
+                  `
+              )
+              .join("")
+          }
+
+        </ul>
+      `;
+
+    }
+  );
+
+
+  /* ARTICLE CLICK */
+
+  $$("[data-id]")
+    .forEach(
+      link => {
+
+        link.onclick =
+          event => {
+
+            event.preventDefault();
+
+
+            const post =
+              posts.find(
+                x =>
+                  x.id ===
+                  link.dataset.id
+              );
+
+
+            if(!post){
+              return;
+            }
+
+
+            const windowRef =
+              window.open(
+                "",
+                "_blank"
+              );
+
+
+            if(!windowRef){
+
+              toast(
+                "Trình duyệt đang chặn cửa sổ mới.",
+                true
+              );
+
+              return;
+
+            }
+
+
+            const content =
+              esc(
+                post.content ||
+                post.excerpt
+              )
+              .replace(
+                /\n/g,
+                "<br>"
+              );
+
+
+            windowRef.document.write(`
+
+              <!DOCTYPE html>
+
+              <html lang="vi">
+
+              <head>
+
+                <meta charset="utf-8">
+
+                <title>
+                  ${esc(post.title)}
+                </title>
+
+                <style>
+
+                  body{
+                    font-family:Arial,sans-serif;
+                    max-width:940px;
+                    margin:35px auto;
+                    padding:0 18px;
+                    color:#26323d;
+                    line-height:1.8;
+                  }
+
+                  h1{
+                    margin-bottom:8px;
+                    color:#0b58a9;
+                  }
+
+                  .info{
+                    margin-bottom:20px;
+                    color:#78848e;
+                  }
+
+                  img,
+                  video,
+                  iframe{
+                    max-width:100%;
+                  }
+
+                  iframe{
+                    width:100%;
+                    height:520px;
+                    border:0;
+                  }
+
+                  .article-media{
+                    margin:20px 0;
+                  }
+
+                </style>
+
+              </head>
+
+              <body>
+
+                <h1>
+                  ${esc(post.title)}
+                </h1>
+
+                <div class="info">
+                  ${esc(post.cat)}
+                  -
+                  ${esc(fmt(post.date))}
+                </div>
+
+                <div class="article-media">
+                  ${
+                    post.mediaUrl
+                      ? media(post)
+                      : ""
+                  }
+                </div>
+
+                <div>
+                  ${content}
+                </div>
+
+              </body>
+
+              </html>
+
+            `);
+
+
+            windowRef.document.close();
+
+          };
+
+      }
+    );
 
 
   renderAdmin();
-
 }
 
 
 /* =========================
-   SETTINGS
+   APPLY SETTINGS
 ========================= */
 
-function applySettings(s){
+function applySettings(
+  source
+){
 
-  const d = {
+  const data = {
 
-    bannerTitle:"THCS Chao Đâu",
+    bannerTitle:
+      "THCS Chao Đâu",
 
     bannerSubtitle:
       "Cổng thông tin điện tử",
 
-    bannerBg:"",
+    bannerBg:
+      "",
 
-    siteIcon:"",
+    siteIcon:
+      "",
 
     marquee:
       "Chào mừng bạn đến với cổng thông tin điện tử Trường THCS Chao Đâu!",
@@ -2103,21 +3387,25 @@ function applySettings(s){
       "info@chaodau.edu.vn",
 
     morning:
-      "7:00 – 11:30",
+      "7:00 - 11:30",
 
     afternoon:
-      "13:30 – 17:00",
+      "13:30 - 17:00",
 
     workNote:
       "(Từ thứ 2 đến thứ 6)",
 
-    youtube:"",
+    youtube:
+      "",
 
-    quickLinks:[],
+    quickLinks:
+      [],
 
-    services:[],
+    services:
+      [],
 
-    webLinks:[],
+    webLinks:
+      [],
 
     footerName:
       "TRƯỜNG THCS CHAO ĐÂU",
@@ -2125,55 +3413,71 @@ function applySettings(s){
     responsible:
       "Ban Giám hiệu",
 
-    ...s
+    ...source
+
   };
 
 
   $("#marquee").textContent =
-    "📢 " + d.marquee;
+    data.marquee;
+
 
   $("#address").textContent =
-    d.address;
+    data.address;
+
 
   $("#phone").textContent =
-    d.phone;
+    data.phone;
+
 
   $("#email").textContent =
-    d.email;
+    data.email;
+
 
   $("#footerName").textContent =
-    d.footerName;
+    data.footerName;
+
 
   $("#responsible").textContent =
-    d.responsible;
+    data.responsible;
 
 
   $("#work").innerHTML = `
 
     <p>
       <b>Sáng:</b>
-      ${esc(d.morning)}
+      ${esc(data.morning)}
     </p>
 
     <p>
       <b>Chiều:</b>
-      ${esc(d.afternoon)}
+      ${esc(data.afternoon)}
     </p>
 
     <p class="note">
-      ${esc(d.workNote)}
+      ${esc(data.workNote)}
     </p>
+
   `;
 
 
+  const bannerUrl =
+    normalizeUrl(
+      data.bannerBg
+    );
+
+
   $("#bannerImage").src =
-    d.bannerBg || DEFAULT_BANNER;
+    bannerUrl ||
+    DEFAULT_BANNER;
 
 
-  if(d.bannerBg){
+  if(
+    bannerUrl
+  ){
 
     $("#bannerPreview").src =
-      d.bannerBg;
+      bannerUrl;
 
     $("#bannerPreview").style.display =
       "block";
@@ -2186,284 +3490,381 @@ function applySettings(s){
   }
 
 
-  if(d.siteIcon){
+  if(
+    validUrl(data.siteIcon)
+  ){
 
     $("#favicon").href =
-      d.siteIcon;
+      normalizeUrl(data.siteIcon);
 
   }
 
 
-  const y = d.youtube || "";
+  /* YOUTUBE */
 
-  let id = "";
+  const youtube =
+    data.youtube || "";
 
-  if(y.includes("/embed/")){
+  let youtubeId =
+    "";
 
-    id =
-      y.split("/embed/")[1]
-       .split(/[?&]/)[0];
+
+  if(
+    youtube.includes("/embed/")
+  ){
+
+    youtubeId =
+      youtube
+        .split("/embed/")[1]
+        .split(/[?&]/)[0];
 
   }else{
 
-    id =
-      (y.match(/[?&]v=([^&]+)/) || [])[1]
-      || "";
+    youtubeId =
+      (
+        youtube.match(
+          /[?&]v=([^&]+)/
+        ) || []
+      )[1] || "";
 
   }
 
-  if(id){
+
+  if(youtubeId){
 
     $("#yt").src =
-      `https://www.youtube.com/embed/${id}`;
+      "https://www.youtube.com/embed/"
+      +
+      youtubeId;
 
   }
 
 
-  /* QUICK */
+  /* QUICK LINKS */
 
   $("#quick").innerHTML =
-    (d.quickLinks || []).map(x => `
-
-      <a
-        href="${esc(x.url)}"
-        target="_blank">
-
-        <i class="${esc(x.icon || "fas fa-link")}"></i>
-
-        ${esc(x.text)}
-
-      </a>
-
-    `).join("");
+    (data.quickLinks || [])
+      .map(
+        item =>
+          `
+          <a
+            href="${esc(normalizeUrl(item.url))}"
+            target="_blank"
+            rel="noopener">
+            ${esc(item.text)}
+          </a>
+          `
+      )
+      .join("");
 
 
   /* SERVICES */
 
   $("#services").innerHTML =
-    (d.services || []).map(x => `
+    (data.services || [])
+      .map(
+        item =>
+          `
+          <a
+            href="${esc(normalizeUrl(item.url))}"
+            target="_blank"
+            rel="noopener">
+            ${esc(item.text)}
+          </a>
+          `
+      )
+      .join("");
 
-      <a
-        href="${esc(x.url)}"
-        target="_blank">
 
-        <i class="${esc(x.icon || "fas fa-link")}"></i>
-
-        ${esc(x.text)}
-
-      </a>
-
-    `).join("");
-
-
-  /* WEBSITES */
+  /* WEBSITE */
 
   $("#webLinks").innerHTML =
-    '<option value="">-- Chọn liên kết website --</option>' +
-
-    (d.webLinks || []).map(x => `
-
-      <option value="${esc(x.url)}">
-        ${esc(x.text)}
+    `
+      <option value="">
+        Chọn liên kết website
       </option>
+    `
+    +
+    (data.webLinks || [])
+      .map(
+        item =>
+          `
+          <option
+            value="${esc(normalizeUrl(item.url))}">
+            ${esc(item.text)}
+          </option>
+          `
+      )
+      .join("");
 
-    `).join("");
 
-
-  fillSettings(d);
-
+  fillSettings(data);
 }
 
 
 /* =========================
-   SETTINGS FORM
+   FILL SETTINGS
 ========================= */
 
-function fillSettings(s){
+function fillSettings(
+  data
+){
 
   $("#sTitle").value =
-    s.bannerTitle || "";
+    data.bannerTitle || "";
+
 
   $("#sSubtitle").value =
-    s.bannerSubtitle || "";
+    data.bannerSubtitle || "";
+
+
+  $("#sBannerUrl").value =
+    data.bannerBg || "";
+
+
+  $("#sFaviconUrl").value =
+    data.siteIcon || "";
+
 
   $("#sMarquee").value =
-    s.marquee || "";
+    data.marquee || "";
+
 
   $("#sAddress").value =
-    s.address || "";
+    data.address || "";
+
 
   $("#sPhone").value =
-    s.phone || "";
+    data.phone || "";
+
 
   $("#sEmail").value =
-    s.email || "";
+    data.email || "";
+
 
   $("#sMorning").value =
-    s.morning || "";
+    data.morning || "";
+
 
   $("#sAfternoon").value =
-    s.afternoon || "";
+    data.afternoon || "";
+
 
   $("#sWorkNote").value =
-    s.workNote || "";
+    data.workNote || "";
+
 
   $("#sYoutube").value =
-    s.youtube || "";
+    data.youtube || "";
+
 
   $("#sFooterName").value =
-    s.footerName || "";
+    data.footerName || "";
+
 
   $("#sResponsible").value =
-    s.responsible || "";
+    data.responsible || "";
 
 
   fillLinks(
     "quickEdit",
-    s.quickLinks || []
+    data.quickLinks || []
   );
+
 
   fillLinks(
     "serviceEdit",
-    s.services || []
+    data.services || []
   );
+
 
   fillLinks(
     "webEdit",
-    s.webLinks || [],
+    data.webLinks || [],
     true
   );
-
 }
 
 
 /* =========================
-   LINK EDIT
+   LINKS
 ========================= */
 
-function fillLinks(id,arr,web=false){
+function fillLinks(
+  id,
+  array,
+  website=false
+){
 
-  const box = $("#"+id);
+  const box =
+    $("#"+id);
 
-  box.innerHTML = "";
+  box.innerHTML =
+    "";
 
-  (arr || []).forEach(x =>
-    addLink(id,x,web)
-  );
 
+  (array || [])
+    .forEach(
+      item =>
+        addLink(
+          id,
+          item,
+          website
+        )
+    );
 }
 
 
-function addLink(id,x={},web=false){
+function addLink(
+  id,
+  item={},
+  website=false
+){
 
-  const r =
-    document.createElement("div");
+  const row =
+    document.createElement(
+      "div"
+    );
 
-  r.className =
+
+  row.className =
     "linkrow" +
-    (web ? " webrow" : "");
+    (
+      website
+        ? " webrow"
+        : ""
+    );
 
 
-  if(web){
+  if(website){
 
-    r.innerHTML = `
+    row.innerHTML = `
 
       <input
         class="text"
-        value="${esc(x.text || "")}"
-        placeholder="Tên">
+        value="${esc(item.text || "")}"
+        placeholder="Tên website">
 
       <input
         class="url"
-        value="${esc(x.url || "")}"
+        value="${esc(item.url || "")}"
         placeholder="https://...">
 
-      <button type="button">
-        ✕
+      <button
+        type="button">
+        Xóa
       </button>
+
     `;
 
   }else{
 
-    r.innerHTML = `
-
-      <input
-        class="icon"
-        value="${esc(x.icon || "fas fa-link")}"
-        placeholder="fas fa-link">
+    row.innerHTML = `
 
       <input
         class="text"
-        value="${esc(x.text || "")}"
-        placeholder="Tên">
+        value="${esc(item.text || "")}"
+        placeholder="Tên liên kết">
 
       <input
         class="url"
-        value="${esc(x.url || "")}"
+        value="${esc(item.url || "")}"
         placeholder="https://...">
 
-      <button type="button">
-        ✕
+      <button
+        type="button">
+        Xóa
       </button>
+
     `;
+
   }
 
 
-  r.querySelector("button").onclick =
-    () => r.remove();
+  row
+    .querySelector("button")
+    .onclick =
+      () =>
+        row.remove();
 
-  $("#"+id).appendChild(r);
 
-}
-
-
-function readLinks(id){
-
-  return $$(
-    "#"+id+" .linkrow"
-  )
-
-  .map(r => ({
-
-    icon:
-      r.querySelector(".icon")?.value.trim()
-      || "fas fa-link",
-
-    text:
-      r.querySelector(".text")?.value.trim()
-      || "",
-
-    url:
-      r.querySelector(".url")?.value.trim()
-      || ""
-
-  }))
-
-  .filter(x => x.text);
+  $("#"+id)
+    .appendChild(row);
 
 }
 
 
-function readWeb(id){
+function readLinks(
+  id
+){
 
   return $$(
-    "#"+id+" .linkrow"
+    "#"+id+
+    " .linkrow"
   )
+  .map(
+    row =>
+      ({
+        text:
+          row
+            .querySelector(
+              ".text"
+            )
+            ?.value
+            .trim() || "",
 
-  .map(r => ({
+        url:
+          normalizeUrl(
+            row
+              .querySelector(
+                ".url"
+              )
+              ?.value
+              .trim() || ""
+          )
+      })
+  )
+  .filter(
+    item =>
+      item.text
+  );
+}
 
-    text:
-      r.querySelector(".text")?.value.trim()
-      || "",
 
-    url:
-      r.querySelector(".url")?.value.trim()
-      || ""
+function readWeb(
+  id
+){
 
-  }))
+  return $$(
+    "#"+id+
+    " .linkrow"
+  )
+  .map(
+    row =>
+      ({
+        text:
+          row
+            .querySelector(
+              ".text"
+            )
+            ?.value
+            .trim() || "",
 
-  .filter(x => x.text);
-
+        url:
+          normalizeUrl(
+            row
+              .querySelector(
+                ".url"
+              )
+              ?.value
+              .trim() || ""
+          )
+      })
+  )
+  .filter(
+    item =>
+      item.text
+  );
 }
 
 
@@ -2476,8 +3877,10 @@ function renderAdmin(){
   $("#postCount").textContent =
     posts.length;
 
+
   $("#noticeCount").textContent =
     notices.length;
+
 
   $("#docCount").textContent =
     docs.length;
@@ -2488,39 +3891,48 @@ function renderAdmin(){
   $("#adminPosts").innerHTML =
     posts.length
 
-      ? posts.map(p => `
+      ? posts
+          .map(
+            post =>
+              `
+              <div class="adminitem">
 
-          <div class="adminitem">
+                <div class="thumb">
+                  ${
+                    post.mediaUrl
+                      ? media(post,true)
+                      : "Không có ảnh"
+                  }
+                </div>
 
-            <div class="thumb">
-              ${media(p,true)}
-            </div>
+                <div class="grow">
 
-            <div class="grow">
+                  <b>
+                    ${esc(post.title)}
+                  </b>
 
-              <b>
-                ${esc(p.title)}
-              </b>
+                  <small>
+                    ${esc(post.cat)}
+                    -
+                    ${esc(fmt(post.date))}
+                  </small>
 
-              <small>
-                📁 ${esc(p.cat)}
-                •
-                ${esc(fmt(p.date))}
-              </small>
+                </div>
 
-            </div>
+                <button
+                  class="del"
+                  data-p="${esc(post.id)}">
+                  Xóa
+                </button>
 
-            <button
-              class="del"
-              data-p="${esc(p.id)}">
-              Xóa
-            </button>
+              </div>
+              `
+          )
+          .join("")
 
-          </div>
-
-        `).join("")
-
-      : empty("Chưa có bài viết.");
+      : empty(
+          "Chưa có bài viết."
+        );
 
 
   /* NOTICES */
@@ -2528,34 +3940,39 @@ function renderAdmin(){
   $("#adminNotices").innerHTML =
     notices.length
 
-      ? notices.map(n => `
+      ? notices
+          .map(
+            notice =>
+              `
+              <div class="adminitem">
 
-          <div class="adminitem">
+                <div class="grow">
 
-            <div class="grow">
+                  <b>
+                    ${esc(notice.text)}
+                  </b>
 
-              <b>
-                ${esc(n.text)}
-              </b>
+                  <small>
+                    Thứ tự:
+                    ${notice.order || 0}
+                  </small>
 
-              <small>
-                Thứ tự:
-                ${n.order || 0}
-              </small>
+                </div>
 
-            </div>
+                <button
+                  class="del"
+                  data-n="${esc(notice.id)}">
+                  Xóa
+                </button>
 
-            <button
-              class="del"
-              data-n="${esc(n.id)}">
-              Xóa
-            </button>
+              </div>
+              `
+          )
+          .join("")
 
-          </div>
-
-        `).join("")
-
-      : empty("Chưa có thông báo.");
+      : empty(
+          "Chưa có thông báo."
+        );
 
 
   /* DOCUMENTS */
@@ -2563,64 +3980,85 @@ function renderAdmin(){
   $("#adminDocs").innerHTML =
     docs.length
 
-      ? docs.map(d => `
+      ? docs
+          .map(
+            doc =>
+              `
+              <div class="adminitem">
 
-          <div class="adminitem">
+                <div class="thumb">
+                  PDF
+                </div>
 
-            <div class="thumb">
-              📄
-            </div>
+                <div class="grow">
 
-            <div class="grow">
+                  <b>
+                    ${esc(doc.code)}
+                    -
+                    ${esc(doc.title)}
+                  </b>
 
-              <b>
-                ${esc(d.code)}
-                —
-                ${esc(d.title)}
-              </b>
+                  <small>
+                    ${esc(fmt(doc.date))}
+                  </small>
 
-              <small>
-                ${esc(fmt(d.date))}
-              </small>
+                </div>
 
-            </div>
+                <a
+                  href="${esc(normalizeUrl(doc.fileUrl))}"
+                  target="_blank"
+                  rel="noopener"
+                  class="btn small">
+                  Xem
+                </a>
 
-            <a
-              href="${esc(d.fileUrl)}"
-              target="_blank"
-              class="white"
-              style="padding:5px 8px;background:#0b58a9;color:#fff;border-radius:7px">
-              Xem
-            </a>
+                <button
+                  class="del"
+                  data-d="${esc(doc.id)}">
+                  Xóa
+                </button>
 
-            <button
-              class="del"
-              data-d="${esc(d.id)}">
-              Xóa
-            </button>
+              </div>
+              `
+          )
+          .join("")
 
-          </div>
-
-        `).join("")
-
-      : empty("Chưa có văn bản.");
+      : empty(
+          "Chưa có văn bản."
+        );
 
 
-  $$("[data-p]").forEach(
-    b => b.onclick = () =>
-      delPost(b.dataset.p)
-  );
+  $$("[data-p]")
+    .forEach(
+      button =>
+        button.onclick =
+          () =>
+            delPost(
+              button.dataset.p
+            )
+    );
 
-  $$("[data-n]").forEach(
-    b => b.onclick = () =>
-      delNotice(b.dataset.n)
-  );
 
-  $$("[data-d]").forEach(
-    b => b.onclick = () =>
-      delDoc(b.dataset.d)
-  );
+  $$("[data-n]")
+    .forEach(
+      button =>
+        button.onclick =
+          () =>
+            delNotice(
+              button.dataset.n
+            )
+    );
 
+
+  $$("[data-d]")
+    .forEach(
+      button =>
+        button.onclick =
+          () =>
+            delDoc(
+              button.dataset.d
+            )
+    );
 }
 
 
@@ -2628,135 +4066,198 @@ function renderAdmin(){
    DELETE
 ========================= */
 
-async function delPost(id){
+async function delPost(
+  id
+){
 
-  if(!auth.currentUser)
+  if(!auth.currentUser){
+
     return toast(
       "Chưa đăng nhập admin.",
       true
     );
 
-  if(!confirm("Xóa bài viết này?"))
+  }
+
+
+  if(
+    !confirm(
+      "Xóa bài viết này?"
+    )
+  ){
     return;
+  }
+
 
   try{
 
     await remove(
-      ref(db,"posts/"+id)
+      ref(
+        db,
+        "posts/"+id
+      )
     );
 
-    toast("Đã xóa bài viết.");
-
-  }catch(err){
 
     toast(
-      err.message || "Không thể xóa.",
+      "Đã xóa bài viết."
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xóa.",
       true
     );
 
   }
-
 }
 
 
-async function delNotice(id){
+async function delNotice(
+  id
+){
 
-  if(!auth.currentUser)
+  if(!auth.currentUser){
+
     return toast(
       "Chưa đăng nhập admin.",
       true
     );
 
-  if(!confirm("Xóa thông báo này?"))
+  }
+
+
+  if(
+    !confirm(
+      "Xóa thông báo này?"
+    )
+  ){
     return;
+  }
+
 
   try{
 
     await remove(
-      ref(db,"notices/"+id)
+      ref(
+        db,
+        "notices/"+id
+      )
     );
 
-    toast("Đã xóa thông báo.");
-
-  }catch(err){
 
     toast(
-      err.message || "Không thể xóa.",
+      "Đã xóa thông báo."
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xóa.",
       true
     );
 
   }
-
 }
 
 
-async function delDoc(id){
+async function delDoc(
+  id
+){
 
-  if(!auth.currentUser)
+  if(!auth.currentUser){
+
     return toast(
       "Chưa đăng nhập admin.",
       true
     );
 
-  if(!confirm("Xóa văn bản này?"))
+  }
+
+
+  if(
+    !confirm(
+      "Xóa văn bản này?"
+    )
+  ){
     return;
+  }
+
 
   try{
 
     await remove(
-      ref(db,"documents/"+id)
+      ref(
+        db,
+        "documents/"+id
+      )
     );
 
-    toast("Đã xóa văn bản.");
-
-  }catch(err){
 
     toast(
-      err.message || "Không thể xóa.",
+      "Đã xóa văn bản."
+    );
+
+  }catch(error){
+
+    toast(
+      error.message ||
+      "Không thể xóa.",
       true
     );
 
   }
-
 }
 
 
 /* =========================
-   GOOGLE URL PREVIEW
+   MEDIA URL PREVIEW
 ========================= */
 
 function updateMediaPreview(){
 
-  const url =
-    $("#pMediaUrl").value.trim();
+  const raw =
+    $("#pMediaUrl")
+      .value
+      .trim();
+
 
   const type =
-    $("#pMediaType").value;
+    $("#pMediaType")
+      .value;
+
 
   const preview =
     $("#pPreview");
+
 
   const status =
     $("#pUrlStatus");
 
 
-  preview.innerHTML = "";
-  status.textContent = "";
+  preview.innerHTML =
+    "";
+
+  status.textContent =
+    "";
 
 
-  if(!url){
+  if(!raw){
     return;
   }
 
 
-  try{
+  const url =
+    normalizeUrl(raw);
 
-    new URL(url);
 
-  }catch{
+  if(!validUrl(url)){
 
     status.textContent =
-      "URL chưa hợp lệ.";
+      "URL không hợp lệ.";
 
     return;
 
@@ -2767,52 +4268,58 @@ function updateMediaPreview(){
     getDriveId(url);
 
 
-  if(type.startsWith("image/")){
+  if(type === "image"){
 
     const imageUrl =
-      driveId
-        ? `https://drive.google.com/thumbnail?id=${driveId}&sz=w1600`
-        : url;
+      driveImageUrl(url) ||
+      url;
 
 
     preview.innerHTML = `
 
       <img
-        class="preview"
         src="${esc(imageUrl)}"
-        alt="">
+        alt="Xem trước">
 
     `;
 
 
     status.textContent =
       driveId
-        ? "✓ Đã nhận link Google Drive."
-        : "✓ Đã nhận URL ảnh.";
+        ? "Đã nhận link Google Drive ảnh."
+        : "Đã nhận URL ảnh.";
 
-  }else{
+    return;
+  }
 
-    if(driveId){
+
+  if(type === "video"){
+
+    const drive =
+      drivePreviewUrl(url);
+
+
+    if(drive){
 
       preview.innerHTML = `
 
         <iframe
-          class="preview"
-          style="height:220px"
-          src="https://drive.google.com/file/d/${driveId}/preview"
+          class="drive-preview"
+          src="${esc(drive)}"
           allow="autoplay">
         </iframe>
+
       `;
 
+
       status.textContent =
-        "✓ Đã nhận link Google Drive video.";
+        "Đã nhận link Google Drive video.";
 
     }else{
 
       preview.innerHTML = `
 
         <video
-          class="preview"
           controls
           playsinline
           src="${esc(url)}">
@@ -2820,948 +4327,1050 @@ function updateMediaPreview(){
 
       `;
 
+
       status.textContent =
-        "✓ Đã nhận URL video.";
+        "Đã nhận URL video.";
 
     }
 
   }
-
 }
 
 
-$("#pMediaUrl").oninput =
-  updateMediaPreview;
+$("#pMediaUrl")
+  .addEventListener(
+    "input",
+    updateMediaPreview
+  );
 
-$("#pMediaType").onchange =
-  updateMediaPreview;
+
+$("#pMediaType")
+  .addEventListener(
+    "change",
+    updateMediaPreview
+  );
 
 
 /* =========================
    LOGIN
 ========================= */
 
-$("#loginOpen").onclick = e => {
+$("#loginOpen").onclick =
+  event => {
 
-  e.preventDefault();
-
-  $("#loginOverlay")
-    .classList.add("show");
-
-  $("#loginUser").value = "";
-  $("#loginPass").value = "";
-
-  $("#loginError")
-    .classList.remove("show");
-
-  $("#loginUser").focus();
-
-};
-
-
-$("#loginClose").onclick = () =>
-  $("#loginOverlay")
-    .classList.remove("show");
-
-
-$("#loginOverlay").onclick = e => {
-
-  if(e.target.id === "loginOverlay"){
+    event.preventDefault();
 
     $("#loginOverlay")
-      .classList.remove("show");
+      .classList
+      .add("show");
 
-  }
+    $("#loginUser").value =
+      "";
 
-};
-
-
-$("#loginForm").onsubmit = async e => {
-
-  e.preventDefault();
-
-  $("#loginError")
-    .classList.remove("show");
-
-
-  const u =
-    $("#loginUser").value.trim();
-
-  const p =
-    $("#loginPass").value;
-
-
-  if(
-    u.toLowerCase() !==
-    ADMIN_USERNAME ||
-    !p
-  ){
-
-    $("#loginError").textContent =
-      "Sai tài khoản hoặc mật khẩu.";
+    $("#loginPass").value =
+      "";
 
     $("#loginError")
-      .classList.add("show");
+      .classList
+      .remove("show");
 
-    return;
+    $("#loginUser").focus();
 
-  }
-
-
-  const b =
-    e.submitter ||
-    e.target.querySelector(
-      'button[type="submit"]'
-    );
+  };
 
 
-  if(b){
-
-    b.disabled = true;
-    b.textContent =
-      "Đang đăng nhập...";
-
-  }
+$("#loginClose").onclick =
+  () =>
+    $("#loginOverlay")
+      .classList
+      .remove("show");
 
 
-  try{
+$("#loginOverlay").onclick =
+  event => {
 
-    await signInWithEmailAndPassword(
-      auth,
-      ADMIN_EMAIL,
-      p
-    );
+    if(
+      event.target.id ===
+      "loginOverlay"
+    ){
+
+      $("#loginOverlay")
+        .classList
+        .remove("show");
+
+    }
+
+  };
+
+
+$("#loginForm").onsubmit =
+  async event => {
+
+    event.preventDefault();
+
+
+    $("#loginError")
+      .classList
+      .remove("show");
+
+
+    const username =
+      $("#loginUser")
+        .value
+        .trim();
+
+
+    const password =
+      $("#loginPass")
+        .value;
 
 
     if(
-      auth.currentUser?.email !==
-      ADMIN_EMAIL
+      username.toLowerCase()
+      !==
+      ADMIN_USERNAME ||
+      !password
     ){
 
-      await signOut(auth);
+      $("#loginError").textContent =
+        "Sai tài khoản hoặc mật khẩu.";
 
-      throw new Error(
-        "Không có quyền quản trị."
-      );
+
+      $("#loginError")
+        .classList
+        .add("show");
+
+
+      return;
 
     }
 
 
-    $("#loginOverlay")
-      .classList.remove("show");
-
-    toast(
-      "Đăng nhập admin thành công"
-    );
-
-  }catch(err){
-
-    let msg =
-      "Sai tài khoản hoặc mật khẩu.";
+    const button =
+      event.submitter;
 
 
-    if(
-      err?.code ===
-      "auth/too-many-requests"
-    ){
+    if(button){
 
-      msg =
-        "Có quá nhiều lần thử. Hãy thử lại sau.";
+      button.disabled =
+        true;
 
-    }else if(
-      err?.code ===
-      "auth/network-request-failed"
-    ){
-
-      msg =
-        "Không kết nối được Firebase.";
+      button.textContent =
+        "Đang đăng nhập...";
 
     }
 
-
-    $("#loginError").textContent =
-      msg;
-
-    $("#loginError")
-      .classList.add("show");
-
-    $("#loginPass").value = "";
-
-  }finally{
-
-    if(b){
-
-      b.disabled = false;
-      b.textContent =
-        "Đăng nhập";
-
-    }
-
-  }
-
-};
-
-
-$("#logout").onclick = async () => {
-
-  try{
-    await signOut(auth);
-  }catch{}
-
-  setAdmin(false);
-
-  $("#loginUser").value = "";
-  $("#loginPass").value = "";
-
-};
-
-
-$("#viewSite").onclick = () =>
-  setAdmin(false);
-
-
-/* =========================
-   POST
-========================= */
-
-$("#postForm").onsubmit = async e => {
-
-  e.preventDefault();
-
-
-  if(!auth.currentUser){
-
-    return toast(
-      "Chưa đăng nhập admin.",
-      true
-    );
-
-  }
-
-
-  const title =
-    $("#pTitle").value.trim();
-
-  const excerpt =
-    $("#pExcerpt").value.trim();
-
-  const date =
-    $("#pDate").value;
-
-  const mediaUrl =
-    $("#pMediaUrl").value.trim();
-
-  const mediaType =
-    $("#pMediaType").value;
-
-
-  if(!title || !excerpt || !date){
-
-    return toast(
-      "Vui lòng điền Tiêu đề, Ngày đăng và Mô tả ngắn.",
-      true
-    );
-
-  }
-
-
-  if(mediaUrl){
 
     try{
 
-      new URL(mediaUrl);
+      await signInWithEmailAndPassword(
+        auth,
+        ADMIN_EMAIL,
+        password
+      );
 
-    }catch{
+
+      if(
+        auth.currentUser?.email
+        !==
+        ADMIN_EMAIL
+      ){
+
+        await signOut(auth);
+
+        throw new Error(
+          "Không có quyền quản trị."
+        );
+
+      }
+
+
+      $("#loginOverlay")
+        .classList
+        .remove("show");
+
+
+      toast(
+        "Đăng nhập admin thành công."
+      );
+
+    }catch(error){
+
+      let message =
+        "Sai tài khoản hoặc mật khẩu.";
+
+
+      if(
+        error?.code ===
+        "auth/too-many-requests"
+      ){
+
+        message =
+          "Có quá nhiều lần thử. Hãy thử lại sau.";
+
+      }else if(
+        error?.code ===
+        "auth/network-request-failed"
+      ){
+
+        message =
+          "Không kết nối được Firebase.";
+
+      }
+
+
+      $("#loginError").textContent =
+        message;
+
+
+      $("#loginError")
+        .classList
+        .add("show");
+
+
+      $("#loginPass").value =
+        "";
+
+    }finally{
+
+      if(button){
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Đăng nhập";
+
+      }
+
+    }
+  };
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+$("#logout").onclick =
+  async () => {
+
+    try{
+      await signOut(auth);
+    }catch{}
+
+    setAdmin(false);
+
+    $("#loginUser").value =
+      "";
+
+    $("#loginPass").value =
+      "";
+
+  };
+
+
+$("#viewSite").onclick =
+  () =>
+    setAdmin(false);
+
+
+/* =========================
+   POST SUBMIT
+========================= */
+
+$("#postForm").onsubmit =
+  async event => {
+
+    event.preventDefault();
+
+
+    if(!auth.currentUser){
 
       return toast(
-        "URL ảnh/video không hợp lệ.",
+        "Chưa đăng nhập admin.",
         true
       );
 
     }
 
-  }
+
+    const title =
+      $("#pTitle")
+        .value
+        .trim();
 
 
-  const btn =
-    $("#postSubmit");
+    const excerpt =
+      $("#pExcerpt")
+        .value
+        .trim();
 
 
-  if(btn){
+    const date =
+      $("#pDate")
+        .value;
 
-    btn.disabled = true;
-    btn.textContent =
+
+    const mediaRaw =
+      $("#pMediaUrl")
+        .value
+        .trim();
+
+
+    const mediaUrl =
+      normalizeUrl(
+        mediaRaw
+      );
+
+
+    const mediaType =
+      $("#pMediaType")
+        .value;
+
+
+    if(
+      !title ||
+      !excerpt ||
+      !date
+    ){
+
+      return toast(
+        "Vui lòng nhập đủ Tiêu đề, Ngày đăng và Mô tả ngắn.",
+        true
+      );
+
+    }
+
+
+    if(
+      mediaUrl &&
+      !validUrl(mediaUrl)
+    ){
+
+      return toast(
+        "Link ảnh/video không hợp lệ.",
+        true
+      );
+
+    }
+
+
+    const button =
+      $("#postSubmit");
+
+
+    button.disabled =
+      true;
+
+    button.textContent =
       "Đang đăng...";
 
-  }
+
+    try{
+
+      const id =
+        push(
+          ref(db,"posts")
+        ).key;
 
 
-  try{
+      const data = {
 
-    const id =
-      push(ref(db,"posts")).key;
+        id,
 
+        title,
 
-    const data = {
+        cat:
+          $("#pCat").value,
 
-      id,
+        date,
 
-      title,
+        excerpt,
 
-      cat:
-        $("#pCat").value,
+        content:
+          $("#pContent")
+            .value
+            .trim() ||
+          excerpt,
 
-      date,
+        mediaUrl:
+          mediaUrl || "",
 
-      icon:
-        $("#pIcon").value.trim()
-        || "📰",
+        mediaType:
+          mediaUrl
+            ? mediaType
+            : "",
 
-      color:
-        Number($("#pColor").value)
-        || 0,
+        fileName:
+          "",
 
-      excerpt,
+        createdAt:
+          Date.now()
 
-      content:
-        $("#pContent").value.trim()
-        || excerpt,
-
-      mediaUrl,
-
-      mediaType:
-        mediaUrl
-          ? mediaType
-          : "",
-
-      fileName:"",
-
-      createdAt:
-        Date.now()
-
-    };
+      };
 
 
-    await set(
-      ref(db,"posts/"+id),
-      data
-    );
+      await set(
+        ref(
+          db,
+          "posts/"+id
+        ),
+        data
+      );
 
 
-    toast(
-      "Đăng bài thành công. Firebase chỉ lưu URL."
-    );
+      toast(
+        "Đăng bài thành công."
+      );
 
 
-    e.target.reset();
+      event.target.reset();
 
-    $("#pDate").value =
-      today();
 
-    $("#pPreview").innerHTML = "";
+      $("#pDate").value =
+        today();
 
-    $("#pUrlStatus").textContent = "";
 
-  }catch(err){
+      $("#pPreview").innerHTML =
+        "";
 
-    console.error(
-      "POST ERROR",
-      err
-    );
+      $("#pUrlStatus").textContent =
+        "";
 
-    toast(
-      "Không thể đăng bài: " +
-      (err?.message || err),
-      true
-    );
+    }catch(error){
 
-  }finally{
+      console.error(
+        "POST ERROR",
+        error
+      );
 
-    if(btn){
 
-      btn.disabled = false;
-      btn.textContent =
+      toast(
+        "Không thể đăng bài: " +
+        (
+          error?.message ||
+          error
+        ),
+        true
+      );
+
+    }finally{
+
+      button.disabled =
+        false;
+
+      button.textContent =
         "Đăng bài";
 
     }
 
-  }
-
-};
+  };
 
 
 /* =========================
-   NOTICE
+   NOTICE SUBMIT
 ========================= */
 
-$("#noticeForm").onsubmit = async e => {
+$("#noticeForm").onsubmit =
+  async event => {
 
-  e.preventDefault();
-
-  if(!auth.currentUser){
-
-    return toast(
-      "Chưa đăng nhập",
-      true
-    );
-
-  }
+    event.preventDefault();
 
 
-  try{
+    if(!auth.currentUser){
 
-    const id =
-      push(ref(db,"notices")).key;
+      return toast(
+        "Chưa đăng nhập admin.",
+        true
+      );
 
-
-    await set(
-      ref(db,"notices/"+id),
-      {
-
-        id,
-
-        text:
-          $("#nText")
-            .value
-            .trim(),
-
-        order:
-          Number($("#nOrder").value)
-          || 0,
-
-        createdAt:
-          Date.now()
-
-      }
-    );
+    }
 
 
-    e.target.reset();
+    const text =
+      $("#nText")
+        .value
+        .trim();
 
-    $("#nOrder").value = 0;
 
-    toast(
-      "Đã thêm thông báo"
-    );
+    if(!text){
 
-  }catch(err){
+      return toast(
+        "Chưa nhập nội dung.",
+        true
+      );
 
-    toast(
-      err.message,
-      true
-    );
+    }
 
-  }
 
-};
+    try{
+
+      const id =
+        push(
+          ref(db,"notices")
+        ).key;
+
+
+      await set(
+        ref(
+          db,
+          "notices/"+id
+        ),
+        {
+
+          id,
+
+          text,
+
+          order:
+            Number(
+              $("#nOrder").value
+            ) || 0,
+
+          createdAt:
+            Date.now()
+
+        }
+      );
+
+
+      event.target.reset();
+
+      $("#nOrder").value =
+        0;
+
+
+      toast(
+        "Đã thêm thông báo."
+      );
+
+    }catch(error){
+
+      toast(
+        error.message ||
+        "Không thể thêm thông báo.",
+        true
+      );
+
+    }
+
+  };
 
 
 /* =========================
-   DOCUMENT
+   PDF SUBMIT
 ========================= */
 
-$("#docForm").onsubmit = async e => {
+$("#docForm").onsubmit =
+  async event => {
 
-  e.preventDefault();
-
-
-  if(!auth.currentUser){
-
-    return toast(
-      "Chưa đăng nhập admin.",
-      true
-    );
-
-  }
+    event.preventDefault();
 
 
-  const fileUrl =
-    $("#dUrl").value.trim();
+    if(!auth.currentUser){
 
-  const code =
-    $("#dCode").value.trim();
+      return toast(
+        "Chưa đăng nhập admin.",
+        true
+      );
 
-  const title =
-    $("#dTitle").value.trim();
-
-
-  if(!fileUrl){
-
-    return toast(
-      "Chưa nhập URL PDF.",
-      true
-    );
-
-  }
+    }
 
 
-  if(!code || !title){
-
-    return toast(
-      "Vui lòng nhập số/ký hiệu và tiêu đề.",
-      true
-    );
-
-  }
+    const fileUrl =
+      normalizeUrl(
+        $("#dUrl")
+          .value
+          .trim()
+      );
 
 
-  try{
-
-    new URL(fileUrl);
-
-  }catch{
-
-    return toast(
-      "URL PDF không hợp lệ.",
-      true
-    );
-
-  }
+    const code =
+      $("#dCode")
+        .value
+        .trim();
 
 
-  const btn =
-    e.submitter;
+    const title =
+      $("#dTitle")
+        .value
+        .trim();
 
 
-  if(btn){
+    if(!fileUrl){
 
-    btn.disabled = true;
+      return toast(
+        "Chưa nhập URL PDF.",
+        true
+      );
 
-    btn.textContent =
+    }
+
+
+    if(
+      !validUrl(fileUrl)
+    ){
+
+      return toast(
+        "Link PDF không hợp lệ.",
+        true
+      );
+
+    }
+
+
+    if(!code || !title){
+
+      return toast(
+        "Vui lòng nhập số/ký hiệu và tiêu đề.",
+        true
+      );
+
+    }
+
+
+    const button =
+      event.submitter;
+
+
+    button.disabled =
+      true;
+
+    button.textContent =
       "Đang đăng...";
 
-  }
+
+    try{
+
+      const id =
+        push(
+          ref(db,"documents")
+        ).key;
 
 
-  try{
+      await set(
+        ref(
+          db,
+          "documents/"+id
+        ),
+        {
 
-    const id =
-      push(ref(db,"documents")).key;
+          id,
 
+          code,
 
-    await set(
-      ref(db,"documents/"+id),
-      {
+          title,
 
-        id,
+          date:
+            $("#dDate")
+              .value || "",
 
-        code,
+          description:
+            $("#dDesc")
+              .value
+              .trim(),
 
-        title,
+          fileUrl,
 
-        date:
-          $("#dDate").value
-          || "",
+          fileName:
+            "",
 
-        description:
-          $("#dDesc")
-            .value
-            .trim(),
+          createdAt:
+            Date.now()
 
-        fileUrl,
-
-        fileName:"",
-
-        createdAt:
-          Date.now()
-
-      }
-    );
+        }
+      );
 
 
-    toast(
-      "Đăng PDF thành công. Firebase chỉ lưu URL."
-    );
+      toast(
+        "Đăng PDF thành công."
+      );
 
 
-    e.target.reset();
+      event.target.reset();
 
-    $("#dDate").value =
-      today();
+      $("#dDate").value =
+        today();
 
-  }catch(err){
+    }catch(error){
 
-    console.error(
-      "DOC ERROR",
-      err
-    );
+      console.error(
+        "PDF ERROR",
+        error
+      );
 
-    toast(
-      "Không thể đăng PDF: " +
-      (err?.message || err),
-      true
-    );
 
-  }finally{
+      toast(
+        "Không thể đăng PDF: " +
+        (
+          error?.message ||
+          error
+        ),
+        true
+      );
 
-    if(btn){
+    }finally{
 
-      btn.disabled = false;
+      button.disabled =
+        false;
 
-      btn.textContent =
+      button.textContent =
         "Đăng PDF";
 
     }
 
-  }
-
-};
+  };
 
 
 /* =========================
-   SIMPLE DATA URL FOR BANNER
+   SETTINGS SUBMIT
 ========================= */
 
-function fileToDataURL(file){
+$("#settingsForm").onsubmit =
+  async event => {
 
-  return new Promise(
-    (resolve,reject) => {
-
-      const reader =
-        new FileReader();
-
-      reader.onload = () =>
-        resolve(
-          String(reader.result || "")
-        );
-
-      reader.onerror = () =>
-        reject(
-          new Error("Không đọc được file.")
-        );
-
-      reader.readAsDataURL(file);
-
-    }
-  );
-
-}
+    event.preventDefault();
 
 
-async function bannerDataURL(file,maxBytes=900000){
+    if(!auth.currentUser){
 
-  if(!file)
-    return "";
-
-
-  if(file.size > maxBytes){
-
-    throw new Error(
-      "Ảnh quá lớn. Hãy chọn ảnh nhẹ hơn."
-    );
-
-  }
-
-
-  return await fileToDataURL(file);
-
-}
-
-
-/* =========================
-   SETTINGS
-========================= */
-
-$("#settingsForm").onsubmit = async e => {
-
-  e.preventDefault();
-
-
-  if(!auth.currentUser){
-
-    return toast(
-      "Chưa đăng nhập admin.",
-      true
-    );
-
-  }
-
-
-  const b =
-    e.submitter;
-
-
-  if(b)
-    b.disabled = true;
-
-
-  try{
-
-    let bannerBg =
-      settings.bannerBg || "";
-
-    let siteIcon =
-      settings.siteIcon || "";
-
-
-    if(
-      $("#sBanner").files[0]
-    ){
-
-      bannerBg =
-        await bannerDataURL(
-          $("#sBanner").files[0]
-        );
+      return toast(
+        "Chưa đăng nhập admin.",
+        true
+      );
 
     }
 
 
-    if(
-      $("#sFavicon").files[0]
-    ){
+    const button =
+      event.submitter;
 
-      siteIcon =
-        await bannerDataURL(
-          $("#sFavicon").files[0],
-          700000
-        );
 
+    if(button){
+      button.disabled =
+        true;
     }
 
 
-    await set(
-      ref(db,"settings/site"),
-      {
+    try{
 
-        bannerTitle:
-          $("#sTitle").value.trim(),
+      const bannerBg =
+        normalizeUrl(
+          $("#sBannerUrl")
+            .value
+            .trim()
+        );
 
-        bannerSubtitle:
-          $("#sSubtitle").value.trim(),
 
-        bannerBg,
+      const siteIcon =
+        normalizeUrl(
+          $("#sFaviconUrl")
+            .value
+            .trim()
+        );
 
-        siteIcon,
 
-        marquee:
-          $("#sMarquee")
-            .value.trim(),
+      if(
+        bannerBg &&
+        !validUrl(bannerBg)
+      ){
 
-        address:
-          $("#sAddress")
-            .value.trim(),
-
-        phone:
-          $("#sPhone")
-            .value.trim(),
-
-        email:
-          $("#sEmail")
-            .value.trim(),
-
-        morning:
-          $("#sMorning")
-            .value.trim(),
-
-        afternoon:
-          $("#sAfternoon")
-            .value.trim(),
-
-        workNote:
-          $("#sWorkNote")
-            .value.trim(),
-
-        youtube:
-          $("#sYoutube")
-            .value.trim(),
-
-        quickLinks:
-          readLinks("quickEdit"),
-
-        services:
-          readLinks("serviceEdit"),
-
-        webLinks:
-          readWeb("webEdit"),
-
-        footerName:
-          $("#sFooterName")
-            .value.trim(),
-
-        responsible:
-          $("#sResponsible")
-            .value.trim()
+        throw new Error(
+          "URL banner không hợp lệ."
+        );
 
       }
-    );
 
 
-    toast(
-      "Đã lưu cài đặt."
-    );
+      if(
+        siteIcon &&
+        !validUrl(siteIcon)
+      ){
 
-  }catch(err){
+        throw new Error(
+          "URL favicon không hợp lệ."
+        );
 
-    toast(
-      err.message,
-      true
-    );
+      }
 
-  }finally{
 
-    if(b)
-      b.disabled = false;
+      await set(
+        ref(
+          db,
+          "settings/site"
+        ),
+        {
 
-  }
+          bannerTitle:
+            $("#sTitle")
+              .value
+              .trim(),
 
-};
+          bannerSubtitle:
+            $("#sSubtitle")
+              .value
+              .trim(),
+
+          bannerBg,
+
+          siteIcon,
+
+          marquee:
+            $("#sMarquee")
+              .value
+              .trim(),
+
+          address:
+            $("#sAddress")
+              .value
+              .trim(),
+
+          phone:
+            $("#sPhone")
+              .value
+              .trim(),
+
+          email:
+            $("#sEmail")
+              .value
+              .trim(),
+
+          morning:
+            $("#sMorning")
+              .value
+              .trim(),
+
+          afternoon:
+            $("#sAfternoon")
+              .value
+              .trim(),
+
+          workNote:
+            $("#sWorkNote")
+              .value
+              .trim(),
+
+          youtube:
+            $("#sYoutube")
+              .value
+              .trim(),
+
+          quickLinks:
+            readLinks(
+              "quickEdit"
+            ),
+
+          services:
+            readLinks(
+              "serviceEdit"
+            ),
+
+          webLinks:
+            readWeb(
+              "webEdit"
+            ),
+
+          footerName:
+            $("#sFooterName")
+              .value
+              .trim(),
+
+          responsible:
+            $("#sResponsible")
+              .value
+              .trim()
+
+        }
+      );
+
+
+      toast(
+        "Đã lưu cài đặt."
+      );
+
+    }catch(error){
+
+      toast(
+        error.message ||
+        "Không thể lưu cài đặt.",
+        true
+      );
+
+    }finally{
+
+      if(button){
+        button.disabled =
+          false;
+      }
+
+    }
+
+  };
 
 
 /* =========================
    RESET BANNER
 ========================= */
 
-$("#resetBanner").onclick = async () => {
+$("#resetBanner").onclick =
+  async () => {
 
-  if(!auth.currentUser){
+    if(!auth.currentUser){
 
-    return toast(
-      "Chưa đăng nhập admin.",
-      true
-    );
+      return toast(
+        "Chưa đăng nhập admin.",
+        true
+      );
 
-  }
-
-
-  try{
-
-    await update(
-      ref(db,"settings/site"),
-      {
-        bannerBg:""
-      }
-    );
+    }
 
 
-    toast(
-      "Đã khôi phục banner mặc định."
-    );
+    try{
 
-  }catch(e){
+      await update(
+        ref(db,"settings/site"),
+        {
+          bannerBg:""
+        }
+      );
 
-    toast(
-      e.message,
-      true
-    );
 
-  }
+      $("#sBannerUrl").value =
+        DEFAULT_BANNER;
 
-};
+
+      toast(
+        "Đã khôi phục banner mặc định."
+      );
+
+    }catch(error){
+
+      toast(
+        error.message,
+        true
+      );
+
+    }
+
+  };
 
 
 /* =========================
    BANNER PREVIEW
 ========================= */
 
-$("#sBanner").onchange = e => {
+$("#sBannerUrl").oninput =
+  () => {
 
-  const file =
-    e.target.files[0];
-
-  $("#sBannerName").textContent =
-    file
-      ? file.name
-      : "";
-
-
-  if(!file){
-
-    $("#bannerPreview")
-      .style.display =
-      "none";
-
-    return;
-
-  }
+    const url =
+      normalizeUrl(
+        $("#sBannerUrl")
+          .value
+          .trim()
+      );
 
 
-  const url =
-    URL.createObjectURL(file);
+    if(
+      url &&
+      validUrl(url)
+    ){
 
-  $("#bannerPreview").src =
-    url;
+      $("#bannerPreview").src =
+        url;
 
-  $("#bannerPreview")
-    .style.display =
-    "block";
+      $("#bannerPreview").style.display =
+        "block";
 
-};
+    }else{
 
+      $("#bannerPreview").style.display =
+        "none";
 
-$("#sFavicon").onchange = e => {
+    }
 
-  const file =
-    e.target.files[0];
-
-  $("#sFaviconName").textContent =
-    file
-      ? file.name
-      : "";
-
-};
+  };
 
 
 /* =========================
-   LINK BUTTONS
+   ADD LINK BUTTONS
 ========================= */
 
 $("#addQuick").onclick =
-  () => addLink("quickEdit");
-
-$("#addService").onclick =
-  () => addLink("serviceEdit");
-
-$("#addWeb").onclick =
-  () => addLink(
-    "webEdit",
-    {},
-    true
-  );
-
-
-$("#webLinks").onchange = e => {
-
-  if(e.target.value){
-
-    window.open(
-      e.target.value,
-      "_blank"
+  () =>
+    addLink(
+      "quickEdit"
     );
 
-  }
 
-};
+$("#addService").onclick =
+  () =>
+    addLink(
+      "serviceEdit"
+    );
+
+
+$("#addWeb").onclick =
+  () =>
+    addLink(
+      "webEdit",
+      {},
+      true
+    );
+
+
+$("#webLinks").onchange =
+  event => {
+
+    const url =
+      event.target.value;
+
+
+    if(url){
+
+      window.open(
+        url,
+        "_blank"
+      );
+
+    }
+
+  };
 
 
 /* =========================
    SEARCH
 ========================= */
 
-$("#searchBtn").onclick = () => {
-
-  searchText =
-    $("#search")
-      .value
-      .trim();
-
-  render();
-
-};
-
-
-$("#search").onkeydown = e => {
-
-  if(e.key === "Enter"){
+$("#searchBtn").onclick =
+  () => {
 
     searchText =
-      e.target.value
-      .trim();
+      $("#search")
+        .value
+        .trim();
 
     render();
 
-  }
+  };
 
-};
+
+$("#search").onkeydown =
+  event => {
+
+    if(
+      event.key ===
+      "Enter"
+    ){
+
+      searchText =
+        event.target.value
+          .trim();
+
+      render();
+
+    }
+
+  };
 
 
 /* =========================
@@ -3769,29 +5378,43 @@ $("#search").onkeydown = e => {
 ========================= */
 
 $$(".admin-tabs button")
-.forEach(b => {
+  .forEach(
+    button => {
 
-  b.onclick = () => {
+      button.onclick =
+        () => {
 
-    $$(".admin-tabs button")
-      .forEach(
-        x => x.classList.remove("active")
-      );
-
-    $$(".panel")
-      .forEach(
-        x => x.classList.remove("active")
-      );
+          $$(".admin-tabs button")
+            .forEach(
+              item =>
+                item.classList
+                  .remove("active")
+            );
 
 
-    b.classList.add("active");
+          $$(".panel")
+            .forEach(
+              panel =>
+                panel.classList
+                  .remove("active")
+            );
 
-    $("#panel-"+b.dataset.panel)
-      .classList.add("active");
 
-  };
+          button.classList
+            .add("active");
 
-});
+
+          $(
+            "#panel-" +
+            button.dataset.panel
+          )
+          .classList
+          .add("active");
+
+        };
+
+    }
+  );
 
 
 /* =========================
@@ -3800,33 +5423,61 @@ $$(".admin-tabs button")
 
 function clock(){
 
-  const d =
+  const date =
     new Date();
 
+
   const days = [
+
     "Chủ nhật",
+
     "Thứ 2",
+
     "Thứ 3",
+
     "Thứ 4",
+
     "Thứ 5",
+
     "Thứ 6",
+
     "Thứ 7"
+
   ];
 
-  const p = n =>
-    String(n).padStart(2,"0");
+
+  const pad =
+    number =>
+      String(number)
+        .padStart(2,"0");
 
 
-  $("#clock").textContent = `
+  $("#clock").textContent =
 
-    ${days[d.getDay()]},
-    ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}
-    -
-    ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}
+    days[date.getDay()] +
+    ", " +
 
-  `;
+    pad(date.getDate()) +
+    "/" +
+
+    pad(
+      date.getMonth()+1
+    ) +
+    "/" +
+
+    date.getFullYear() +
+    " - " +
+
+    pad(date.getHours()) +
+    ":" +
+
+    pad(date.getMinutes()) +
+    ":" +
+
+    pad(date.getSeconds());
 
 }
+
 
 clock();
 
@@ -3847,31 +5498,37 @@ function realtime(){
 
   onValue(
     ref(db,"posts"),
-    s => {
+    snapshot => {
 
-      const v =
-        s.val() || {};
+      const value =
+        snapshot.val() || {};
 
 
       posts =
-        Object.entries(v)
-
+        Object.entries(value)
           .map(
-            ([id,x]) =>
+            ([id,item]) =>
               ({
-                ...x,
+                ...item,
                 id
               })
           )
-
           .sort(
             (a,b) =>
-              (b.date || "")
-                .localeCompare(a.date || "")
+              (
+                b.date || ""
+              )
+              .localeCompare(
+                a.date || ""
+              )
               ||
-              (b.createdAt || 0)
+              (
+                b.createdAt || 0
+              )
               -
-              (a.createdAt || 0)
+              (
+                a.createdAt || 0
+              )
           );
 
 
@@ -3885,43 +5542,54 @@ function realtime(){
 
   onValue(
     ref(db,"notices"),
-    s => {
+    snapshot => {
 
-      const v =
-        s.val() || {};
+      const value =
+        snapshot.val() || {};
 
 
       notices =
-        Object.entries(v)
-
+        Object.entries(value)
           .map(
-            ([id,x]) =>
+            ([id,item]) =>
               ({
-                ...x,
+                ...item,
                 id
               })
           )
-
           .sort(
             (a,b) =>
-              (a.order || 0)
+              (
+                a.order || 0
+              )
               -
-              (b.order || 0)
+              (
+                b.order || 0
+              )
               ||
-              (b.createdAt || 0)
+              (
+                b.createdAt || 0
+              )
               -
-              (a.createdAt || 0)
+              (
+                a.createdAt || 0
+              )
           );
 
 
       $("#noticeList").innerHTML =
         notices.length
 
-          ? notices.map(n => `
-              <p>
-                ${esc(n.text)}
-              </p>
-            `).join("")
+          ? notices
+              .map(
+                notice =>
+                  `
+                  <p>
+                    ${esc(notice.text)}
+                  </p>
+                  `
+              )
+              .join("")
 
           : empty(
               "Chưa có thông báo."
@@ -3938,74 +5606,89 @@ function realtime(){
 
   onValue(
     ref(db,"documents"),
-    s => {
+    snapshot => {
 
-      const v =
-        s.val() || {};
+      const value =
+        snapshot.val() || {};
 
 
       docs =
-        Object.entries(v)
-
+        Object.entries(value)
           .map(
-            ([id,x]) =>
+            ([id,item]) =>
               ({
-                ...x,
+                ...item,
                 id
               })
           )
-
           .sort(
             (a,b) =>
-              (b.date || "")
-                .localeCompare(a.date || "")
+              (
+                b.date || ""
+              )
+              .localeCompare(
+                a.date || ""
+              )
               ||
-              (b.createdAt || 0)
+              (
+                b.createdAt || 0
+              )
               -
-              (a.createdAt || 0)
+              (
+                a.createdAt || 0
+              )
           );
 
 
       $("#documents").innerHTML =
         docs.length
 
-          ? docs.slice(0,5).map(d => `
+          ? docs
+              .slice(0,5)
+              .map(
+                doc =>
+                  `
+                  <div class="doc">
 
-              <div class="doc">
+                    <span class="code">
+                      ${esc(doc.code)}
+                    </span>
 
-                <span class="code">
-                  ${esc(d.code)}
-                </span>
+                    <a
+                      href="${esc(normalizeUrl(doc.fileUrl))}"
+                      target="_blank"
+                      rel="noopener">
 
-                <a
-                  href="${esc(d.fileUrl)}"
-                  target="_blank">
-                  ${esc(d.title)}
-                </a>
+                      ${esc(doc.title)}
 
-                <small>
-                  ${esc(fmt(d.date))}
-                </small>
+                    </a>
 
-                <div class="actions">
+                    <small>
+                      ${esc(fmt(doc.date))}
+                    </small>
 
-                  <a
-                    href="${esc(d.fileUrl)}"
-                    target="_blank">
-                    Xem
-                  </a>
+                    <div class="actions">
 
-                  <a
-                    href="${esc(d.fileUrl)}"
-                    target="_blank">
-                    Mở
-                  </a>
+                      <a
+                        href="${esc(normalizeUrl(doc.fileUrl))}"
+                        target="_blank"
+                        rel="noopener">
+                        Xem
+                      </a>
 
-                </div>
+                      <a
+                        href="${esc(normalizeUrl(doc.fileUrl))}"
+                        target="_blank"
+                        rel="noopener">
+                        Mở
+                      </a>
 
-              </div>
+                    </div>
 
-            `).join("")
+                  </div>
+                  `
+              )
+              .join("")
 
           : empty(
               "Chưa có văn bản."
@@ -4022,10 +5705,11 @@ function realtime(){
 
   onValue(
     ref(db,"settings/site"),
-    s => {
+    snapshot => {
 
       settings =
-        s.val() || {};
+        snapshot.val() || {};
+
 
       applySettings(
         settings
@@ -4039,50 +5723,59 @@ function realtime(){
 
   onValue(
     ref(db,"stats"),
-    s => {
+    snapshot => {
 
-      const x =
-        s.val() || {};
+      const data =
+        snapshot.val() || {};
 
-      const d =
-        x.days || {};
+      const days =
+        data.days || {};
 
-      const t =
+      const current =
         today();
 
-      const ago =
+      const weekStart =
         new Date(
-          Date.now()
-          -
-          6 * 86400000
+          Date.now() -
+          6*86400000
         )
         .toISOString()
         .slice(0,10);
 
 
       $("#total").textContent =
-        num(x.total || 0);
+        num(
+          data.total || 0
+        );
 
 
       $("#today").textContent =
-        num(d[t] || 0);
+        num(
+          days[current] || 0
+        );
+
+
+      const weekTotal =
+        Object.entries(days)
+          .filter(
+            ([date]) =>
+              date >= weekStart &&
+              date <= current
+          )
+          .reduce(
+            (sum,[,value]) =>
+              sum +
+              (
+                Number(value) ||
+                0
+              ),
+            0
+          );
 
 
       $("#week").textContent =
         num(
-          Object.entries(d)
-
-            .filter(
-              ([k]) =>
-                k >= ago &&
-                k <= t
-            )
-
-            .reduce(
-              (a,[,v]) =>
-                a + (Number(v) || 0),
-              0
-            )
+          weekTotal
         );
 
     }
@@ -4093,27 +5786,33 @@ function realtime(){
 
   onValue(
     ref(db,"presence"),
-    s => {
+    snapshot => {
 
       const now =
         Date.now();
 
-      const v =
-        s.val() || {};
+
+      const value =
+        snapshot.val() || {};
+
+
+      const count =
+        Object.values(value)
+          .filter(
+            item =>
+              now -
+              (
+                item.lastSeen ||
+                0
+              )
+              <
+              90000
+          )
+          .length;
 
 
       $("#online").textContent =
-        num(
-          Object.values(v)
-            .filter(
-              x =>
-                now -
-                (x.lastSeen || 0)
-                <
-                90000
-            )
-            .length
-        );
+        num(count);
 
     }
   );
@@ -4134,17 +5833,19 @@ function realtime(){
       inMemoryPersistence
     );
 
-    await signOut(auth);
+    await signOut(
+      auth
+    );
 
   }catch{}
 
 
   onAuthStateChanged(
     auth,
-    u => {
+    user => {
 
       if(
-        u?.email ===
+        user?.email ===
         ADMIN_EMAIL
       ){
 
@@ -4152,8 +5853,11 @@ function realtime(){
 
       }else{
 
-        if(u)
+        if(user){
+
           signOut(auth);
+
+        }
 
         setAdmin(false);
 
@@ -4173,7 +5877,7 @@ async function presence(){
 
   try{
 
-    const r =
+    const presenceRef =
       ref(
         db,
         "presence/"+sid
@@ -4181,7 +5885,7 @@ async function presence(){
 
 
     await set(
-      r,
+      presenceRef,
       {
         lastSeen:
           Date.now()
@@ -4189,7 +5893,9 @@ async function presence(){
     );
 
 
-    onDisconnect(r).remove();
+    onDisconnect(
+      presenceRef
+    ).remove();
 
   }catch{}
 
@@ -4197,7 +5903,7 @@ async function presence(){
 
 
 /* =========================
-   VISITOR COUNTER
+   VISITOR HIT
 ========================= */
 
 async function hit(){
@@ -4232,10 +5938,12 @@ presence();
 
 hit();
 
+
 setInterval(
   presence,
   25000
 );
+
 
 $("#pDate").value =
   today();
