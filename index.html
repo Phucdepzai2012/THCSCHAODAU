@@ -110,14 +110,117 @@ $("#loginForm").onsubmit=async e=>{
 $("#logout").onclick=async()=>{try{await signOut(auth)}catch{}setAdmin(false);$("#loginUser").value="";$("#loginPass").value=""};
 $("#viewSite").onclick=()=>setAdmin(false);
 
-$("#pMedia").onchange=e=>{mediaFile=e.target.files[0]||null;$("#pName").textContent=mediaFile?.name||"";$("#pUrlBox").classList.add("hidden");$("#pUrl").value="";$("#pPreview").innerHTML=mediaFile?(mediaFile.type.startsWith("video/")?`<video class="preview" controls src="${URL.createObjectURL(mediaFile)}"></video>`:`<img class="preview" src="${URL.createObjectURL(mediaFile)}">`):""};$("#dFile").onchange=e=>{dFile=e.target.files[0]||null;$("#dName").textContent=dFile?.name||"";$("#dUrlBox").classList.add("hidden");$("#dUrl").value=""};$("#sBanner").onchange=e=>{const f=e.target.files[0]||null;$("#sBannerName").textContent=f?.name||"";if(f){$("#bannerPreview").src=URL.createObjectURL(f);$("#bannerPreview").style.display="block";$("#bannerImage").src=URL.createObjectURL(f);toast("Đã xem trước banner. Bấm Lưu cài đặt để áp dụng cho mọi người.")}};$("#sFavicon").onchange=e=>$("#sFaviconName").textContent=e.target.files[0]?.name||"";
+let mediaUploadState="none";
+let dUploadState="none";
+let pendingMedia={url:"",path:"",type:"",name:"",mode:""};
+let pendingDoc={url:"",path:"",type:"",name:"",mode:""};
 
-$("#postForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập admin.",true);const b=$("#postSubmit");b.disabled=true;b.textContent="Đang xử lý...";try{let m={url:"",path:"",type:"",name:""};if(mediaFile)m=await upload(mediaFile,"posts","pProgress","pPercent");if(m.url)setUrl("#pUrlBox","#pUrl",m.url);const id=push(ref(db,"posts")).key;await set(ref(db,"posts/"+id),{id,title:$("#pTitle").value.trim(),cat:$("#pCat").value,date:$("#pDate").value,icon:$("#pIcon").value.trim()||"📰",color:Number($("#pColor").value)||0,excerpt:$("#pExcerpt").value.trim(),content:$("#pContent").value.trim()||$("#pExcerpt").value.trim(),mediaUrl:m.url||"",mediaType:m.type||"",storagePath:m.path||"",fileName:m.name||"",createdAt:Date.now()});e.target.reset();$("#pDate").value=today();mediaFile=null;$("#pPreview").innerHTML="";$("#pName").textContent="";toast("Đăng bài thành công!")}catch(err){toast(err.message,true)}finally{b.disabled=false;b.textContent="Đăng bài"}};
-function setUrl(box,input,url){$(input).value=url||"";$(box).classList.toggle("hidden",!url)}
+async function selectMediaFile(file){
+  mediaUploadState="none";
+  pendingMedia={url:"",path:"",type:"",name:"",mode:""};
+  $("#pUrlBox").classList.add("hidden");
+  $("#pUrl").value="";
+  $("#pPreview").innerHTML="";
+  resetUploadUI("pProgress","pPercent");
+  if(!file){$("#pName").textContent="";return}
+  $("#pName").textContent=file.name;
+  const local=URL.createObjectURL(file);
+  $("#pPreview").innerHTML=file.type.startsWith("video/")
+    ? `<video class="preview" controls playsinline src="${local}"></video>`
+    : `<img class="preview" src="${local}" alt="">`;
+
+  mediaUploadState="uploading";
+  const btn=$("#postSubmit");
+  btn.disabled=true;
+  btn.textContent="Đang tải media...";
+  try{
+    pendingMedia=await upload(file,"posts","pProgress","pPercent");
+    setUrl("#pUrlBox","#pUrl",pendingMedia.url);
+    mediaUploadState="ready";
+    btn.disabled=false;
+    btn.textContent="Đăng bài";
+    toast("Media đã tải xong 100%. Bây giờ bấm Đăng bài.");
+  }catch(err){
+    mediaUploadState="error";
+    btn.disabled=false;
+    btn.textContent="Đăng bài";
+    toast(err.message,true);
+  }
+}
+
+async function selectDocFile(file){
+  dUploadState="none";
+  pendingDoc={url:"",path:"",type:"",name:"",mode:""};
+  $("#dUrlBox").classList.add("hidden");
+  $("#dUrl").value="";
+  resetUploadUI("dProgress","dPercent");
+  if(!file){$("#dName").textContent="";return}
+  $("#dName").textContent=file.name;
+  if(file.type!=="application/pdf" && !file.name.toLowerCase().endsWith(".pdf")){
+    dUploadState="error"; toast("Chỉ nhận file PDF.",true); return;
+  }
+  dUploadState="uploading";
+  const btn=$("#docSubmit");
+  btn.disabled=true;
+  btn.textContent="Đang tải PDF...";
+  try{
+    pendingDoc=await upload(file,"documents","dProgress","dPercent");
+    setUrl("#dUrlBox","#dUrl",pendingDoc.url);
+    dUploadState="ready";
+    btn.disabled=false;
+    btn.textContent="Đăng văn bản";
+    toast("PDF đã tải xong 100%. Bây giờ bấm Đăng văn bản.");
+  }catch(err){
+    dUploadState="error";
+    btn.disabled=false;
+    btn.textContent="Đăng văn bản";
+    toast(err.message,true);
+  }
+}
+
+$("#pMedia").onchange=e=>{mediaFile=e.target.files[0]||null;selectMediaFile(mediaFile)};
+$("#dFile").onchange=e=>{dFile=e.target.files[0]||null;selectDocFile(dFile)};
+
+$("#postForm").onsubmit=async e=>{
+  e.preventDefault();
+  if(!auth.currentUser)return toast("Chưa đăng nhập admin.",true);
+  if(mediaFile && mediaUploadState!=="ready")return toast(mediaUploadState==="uploading"?"Ảnh/video vẫn đang tải. Hãy chờ 100% rồi bấm Đăng bài.":"Ảnh/video chưa upload thành công.",true);
+  const b=$("#postSubmit");b.disabled=true;b.textContent="Đang đăng...";
+  try{
+    const id=push(ref(db,"posts")).key;
+    await set(ref(db,"posts/"+id),{
+      id,title:$("#pTitle").value.trim(),cat:$("#pCat").value,date:$("#pDate").value,
+      icon:$("#pIcon").value.trim()||"📰",color:Number($("#pColor").value)||0,
+      excerpt:$("#pExcerpt").value.trim(),content:$("#pContent").value.trim()||$("#pExcerpt").value.trim(),
+      mediaUrl:pendingMedia.url||"",mediaType:pendingMedia.type||"",storagePath:pendingMedia.path||"",
+      fileName:pendingMedia.name||"",createdAt:Date.now()
+    });
+    e.target.reset();$("#pDate").value=today();mediaFile=null;mediaUploadState="none";pendingMedia={url:"",path:"",type:"",name:"",mode:""};
+    $("#pPreview").innerHTML="";$("#pName").textContent="";$("#pUrl").value="";$("#pUrlBox").classList.add("hidden");resetUploadUI("pProgress","pPercent");
+    toast("Đăng bài thành công!");
+  }catch(err){toast("Đăng bài lỗi: "+(err?.message||err),true)}
+  finally{b.disabled=false;b.textContent="Đăng bài"}
+};
+
 $("#noticeForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{const id=push(ref(db,"notices")).key;await set(ref(db,"notices/"+id),{id,text:$("#nText").value.trim(),order:Number($("#nOrder").value)||0,createdAt:Date.now()});e.target.reset();$("#nOrder").value=0;toast("Đã thêm thông báo")}catch(err){toast(err.message,true)}};
-$("#docForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);if(!dFile)return toast("Chưa chọn PDF",true);const b=e.submitter||e.target.querySelector("button");b.disabled=true;try{const u=await upload(dFile,"documents","dProgress","dPercent");setUrl("#dUrlBox","#dUrl",u.url);const id=push(ref(db,"documents")).key;await set(ref(db,"documents/"+id),{id,code:$("#dCode").value.trim(),title:$("#dTitle").value.trim(),date:$("#dDate").value,description:$("#dDesc").value.trim(),fileUrl:u.url,fileName:u.name,storagePath:u.path,createdAt:Date.now()});e.target.reset();$("#dDate").value=today();dFile=null;$("#dName").textContent="";toast("Đăng PDF thành công!")}catch(err){toast(err.message,true)}finally{b.disabled=false}};
+$("#docForm").onsubmit=async e=>{
+  e.preventDefault();
+  if(!auth.currentUser)return toast("Chưa đăng nhập",true);
+  if(!dFile)return toast("Chưa chọn PDF",true);
+  if(dUploadState!=="ready")return toast(dUploadState==="uploading"?"PDF vẫn đang tải. Hãy chờ 100% rồi đăng.":"PDF chưa upload thành công.",true);
+  const b=$("#docSubmit");b.disabled=true;b.textContent="Đang đăng...";
+  try{
+    const id=push(ref(db,"documents")).key;
+    await set(ref(db,"documents/"+id),{
+      id,code:$("#dCode").value.trim(),title:$("#dTitle").value.trim(),date:$("#dDate").value,
+      description:$("#dDesc").value.trim(),fileUrl:pendingDoc.url,fileName:pendingDoc.name,storagePath:pendingDoc.path,createdAt:Date.now()
+    });
+    e.target.reset();$("#dDate").value=today();dFile=null;dUploadState="none";pendingDoc={url:"",path:"",type:"",name:"",mode:""};$("#dName").textContent="";$("#dUrl").value="";$("#dUrlBox").classList.add("hidden");resetUploadUI("dProgress","dPercent");toast("Đăng văn bản thành công!");
+  }catch(err){toast("Đăng PDF lỗi: "+(err?.message||err),true)}
+  finally{b.disabled=false;b.textContent="Đăng văn bản"}
+};
 $("#settingsForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);const b=e.submitter;b.disabled=true;try{let bannerBg=settings.bannerBg||"",siteIcon=settings.siteIcon||"";if($("#sBanner").files[0])bannerBg=await bannerDataURL($("#sBanner").files[0]);if($("#sFavicon").files[0])siteIcon=await bannerDataURL($("#sFavicon").files[0],700000);await set(ref(db,"settings/site"),{bannerTitle:$("#sTitle").value.trim(),bannerSubtitle:$("#sSubtitle").value.trim(),bannerBg,siteIcon,marquee:$("#sMarquee").value.trim(),address:$("#sAddress").value.trim(),phone:$("#sPhone").value.trim(),email:$("#sEmail").value.trim(),morning:$("#sMorning").value.trim(),afternoon:$("#sAfternoon").value.trim(),workNote:$("#sWorkNote").value.trim(),youtube:$("#sYoutube").value.trim(),quickLinks:readLinks("quickEdit"),services:readLinks("serviceEdit"),webLinks:readWeb("webEdit"),footerName:$("#sFooterName").value.trim(),responsible:$("#sResponsible").value.trim()});toast("Đã lưu. Banner mới đã cập nhật cho mọi người.")}catch(err){toast(err.message,true)}finally{b.disabled=false}};
-$("#resetBanner").onclick=async()=>{if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{await update(ref(db,"settings/site"),{bannerBg:""});toast("Đã khôi phục banner mặc định.")}catch(e){toast(e.message,true)}};$("#addQuick").onclick=()=>addLink("quickEdit");$("#addService").onclick=()=>addLink("serviceEdit");$("#addWeb").onclick=()=>addLink("webEdit",{},true);$("#webLinks").onchange=e=>{if(e.target.value)open(e.target.value,"_blank")};$("#searchBtn").onclick=()=>{searchText=$("#search").value.trim();render()};$("#search").onkeydown=e=>{if(e.key==="Enter"){searchText=e.target.value.trim();render()}};$("#pCopyUrl").onclick=async()=>{const v=$("#pUrl").value;if(!v)return;navigator.clipboard?.writeText(v).then(()=>toast("Đã copy URL ảnh/video")).catch(()=>{})};$("#dCopyUrl").onclick=async()=>{const v=$("#dUrl").value;if(!v)return;navigator.clipboard?.writeText(v).then(()=>toast("Đã copy URL PDF")).catch(()=>{})};$$('.admin-tabs button').forEach(b=>b.onclick=()=>{$$('.admin-tabs button').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#panel-'+b.dataset.panel).classList.add('active')});
+$("#resetBanner").onclick=async()=>{if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{await update(ref(db,"settings/site"),{bannerBg:""});toast("Đã khôi phục banner mặc định.")}catch(e){toast(e.message,true)}};$("#addQuick").onclick=()=>addLink("quickEdit");$("#addService").onclick=()=>addLink("serviceEdit");$("#addWeb").onclick=()=>addLink("webEdit",{},true);$("#webLinks").onchange=e=>{if(e.target.value)open(e.target.value,"_blank")};$("#searchBtn").onclick=()=>{searchText=$("#search").value.trim();render()};$("#search").onkeydown=e=>{if(e.key==="Enter"){searchText=e.target.value.trim();render()}};$("#pCopyUrl").onclick=async()=>{const v=$("#pUrl").value;if(!v)return;(navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>toast("Đã copy URL ảnh/video")).catch(()=>{})};$("#dCopyUrl").onclick=async()=>{const v=$("#dUrl").value;if(!v)return;(navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject()).then(()=>toast("Đã copy URL PDF")).catch(()=>{})};$$('.admin-tabs button').forEach(b=>b.onclick=()=>{$$('.admin-tabs button').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));b.classList.add('active');$('#panel-'+b.dataset.panel).classList.add('active')});
 function clock(){const d=new Date(),days=['Chủ nhật','Thứ 2','Thứ 3','Thứ 4','Thứ 5','Thứ 6','Thứ 7'],p=n=>String(n).padStart(2,'0');$("#clock").textContent=`${days[d.getDay()]}, ${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()} - ${p(d.getHours())}:${p(d.getMinutes())}:${p(d.getSeconds())}`}clock();setInterval(clock,1000);
 function realtime(){onValue(ref(db,'posts'),s=>{const v=s.val()||{};posts=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));render()});onValue(ref(db,'notices'),s=>{const v=s.val()||{};notices=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(a.order||0)-(b.order||0)||(b.createdAt||0)-(a.createdAt||0));$("#noticeList").innerHTML=notices.length?notices.map(n=>`<p>${esc(n.text)}</p>`).join(''):empty('Chưa có thông báo.');renderAdmin()});onValue(ref(db,'documents'),s=>{const v=s.val()||{};docs=Object.entries(v).map(([id,x])=>({...x,id})).sort((a,b)=>(b.date||'').localeCompare(a.date||'')||(b.createdAt||0)-(a.createdAt||0));$("#documents").innerHTML=docs.length?docs.slice(0,5).map(d=>`<div class="doc"><span class="code">${esc(d.code)}</span><a href="${esc(d.fileUrl)}" target="_blank">${esc(d.title)}</a><small>${esc(fmt(d.date))}</small><div class="actions"><a href="${esc(d.fileUrl)}" target="_blank">Xem</a><a href="${esc(d.fileUrl)}" download>Tải</a></div></div>`).join(''):empty('Chưa có văn bản.');renderAdmin()});onValue(ref(db,'settings/site'),s=>{settings=s.val()||{};applySettings(settings)});onValue(ref(db,'stats'),s=>{const x=s.val()||{},d=x.days||{},t=today(),ago=new Date(Date.now()-6*86400000).toISOString().slice(0,10);$("#total").textContent=num(x.total||0);$("#today").textContent=num(d[t]||0);$("#week").textContent=num(Object.entries(d).filter(([k])=>k>=ago&&k<=t).reduce((a,[,v])=>a+(Number(v)||0),0))});onValue(ref(db,'presence'),s=>{const now=Date.now(),v=s.val()||{};$("#online").textContent=num(Object.values(v).filter(x=>now-(x.lastSeen||0)<90000).length)})}
 (async()=>{
