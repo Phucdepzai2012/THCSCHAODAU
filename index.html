@@ -88,55 +88,81 @@ function fillLinks(id,arr,web=false){const box=$("#"+id);box.innerHTML="";(arr||
 function addLink(id,x={},web=false){const r=document.createElement("div");r.className="linkrow";if(web)r.style.gridTemplateColumns="1fr 2fr 38px";r.innerHTML=web?`<input class="text" value="${esc(x.text||"")}" placeholder="Tên"><input class="url" value="${esc(x.url||"")}" placeholder="https://..."><button type="button">✕</button>`:`<input class="icon" value="${esc(x.icon||"fas fa-link")}" placeholder="fas fa-link"><input class="text" value="${esc(x.text||"")}" placeholder="Tên"><input class="url" value="${esc(x.url||"")}" placeholder="https://..."><button type="button">✕</button>`;r.querySelector("button").onclick=()=>r.remove();$("#"+id).appendChild(r)}
 function readLinks(id){return $$("#"+id+" .linkrow").map(r=>({icon:r.querySelector(".icon")?.value.trim()||"fas fa-link",text:r.querySelector(".text").value.trim(),url:r.querySelector(".url").value.trim()})).filter(x=>x.text)}
 function readWeb(id){return $$("#"+id+" .linkrow").map(r=>({text:r.querySelector(".text").value.trim(),url:r.querySelector(".url").value.trim()})).filter(x=>x.text)}
-function fileToDataURL(file){
-  return new Promise((resolve,reject)=>{
-    const reader=new FileReader();
-    reader.onload=()=>resolve(reader.result);
-    reader.onerror=()=>reject(new Error("Không thể đọc file trong trình duyệt."));
-    reader.readAsDataURL(file);
-  });
-}
-async function compressForDataURL(file){
-  if(!file.type.startsWith("image/") || file.type.includes("gif") || file.type.includes("svg")) return file;
+async function compressImage(file){
+  if(!file || !file.type.startsWith("image/") || /gif|svg/i.test(file.type)) return file;
   return new Promise(resolve=>{
-    const img=new Image(),url=URL.createObjectURL(file);
+    const img=new Image();
+    const objectUrl=URL.createObjectURL(file);
     img.onload=()=>{
-      URL.revokeObjectURL(url);
-      let w=img.width,h=img.height,max=1600;
-      if(w>max){h=Math.round(h*max/w);w=max}
-      const c=document.createElement("canvas");c.width=w;c.height=h;
-      c.getContext("2d").drawImage(img,0,0,w,h);
-      c.toBlob(b=>resolve(b?new File([b],file.name.replace(/\.[^.]+$/,"")+".jpg",{type:"image/jpeg"}):file),"image/jpeg",.8);
+      try{
+        URL.revokeObjectURL(objectUrl);
+        const max=1600;
+        let w=img.naturalWidth||img.width,h=img.naturalHeight||img.height;
+        if(w>max){h=Math.round(h*max/w);w=max}
+        const canvas=document.createElement("canvas");
+        canvas.width=w;canvas.height=h;
+        const ctx=canvas.getContext("2d");
+        ctx.drawImage(img,0,0,w,h);
+        canvas.toBlob(blob=>{
+          if(!blob) return resolve(file);
+          resolve(new File([blob],file.name.replace(/\.[^.]+$/i,"")+".jpg",{type:"image/jpeg",lastModified:Date.now()}));
+        },"image/jpeg",0.82);
+      }catch(_){resolve(file)}
     };
-    img.onerror=()=>{URL.revokeObjectURL(url);resolve(file)};
-    img.src=url;
+    img.onerror=()=>{URL.revokeObjectURL(objectUrl);resolve(file)};
+    img.src=objectUrl;
   });
 }
+function resetUploadUI(barId,pctId){
+  const bar=$("#"+barId),pct=$("#"+pctId);
+  if(bar){bar.classList.remove("show");bar.querySelector("i").style.width="0%"}
+  if(pct)pct.textContent="0%";
+}
+function showUploadError(msg){toast(msg,true)}
 async function upload(file,folder,barId,pctId){
-  // File nhỏ: biến trực tiếp thành Data URL/Base64, không cần Storage.
-  // File lớn: dùng Firebase Storage để có URL thật và không làm phình Realtime Database.
-  const SMALL_LIMIT=3*1024*1024;
-  const original=file;
-  const candidate=await compressForDataURL(file);
-  if(candidate.size<=SMALL_LIMIT){
-    const dataUrl=await fileToDataURL(candidate);
-    $("#"+barId).classList.add("show");$("#"+barId+" i").style.width="100%";$("#"+pctId).textContent="100%";
-    return {url:dataUrl,path:"",type:candidate.type||original.type,name:original.name,mode:"data"};
-  }
-  const safeName=original.name.replace(/[^\w.\-]/g,"_");
+  if(!file) throw new Error("Chưa chọn file.");
+  resetUploadUI(barId,pctId);
+  const prepared=await compressImage(file);
+  const safeName=(prepared.name||file.name||"file.bin").replace(/[^a-zA-Z0-9._-]/g,"_");
   const key=`${folder}/${Date.now()}_${crypto.randomUUID()}_${safeName}`;
-  const task=uploadBytesResumable(storageRef(storage,key),original,{contentType:original.type||"application/octet-stream",cacheControl:"public,max-age=31536000"});
-  return new Promise((resolve,reject)=>task.on("state_changed",snap=>{
-    const p=Math.round(snap.bytesTransferred/snap.totalBytes*100);
-    $("#"+barId).classList.add("show");$("#"+barId+" i").style.width=p+"%";$("#"+pctId).textContent=p+"%";
-  },err=>{
-    if(err?.code==="storage/quota-exceeded") reject(new Error("Firebase Storage đang bị giới hạn. Dự án cần bật gói Blaze."));
-    else if(err?.code==="storage/unauthorized") reject(new Error("Firebase Storage Rules chưa cho phép tài khoản admin upload."));
-    else reject(new Error("Upload Storage lỗi: "+(err?.message||err?.code||"không xác định")));
-  },async()=>{
-    try{resolve({url:await getDownloadURL(task.snapshot.ref),path:key,type:original.type,name:original.name,mode:"storage"})}
-    catch(e){reject(e)}
-  }));
+  const target=storageRef(storage,key);
+  const bar=$("#"+barId),pct=$("#"+pctId);
+  if(bar)bar.classList.add("show");
+  if(pct)pct.textContent="1%";
+  try{
+    const task=uploadBytesResumable(target,prepared,{contentType:prepared.type||"application/octet-stream",cacheControl:"public,max-age=31536000"});
+    return await new Promise((resolve,reject)=>{
+      task.on("state_changed",snap=>{
+        const value=snap.totalBytes?Math.round((snap.bytesTransferred/snap.totalBytes)*100):1;
+        if(bar)bar.querySelector("i").style.width=Math.max(1,value)+"%";
+        if(pct)pct.textContent=Math.max(1,value)+"%";
+      },err=>{
+        let msg="Upload thất bại.";
+        if(err?.code==="storage/unauthorized")msg="Firebase Storage từ chối upload. Kiểm tra Storage Rules: người đăng nhập phải được phép ghi.";
+        else if(err?.code==="storage/quota-exceeded")msg="Firebase Storage đã hết/quá quota hoặc dự án chưa đáp ứng yêu cầu gói dịch vụ.";
+        else if(err?.code==="storage/unauthenticated")msg="Phiên đăng nhập Firebase đã hết. Hãy đăng nhập admin lại.";
+        else if(err?.code)msg+=` (${err.code})`;
+        else if(err?.message)msg+=` ${err.message}`;
+        reject(new Error(msg));
+      },async()=>{
+        try{
+          const url=await getDownloadURL(task.snapshot.ref);
+          if(bar)bar.querySelector("i").style.width="100%";
+          if(pct)pct.textContent="100%";
+          resolve({url,path:key,type:prepared.type||file.type,name:file.name,mode:"storage"});
+        }catch(err){reject(new Error("Upload xong nhưng không lấy được URL Firebase: "+(err.message||err))) }
+      });
+    });
+  }catch(err){
+    if(bar)bar.querySelector("i").style.width="0%";
+    if(pct)pct.textContent="Lỗi";
+    throw err;
+  }
+}
+function setUrlBox(inputId,boxId,url){
+  const input=$(inputId),box=$(boxId);
+  if(input)input.value=url||"";
+  if(box)box.classList.toggle("hidden",!url);
 }
 async function delStorage(path){if(path)try{await deleteObject(storageRef(storage,path))}catch(e){} }
 async function delPost(id){if(!confirm("Xóa bài viết này?"))return;const p=posts.find(x=>x.id===id);try{await remove(ref(db,"posts/"+id));await delStorage(p?.storagePath);toast("Đã xóa bài viết") }catch(e){toast(e.message,true)}}
@@ -147,9 +173,58 @@ function setAdmin(show){$("#Admin").style.display=show?"block":"none";$("#wrap")
 $("#loginOpen").onclick=e=>{e.preventDefault();$("#loginOverlay").classList.add("show");$("#loginEmail").value=ADMIN_USERNAME;$("#loginPassword").value=ADMIN_PASSWORD};$("#loginClose").onclick=()=>$("#loginOverlay").classList.remove("show");$("#loginForm").onsubmit=async e=>{e.preventDefault();$("#loginError").classList.remove("show");const username=$("#loginEmail").value.trim(),password=$("#loginPassword").value;if(username!==ADMIN_USERNAME){$("#loginError").textContent="Sai tài khoản. Chỉ tài khoản admin được phép đăng nhập.";$("#loginError").classList.add("show");return}try{await signInWithEmailAndPassword(auth,ADMIN_EMAIL,password)}catch(err){if(err.code==="auth/user-not-found"||err.code==="auth/invalid-credential"){try{await createUserWithEmailAndPassword(auth,ADMIN_EMAIL,password)}catch(createErr){$("#loginError").textContent="Không thể tạo tài khoản admin Firebase: "+createErr.message;$("#loginError").classList.add("show");return}}else{$("#loginError").textContent="Đăng nhập thất bại: "+err.message;$("#loginError").classList.add("show");return}}if(auth.currentUser?.email!==ADMIN_EMAIL){await signOut(auth);$("#loginError").textContent="Tài khoản không có quyền quản trị.";$("#loginError").classList.add("show");return}$("#loginOverlay").classList.remove("show");toast("Đăng nhập admin thành công")};$("#logout").onclick=()=>signOut(auth);$("#viewSite").onclick=()=>setAdmin(false);
 
 $("#pMedia").onchange=e=>{mediaFile=e.target.files[0]||null;$("#pName").textContent=mediaFile?.name||"";$("#pUrlBox").classList.add("hidden");$("#pUrl").value="";$("#pPreview").innerHTML=mediaFile?(mediaFile.type.startsWith("video/")?`<video class="preview" controls src="${URL.createObjectURL(mediaFile)}"></video>`:`<img class="preview" src="${URL.createObjectURL(mediaFile)}">`):""};$("#dFile").onchange=e=>{dFile=e.target.files[0]||null;$("#dName").textContent=dFile?.name||"";$("#dUrlBox").classList.add("hidden");$("#dUrl").value=""};$("#pDate").value=today();$("#dDate").value=today();
-$("#postForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);const b=$("#postSubmit");b.disabled=true;try{let u=null;if(mediaFile)u=await upload(mediaFile,"posts","pProgress","pPercent");if(u?.url){$("#pUrl").value=u.url;$("#pUrlBox").classList.remove("hidden")}const id=push(ref(db,"posts")).key;await set(ref(db,"posts/"+id),{id,title:$("#pTitle").value.trim(),cat:$("#pCat").value,date:$("#pDate").value,icon:$("#pIcon").value.trim()||"📰",color:Number($("#pColor").value),excerpt:$("#pExcerpt").value.trim(),content:$("#pContent").value.trim()||$("#pExcerpt").value.trim(),mediaUrl:u?.url||"",mediaType:u?.type||"",storagePath:u?.path||"",createdAt:Date.now()});e.target.reset();$("#pDate").value=today();mediaFile=null;$("#pPreview").innerHTML="";toast("Đăng bài thành công — URL Firebase đã lưu ngay")}catch(err){toast(err.message,true)}finally{b.disabled=false}};
+$("#postForm").onsubmit=async e=>{
+  e.preventDefault();
+  if(!auth.currentUser){toast("Chưa đăng nhập admin.",true);return}
+  const title=$("#pTitle").value.trim(),excerpt=$("#pExcerpt").value.trim(),date=$("#pDate").value;
+  if(!title||!excerpt||!date){toast("Vui lòng nhập Tiêu đề, Ngày đăng và Mô tả ngắn.",true);return}
+  const b=$("#postSubmit");b.disabled=true;b.textContent="Đang xử lý...";
+  try{
+    let media={url:"",path:"",type:"",name:""};
+    if(mediaFile){
+      media=await upload(mediaFile,"posts","pProgress","pPercent");
+      setUrlBox("#pUrl","#pUrlBox",media.url);
+    }
+    const id=push(ref(db,"posts")).key;
+    const data={
+      id,
+      title,
+      cat:$("#pCat").value,
+      date,
+      icon:$("#pIcon").value.trim()||"📰",
+      color:Number($("#pColor").value)||0,
+      excerpt,
+      content:$("#pContent").value.trim()||excerpt,
+      mediaUrl:media.url||"",
+      mediaType:media.type||"",
+      storagePath:media.path||"",
+      fileName:media.name||"",
+      createdAt:Date.now()
+    };
+    await set(ref(db,"posts/"+id),data);
+    e.target.reset();$("#pDate").value=today();mediaFile=null;$("#pPreview").innerHTML="";$("#pName").textContent="";
+    if(media.url){setUrlBox("#pUrl","#pUrlBox",media.url);}
+    toast("Đăng bài thành công!");
+  }catch(err){
+    console.error("POST ERROR",err);
+    toast(err?.message||"Không thể đăng bài.",true);
+  }finally{b.disabled=false;b.textContent="Đăng bài"}
+};
 $("#noticeForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{const id=push(ref(db,"notices")).key;await set(ref(db,"notices/"+id),{id,text:$("#nText").value.trim(),order:Number($("#nOrder").value)||0,createdAt:Date.now()});e.target.reset();$("#nOrder").value=0;toast("Đã thêm thông báo")}catch(err){toast(err.message,true)}};
-$("#docForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);if(!dFile)return toast("Chưa chọn PDF",true);try{const u=await upload(dFile,"documents","dProgress","dPercent");$("#dUrl").value=u.url;$("#dUrlBox").classList.remove("hidden");const id=push(ref(db,"documents")).key;await set(ref(db,"documents/"+id),{id,code:$("#dCode").value.trim(),title:$("#dTitle").value.trim(),date:$("#dDate").value,description:$("#dDesc").value.trim(),fileUrl:u.url,fileName:u.name,storagePath:u.path,createdAt:Date.now()});e.target.reset();$("#dDate").value=today();dFile=null;toast("Đăng PDF thành công — URL Firebase đã lưu ngay")}catch(err){toast(err.message,true)}};
+$("#docForm").onsubmit=async e=>{
+  e.preventDefault();
+  if(!auth.currentUser){toast("Chưa đăng nhập admin.",true);return}
+  if(!dFile){toast("Chưa chọn PDF.",true);return}
+  if(!$("#dCode").value.trim()||!$("#dTitle").value.trim()){toast("Vui lòng nhập Số/ký hiệu và Tiêu đề.",true);return}
+  const b=e.submitter||e.target.querySelector("button");b.disabled=true;
+  try{
+    const u=await upload(dFile,"documents","dProgress","dPercent");
+    setUrlBox("#dUrl","#dUrlBox",u.url);
+    const id=push(ref(db,"documents")).key;
+    await set(ref(db,"documents/"+id),{id,code:$("#dCode").value.trim(),title:$("#dTitle").value.trim(),date:$("#dDate").value,description:$("#dDesc").value.trim(),fileUrl:u.url,fileName:u.name,storagePath:u.path,createdAt:Date.now()});
+    e.target.reset();$("#dDate").value=today();dFile=null;$("#dName").textContent="";toast("Đăng PDF thành công!");
+  }catch(err){console.error("DOC ERROR",err);toast(err?.message||"Không thể đăng PDF.",true)}finally{b.disabled=false}
+};
 $("#settingsForm").onsubmit=async e=>{e.preventDefault();if(!auth.currentUser)return toast("Chưa đăng nhập",true);try{let bannerBg=settings.bannerBg||"",siteIcon=settings.siteIcon||"";if($("#sBanner").files[0])bannerBg=(await upload($("#sBanner").files[0],"settings/banner","pProgress","pPercent")).url;if($("#sFavicon").files[0])siteIcon=(await upload($("#sFavicon").files[0],"settings/favicon","pProgress","pPercent")).url;await set(ref(db,"settings/site"),{bannerTitle:$("#sTitle").value.trim(),bannerSubtitle:$("#sSubtitle").value.trim(),bannerBg,siteIcon,marquee:$("#sMarquee").value.trim(),address:$("#sAddress").value.trim(),phone:$("#sPhone").value.trim(),email:$("#sEmail").value.trim(),morning:$("#sMorning").value.trim(),afternoon:$("#sAfternoon").value.trim(),workNote:$("#sWorkNote").value.trim(),youtube:$("#sYoutube").value.trim(),quickLinks:readLinks("quickEdit"),services:readLinks("serviceEdit"),webLinks:readWeb("webEdit"),footerName:$("#sFooterName").value.trim(),responsible:$("#sResponsible").value.trim()});toast("Đã lưu cài đặt")}catch(err){toast(err.message,true)}};
 $("#addQuick").onclick=()=>addLink("quickEdit");$("#addService").onclick=()=>addLink("serviceEdit");$("#addWeb").onclick=()=>addLink("webEdit",{},true);$("#webLinks").onchange=e=>{if(e.target.value)open(e.target.value,"_blank")};$("#searchBtn").onclick=()=>{searchText=$("#search").value.trim();render()};$("#search").onkeydown=e=>{if(e.key==="Enter"){searchText=e.target.value.trim();render()}};
 $("#pCopyUrl").onclick=async()=>{const v=$("#pUrl").value;if(!v)return;try{await navigator.clipboard.writeText(v);toast("Đã copy URL ảnh/video")}catch(e){$("#pUrl").select();document.execCommand("copy");toast("Đã copy URL")}};
