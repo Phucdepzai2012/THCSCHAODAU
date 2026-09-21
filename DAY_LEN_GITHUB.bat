@@ -9,12 +9,13 @@ echo.
 echo Bước 1: Hãy vào trang https://github.com/new và tạo 1 Repository mới (để chế độ Public).
 echo Bước 2: Sao chép đường link Repository vừa tạo (Ví dụ: https://github.com/ten-ban/thcs-ngovanso.git)
 echo.
-set /p REPO_URL=">>> Dán đường link GitHub của bạn vào đây rồi bấm Enter: "
+set DEFAULT_REPO=https://github.com/Phucdepzai2012/THCSCHAODAU.git
+echo [Mặc định]: %DEFAULT_REPO%
+echo.
+set /p REPO_URL=">>> Bấm Enter để dùng repo mặc định ở trên (hoặc dán link mới): "
 
 if "%REPO_URL%"=="" (
-    echo [!] Ban chua nhap link GitHub!
-    pause
-    exit /b
+    set REPO_URL=%DEFAULT_REPO%
 )
 
 echo.
