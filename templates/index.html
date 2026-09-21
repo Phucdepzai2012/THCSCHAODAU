@@ -1,0 +1,382 @@
+{% extends 'base.html' %}
+
+{% block title %}Trang chủ - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <!-- LEFT COLUMN (MAIN CONTENT) -->
+  <section class="main-column">
+    
+    <!-- FEATURED ARTICLE SLIDER (TIN NỔI BẬT) -->
+    <div class="slider-widget">
+      <div class="slider-header">
+        <i class="fas fa-newspaper"></i> Tin nổi bật
+      </div>
+      <div class="slider-body">
+        <div class="slider-main">
+          {% for post in featured_posts %}
+          <div class="slider-main-item {% if loop.first %}active{% endif %}">
+            <a href="{{ url_for('post_detail', slug_or_id=post.slug) }}">
+              <img src="{{ post.thumbnail }}" alt="{{ post.title }}">
+            </a>
+            <div class="slider-main-caption">
+              <h3><a href="{{ url_for('post_detail', slug_or_id=post.slug) }}">{{ post.title }}</a></h3>
+              <p>{{ post.summary }}</p>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+
+        <ul class="slider-nav-list">
+          {% for post in featured_posts %}
+          <li class="slider-nav-item {% if loop.first %}active{% endif %}" data-index="{{ loop.index0 }}">
+            <img src="{{ post.thumbnail }}" alt="{{ post.title }}">
+            <div class="slider-nav-info">
+              <span class="slider-nav-title">{{ post.title }}</span>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+
+    <!-- PROMOTIONAL BANNER: BANNER TUYÊN TRUYỀN GIỮA TRANG -->
+    {% if settings.get('promo_banner_active', '1') == '1' and settings.get('promo_banner_url') %}
+    <div class="promo-banner">
+      <a href="{{ settings.get('promo_banner_link') or '#' }}" {% if settings.get('promo_banner_link', '').startswith('http') %}target="_blank"{% endif %}>
+        <img src="{{ settings.get('promo_banner_url') }}" alt="{{ settings.get('promo_banner_title', 'Banner tuyên truyền') }}">
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- TAB 1: TIN TỨC -->
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-rss-square"></i>
+          <a href="{{ url_for('category_view', slug='tin-tuc') }}">Tin tức</a>
+        </div>
+        <a href="{{ url_for('category_view', slug='tin-tuc') }}" class="module-more-link">Xem tất cả <i class="fas fa-angle-double-right"></i></a>
+      </div>
+      <div class="module-body">
+        {% if news_posts %}
+        <div class="articles-lead-list">
+          <!-- Lead Article -->
+          {% set lead = news_posts[0] %}
+          <article class="lead-article">
+            <div class="lead-thumb">
+              <a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">
+                <img src="{{ lead.thumbnail }}" alt="{{ lead.title }}">
+              </a>
+            </div>
+            <h4 class="lead-title"><a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">{{ lead.title }}</a></h4>
+            <div class="lead-meta"><i class="far fa-calendar-alt"></i> {{ lead.published_at[:10] }}</div>
+            <p class="lead-summary">{{ lead.summary }}</p>
+          </article>
+
+          <!-- Sub Articles List -->
+          <ul class="sub-articles-list">
+            {% for p in news_posts[1:] %}
+            <li class="sub-article-item">
+              <i class="fas fa-circle"></i>
+              <a href="{{ url_for('post_detail', slug_or_id=p.slug) }}">{{ p.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TAB 2: NỘI DUNG CÔNG KHAI -->
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-file-contract"></i>
+          <a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}">Nội dung công khai</a>
+        </div>
+        <a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="module-more-link">Xem tất cả <i class="fas fa-angle-double-right"></i></a>
+      </div>
+      <div class="module-body">
+        {% if public_posts %}
+        <div class="articles-lead-list">
+          {% set lead = public_posts[0] %}
+          <article class="lead-article">
+            <div class="lead-thumb">
+              <a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">
+                <img src="{{ lead.thumbnail }}" alt="{{ lead.title }}">
+              </a>
+            </div>
+            <h4 class="lead-title"><a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">{{ lead.title }}</a></h4>
+            <div class="lead-meta"><i class="far fa-calendar-alt"></i> {{ lead.published_at[:10] }}</div>
+            <p class="lead-summary">{{ lead.summary }}</p>
+          </article>
+
+          <ul class="sub-articles-list">
+            {% for p in public_posts[1:] %}
+            <li class="sub-article-item">
+              <i class="fas fa-circle"></i>
+              <a href="{{ url_for('post_detail', slug_or_id=p.slug) }}">{{ p.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TAB 3: THỜI KHÓA BIỂU -->
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-calendar-alt"></i>
+          <a href="{{ url_for('timetable_view') }}">Thời khóa biểu</a>
+        </div>
+        <a href="{{ url_for('timetable_view') }}" class="module-more-link">Xem tất cả <i class="fas fa-angle-double-right"></i></a>
+      </div>
+      <div class="module-body">
+        {% if timetable_posts %}
+        <div class="articles-lead-list">
+          {% set lead = timetable_posts[0] %}
+          <article class="lead-article">
+            <div class="lead-thumb">
+              <a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">
+                <img src="{{ lead.thumbnail }}" alt="{{ lead.title }}">
+              </a>
+            </div>
+            <h4 class="lead-title"><a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">{{ lead.title }}</a></h4>
+            <div class="lead-meta"><i class="far fa-calendar-alt"></i> {{ lead.published_at[:10] }}</div>
+            <p class="lead-summary">{{ lead.summary }}</p>
+          </article>
+
+          <ul class="sub-articles-list">
+            {% for p in timetable_posts[1:] %}
+            <li class="sub-article-item">
+              <i class="fas fa-circle"></i>
+              <a href="{{ url_for('post_detail', slug_or_id=p.slug) }}">{{ p.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TAB 4: TƯ VẤN HỌC ĐƯỜNG -->
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-heart"></i>
+          <a href="{{ url_for('category_view', slug='tu-van-hoc-duong') }}">Tư vấn học đường</a>
+        </div>
+        <a href="{{ url_for('category_view', slug='tu-van-hoc-duong') }}" class="module-more-link">Xem tất cả <i class="fas fa-angle-double-right"></i></a>
+      </div>
+      <div class="module-body">
+        {% if counseling_posts %}
+        <div class="articles-lead-list">
+          {% set lead = counseling_posts[0] %}
+          <article class="lead-article">
+            <div class="lead-thumb">
+              <a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">
+                <img src="{{ lead.thumbnail }}" alt="{{ lead.title }}">
+              </a>
+            </div>
+            <h4 class="lead-title"><a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">{{ lead.title }}</a></h4>
+            <div class="lead-meta"><i class="far fa-calendar-alt"></i> {{ lead.published_at[:10] }}</div>
+            <p class="lead-summary">{{ lead.summary }}</p>
+          </article>
+
+          <ul class="sub-articles-list">
+            {% for p in counseling_posts[1:] %}
+            <li class="sub-article-item">
+              <i class="fas fa-circle"></i>
+              <a href="{{ url_for('post_detail', slug_or_id=p.slug) }}">{{ p.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- TAB 5: SỰ KIỆN -->
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-bullhorn"></i>
+          <a href="{{ url_for('category_view', slug='su-kien') }}">Sự kiện</a>
+        </div>
+        <a href="{{ url_for('category_view', slug='su-kien') }}" class="module-more-link">Xem tất cả <i class="fas fa-angle-double-right"></i></a>
+      </div>
+      <div class="module-body">
+        {% if event_posts %}
+        <div class="articles-lead-list">
+          {% set lead = event_posts[0] %}
+          <article class="lead-article">
+            <div class="lead-thumb">
+              <a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">
+                <img src="{{ lead.thumbnail }}" alt="{{ lead.title }}">
+              </a>
+            </div>
+            <h4 class="lead-title"><a href="{{ url_for('post_detail', slug_or_id=lead.slug) }}">{{ lead.title }}</a></h4>
+            <div class="lead-meta"><i class="far fa-calendar-alt"></i> {{ lead.published_at[:10] }}</div>
+            <p class="lead-summary">{{ lead.summary }}</p>
+          </article>
+
+          <ul class="sub-articles-list">
+            {% for p in event_posts[1:] %}
+            <li class="sub-article-item">
+              <i class="fas fa-circle"></i>
+              <a href="{{ url_for('post_detail', slug_or_id=p.slug) }}">{{ p.title }}</a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+
+  </section>
+
+  <!-- RIGHT COLUMN (SIDEBAR) -->
+  <aside class="sidebar-column">
+    
+    <!-- WIDGET 1: VĂN BẢN MỚI -->
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-file-alt"></i> Văn bản mới
+      </div>
+      <div class="widget-body">
+        {% for doc in documents %}
+        <div class="doc-item">
+          <div class="doc-code">{{ doc.doc_code }}</div>
+          <div class="doc-title"><a href="{{ url_for('documents_view') }}">{{ doc.title }}</a></div>
+          <div class="doc-footer">
+            <span><i class="far fa-calendar-check"></i> {{ doc.issue_date }}</span>
+            <div class="doc-actions">
+              {% if doc.file_url and doc.file_url != '#' %}
+              <a href="{{ doc.file_url }}" target="_blank" title="Tải văn bản"><i class="fas fa-download"></i> Tải về</a>
+              {% else %}
+              <a href="{{ url_for('documents_view') }}" title="Xem chi tiết"><i class="fas fa-eye"></i> Xem</a>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- WIDGET 2: VIDEO CLIP -->
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fab fa-youtube"></i> Video Hoạt Động
+      </div>
+      <div class="widget-body" style="padding: 6px;">
+        <div class="video-wrapper">
+          <iframe src="{{ settings.youtube_video }}" title="Video giới thiệu trường THCS Ngô Văn Sở" allowfullscreen></iframe>
+        </div>
+      </div>
+    </div>
+
+    <!-- DYNAMIC SIDEBAR BANNERS -->
+    {% if settings.get('sidebar_banner_1_active', '1') == '1' and settings.get('sidebar_banner_1_url') %}
+    <div class="sidebar-banner-card" style="margin-bottom: 12px; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <a href="{{ settings.get('sidebar_banner_1_link') or '#' }}" {% if settings.get('sidebar_banner_1_link', '').startswith('http') %}target="_blank"{% endif %} title="{{ settings.get('sidebar_banner_1_title', '') }}">
+        <img src="{{ settings.get('sidebar_banner_1_url') }}" alt="{{ settings.get('sidebar_banner_1_title', 'Banner') }}" style="width: 100%; display: block; border-radius: 6px; transition: transform 0.2s;">
+      </a>
+    </div>
+    {% endif %}
+
+    {% if settings.get('sidebar_banner_2_active', '1') == '1' and settings.get('sidebar_banner_2_url') %}
+    <div class="sidebar-banner-card" style="margin-bottom: 12px; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <a href="{{ settings.get('sidebar_banner_2_link') or '#' }}" {% if settings.get('sidebar_banner_2_link', '').startswith('http') %}target="_blank"{% endif %} title="{{ settings.get('sidebar_banner_2_title', '') }}">
+        <img src="{{ settings.get('sidebar_banner_2_url') }}" alt="{{ settings.get('sidebar_banner_2_title', 'Banner') }}" style="width: 100%; display: block; border-radius: 6px; transition: transform 0.2s;">
+      </a>
+    </div>
+    {% endif %}
+
+    {% if settings.get('sidebar_banner_3_active', '1') == '1' and settings.get('sidebar_banner_3_url') %}
+    <div class="sidebar-banner-card" style="margin-bottom: 12px; border-radius: 6px; overflow: hidden; box-shadow: 0 1px 3px rgba(0,0,0,0.1);">
+      <a href="{{ settings.get('sidebar_banner_3_link') or '#' }}" {% if settings.get('sidebar_banner_3_link', '').startswith('http') %}target="_blank"{% endif %} title="{{ settings.get('sidebar_banner_3_title', '') }}">
+        <img src="{{ settings.get('sidebar_banner_3_url') }}" alt="{{ settings.get('sidebar_banner_3_title', 'Banner') }}" style="width: 100%; display: block; border-radius: 6px; transition: transform 0.2s;">
+      </a>
+    </div>
+    {% endif %}
+
+    <!-- WIDGET 3: DỊCH VỤ CÔNG & TRA CỨU TIỆN ÍCH -->
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-search-plus"></i> Dịch vụ & Tra cứu
+      </div>
+      <div class="widget-body">
+        <div class="lookup-widget-content">
+          <p style="font-size:12px; color:#475569; margin-bottom:4px;">Tra cứu kết quả học tập & điểm thi:</p>
+          <form class="lookup-quick-box" action="{{ url_for('search_student') }}" method="GET">
+            <input type="text" name="q" placeholder="Nhập Mã HS (VD: HS202601) hoặc Họ tên..." required>
+            <button type="submit">Tra cứu</button>
+          </form>
+
+          <div class="lookup-links">
+            <a href="{{ url_for('search_student') }}" class="lookup-link-btn">
+              <i class="fas fa-award"></i> Tra cứu Bảng điểm chi tiết
+            </a>
+            <a href="https://vnedu.vn/" target="_blank" class="lookup-link-btn">
+              <i class="fas fa-graduation-cap"></i> Hệ thống Sổ điểm điện tử vnEdu
+            </a>
+            <a href="https://elearning.vnpt.vn/" target="_blank" class="lookup-link-btn">
+              <i class="fas fa-laptop-code"></i> Hệ thống học trực tuyến eLearning
+            </a>
+            <a href="https://qlvbtbk.backan.gov.vn/" target="_blank" class="lookup-link-btn">
+              <i class="fas fa-folder-open"></i> Hệ thống QLVB & Điều hành công việc
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WIDGET 4: LIÊN KẾT WEBSITE -->
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-link"></i> Liên kết Website
+      </div>
+      <div class="widget-body">
+        <select id="quickWebsites" class="form-control" style="width: 100%; padding: 7px; font-size: 12.5px; border-radius: 4px; border: 1px solid #cbd5e1;">
+          <option value="">-- Chọn website liên kết --</option>
+          <option value="https://moet.gov.vn/">Bộ Giáo dục và Đào tạo</option>
+          <option value="http://laocai.edu.vn/">Sở GD&ĐT Tỉnh Lào Cai</option>
+          <option value="https://laocai.gov.vn/">Cổng thông tin UBND Tỉnh Lào Cai</option>
+          <option value="https://vnedu.vn/">Hệ thống Mạng giáo dục Việt Nam (vnEdu)</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- WIDGET 5: THỐNG KÊ TRUY CẬP -->
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-chart-line"></i> Thống kê truy cập
+      </div>
+      <div class="widget-body">
+        <ul class="counter-list">
+          <li class="counter-item">
+            <span class="label"><i class="fas fa-user-clock"></i> Đang online:</span>
+            <span class="val">{{ stats.online_count }}</span>
+          </li>
+          <li class="counter-item">
+            <span class="label"><i class="fas fa-calendar-day"></i> Hôm nay:</span>
+            <span class="val">{{ stats.visits_today }}</span>
+          </li>
+          <li class="counter-item">
+            <span class="label"><i class="fas fa-calendar-week"></i> Trong tuần:</span>
+            <span class="val">{{ stats.visits_week }}</span>
+          </li>
+          <li class="counter-item">
+            <span class="label"><i class="fas fa-globe"></i> Tất cả:</span>
+            <span class="val">{{ stats.total_visits }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+  </aside>
+</main>
+{% endblock %}

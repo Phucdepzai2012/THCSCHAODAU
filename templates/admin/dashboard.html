@@ -1,0 +1,185 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Bảng Điều Khiển{% endblock %}
+{% block page_heading %}Tổng quan Hệ thống (Dashboard){% endblock %}
+
+{% block content %}
+<!-- STATS CARDS -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-icon blue"><i class="fas fa-newspaper"></i></div>
+    <div class="stat-info">
+      <h3>{{ total_posts }}</h3>
+      <p>Tổng bài viết & tin</p>
+    </div>
+  </div>
+
+  <div class="stat-card amber"><i class="fas fa-file-contract stat-icon amber"></i>
+    <div class="stat-info">
+      <h3>{{ total_docs }}</h3>
+      <p>Văn bản chỉ đạo</p>
+    </div>
+  </div>
+
+  <div class="stat-card emerald"><i class="fas fa-user-graduate stat-icon emerald"></i>
+    <div class="stat-info">
+      <h3>{{ total_students }}</h3>
+      <p>Hồ sơ điểm tra cứu</p>
+    </div>
+  </div>
+
+  <div class="stat-card purple"><i class="fas fa-envelope-open-text stat-icon purple"></i>
+    <div class="stat-info">
+      <h3>{{ total_feedbacks }}</h3>
+      <p>Ý kiến phản hồi</p>
+    </div>
+  </div>
+</div>
+
+<!-- COMMUNITY SHARE LINK HIGHLIGHT CARD -->
+<div style="background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%); color: white; border-radius: 8px; padding: 20px 24px; margin-bottom: 24px; box-shadow: 0 4px 12px rgba(37,99,235,0.2);">
+  <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;">
+    <div>
+      <div style="display:flex; align-items:center; gap:8px; font-size:16px; font-weight:700;">
+        <i class="fas fa-globe-asia" style="font-size:20px; color:#60a5fa;"></i>
+        <span>Link Trang Web Cho Cộng Đồng & Mọi Người Truy Cập</span>
+      </div>
+      <p style="font-size:12.5px; opacity:0.9; margin:4px 0 0;">
+        Mọi người truy cập qua đường link này sẽ thấy tất cả bài viết, thông báo, văn bản và banner bạn vừa đăng tải!
+      </p>
+    </div>
+    
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <a href="{{ url_for('index') }}" target="_blank" class="btn" style="background:#fff; color:#1e3a8a; font-weight:700; font-size:13px; padding:8px 16px;">
+        <i class="fas fa-external-link-alt"></i> Xem Trang Web
+      </a>
+      <a href="{{ url_for('admin_settings') }}" class="btn" style="background:rgba(255,255,255,0.2); color:#fff; font-weight:600; font-size:13px; padding:8px 16px; border:1px solid rgba(255,255,255,0.4);">
+        <i class="fas fa-share-alt"></i> Quản lý Link & Banners
+      </a>
+    </div>
+  </div>
+
+  <div style="background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3); border-radius: 6px; padding: 10px 14px; display: flex; align-items: center; justify-content: space-between; margin-top: 14px; gap: 10px;">
+    <div style="display:flex; align-items:center; gap:8px; flex:1; overflow:hidden;">
+      <span style="font-size:12px; font-weight:700; color:#93c5fd; white-space:nowrap;"><i class="fas fa-link"></i> LINK CHIA SẺ:</span>
+      <input type="text" id="dashShareUrl" value="{{ public_share_url or local_share_url }}" readonly style="background: transparent; border: none; color: #fff; font-family: monospace; font-size: 14px; width: 100%; outline: none; font-weight: bold;">
+    </div>
+    <button onclick="copyDashLink(this)" style="background: #fff; color: #1e3a8a; border: none; border-radius: 4px; padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 12.5px; white-space: nowrap;">
+      <i class="fas fa-copy"></i> Sao chép Link
+    </button>
+  </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div style="display: flex; gap: 12px; margin-bottom: 24px; flex-wrap: wrap;">
+  <a href="{{ url_for('admin_post_new') }}" class="btn btn-primary">
+    <i class="fas fa-plus"></i> Đăng bài viết mới
+  </a>
+  <a href="{{ url_for('admin_settings') }}" class="btn btn-primary" style="background:#d97706;">
+    <i class="fas fa-images"></i> Đổi Banners Toàn Web
+  </a>
+  <a href="{{ url_for('admin_documents') }}" class="btn btn-primary" style="background:#0891b2;">
+    <i class="fas fa-file-upload"></i> Thêm văn bản mới
+  </a>
+  <a href="{{ url_for('admin_students') }}" class="btn btn-primary" style="background:#059669;">
+    <i class="fas fa-user-plus"></i> Cập nhật điểm học sinh
+  </a>
+  <a href="{{ url_for('admin_settings') }}" class="btn btn-primary" style="background:#475569;">
+    <i class="fas fa-sliders-h"></i> Cài đặt cổng trường
+  </a>
+</div>
+
+<!-- RECENT POSTS TABLE -->
+<div class="admin-card">
+  <div class="card-header">
+    <div class="card-title"><i class="fas fa-clock"></i> Bài viết đăng gần đây</div>
+    <a href="{{ url_for('admin_posts') }}" class="btn btn-sm" style="background:#e2e8f0; color:#334155;">Xem tất cả</a>
+  </div>
+  <div class="card-body" style="padding: 0;">
+    <div class="admin-table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Tiêu đề bài viết</th>
+            <th>Chuyên mục</th>
+            <th>Ngày đăng</th>
+            <th>Lượt xem</th>
+            <th>Tin nổi bật</th>
+            <th style="text-align: right;">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in recent_posts %}
+          <tr>
+            <td>
+              <strong><a href="{{ url_for('post_detail', slug_or_id=p.slug) }}" target="_blank" style="color:#1e293b;">{{ p.title }}</a></strong>
+            </td>
+            <td><span class="badge badge-info">{{ p.category_slug }}</span></td>
+            <td>{{ p.published_at[:10] }}</td>
+            <td>{{ p.views }}</td>
+            <td>
+              {% if p.is_featured %}
+              <span class="badge badge-warning">Nổi bật</span>
+              {% else %}
+              <span style="color:#94a3b8; font-size:11px;">Thường</span>
+              {% endif %}
+            </td>
+            <td style="text-align: right;">
+              <a href="{{ url_for('admin_post_edit', post_id=p.id) }}" class="btn btn-sm btn-primary" title="Sửa"><i class="fas fa-edit"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- RECENT FEEDBACKS -->
+<div class="admin-card">
+  <div class="card-header">
+    <div class="card-title"><i class="fas fa-comments"></i> Hòm thư góp ý mới nhất từ phụ huynh & nhân dân</div>
+    <a href="{{ url_for('admin_feedback') }}" class="btn btn-sm" style="background:#e2e8f0; color:#334155;">Xem tất cả</a>
+  </div>
+  <div class="card-body">
+    {% if recent_feedbacks %}
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        {% for fb in recent_feedbacks %}
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px 16px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <strong style="color:#1e293b; font-size:13.5px;">{{ fb.title }}</strong>
+            <span style="font-size:11.5px; color:#64748b;">{{ fb.created_at[:16] }}</span>
+          </div>
+          <div style="font-size:12px; color:#0284c7; margin-bottom:6px;">
+            <i class="fas fa-user"></i> Người gửi: {{ fb.sender_name }} &bull; ĐT: {{ fb.phone }} &bull; Email: {{ fb.email }}
+          </div>
+          <p style="font-size:13px; color:#334155; line-height:1.4;">{{ fb.content }}</p>
+        </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <p style="color:#94a3b8; text-align:center; padding:20px;">Chưa có ý kiến góp ý nào.</p>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function copyDashLink(btn) {
+  const inp = document.getElementById('dashShareUrl');
+  inp.select();
+  inp.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(inp.value);
+  const oldText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-check"></i> Đã sao chép!';
+  btn.style.background = '#10b981';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.innerHTML = oldText;
+    btn.style.background = '#fff';
+    btn.style.color = '#1e3a8a';
+  }, 2000);
+}
+</script>
+{% endblock %}

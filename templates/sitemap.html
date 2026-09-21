@@ -1,0 +1,93 @@
+{% extends 'base.html' %}
+
+{% block title %}Sơ đồ trang - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <span>Sơ đồ trang</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-sitemap"></i> Sơ đồ Cổng thông tin điện tử Trường THCS Ngô Văn Sở
+        </div>
+      </div>
+      <div class="module-body" style="font-size: 14px; line-height: 1.8;">
+        <ul style="list-style-type: none; padding-left: 10px;">
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 1. TRANG CHỦ</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('index') }}">&bull; Cổng thông tin chính thức</a></li>
+              <li><a href="{{ url_for('admin_login') }}">&bull; Đăng nhập hệ thống Quản trị (Admin)</a></li>
+              <li><a href="{{ url_for('feedback_view') }}">&bull; Hòm thư góp ý & phản ánh</a></li>
+            </ul>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 2. GIỚI THIỆU NHÀ TRƯỜNG</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('bgh_view') }}">&bull; Ban Giám hiệu nhà trường</a></li>
+              <li><a href="{{ url_for('doanthe_view') }}">&bull; Các tổ chức đoàn thể (Công đoàn, Đoàn - Đội)</a></li>
+              <li><a href="{{ url_for('noiquy_view') }}">&bull; Nội quy, quy định trường THCS Ngô Văn Sở</a></li>
+              <li><a href="{{ url_for('truyen_thong_view') }}">&bull; Phòng truyền thống và thành tích</a></li>
+            </ul>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 3. NỘI DUNG CÔNG KHAI (3 CÔNG KHAI)</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}">&bull; Điều kiện đảm bảo chất lượng giáo dục</a></li>
+              <li><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}">&bull; Thông tin đội ngũ giáo viên & cán bộ quản lý</a></li>
+              <li><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}">&bull; Cơ sở vật chất & trang thiết bị dạy học</a></li>
+              <li><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}">&bull; Thu chi, tài chính và các khoản thu</a></li>
+            </ul>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 4. VĂN BẢN CHỈ ĐẠO & ĐIỀU HÀNH</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('documents_view') }}">&bull; Quyết định, chỉ thị của Sở GD&ĐT Lào Cai</a></li>
+              <li><a href="{{ url_for('documents_view') }}">&bull; Văn bản chỉ đạo của UBND tỉnh và thành phố</a></li>
+              <li><a href="{{ url_for('documents_view') }}">&bull; Văn bản nội bộ trường</a></li>
+            </ul>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 5. HOẠT ĐỘNG GIÁO DỤC</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('category_view', slug='tin-tuc') }}">&bull; Tin tức hoạt động dạy và học</a></li>
+              <li><a href="{{ url_for('category_view', slug='su-kien') }}">&bull; Sự kiện, phong trào thi đua</a></li>
+              <li><a href="{{ url_for('category_view', slug='tu-van-hoc-duong') }}">&bull; Tư vấn tâm lý học đường</a></li>
+              <li><a href="{{ url_for('timetable_view') }}">&bull; Thời khóa biểu các khối trường chính & phân hiệu 2</a></li>
+            </ul>
+          </li>
+
+          <li style="margin-bottom: 12px;">
+            <strong style="color: #12579b;"><i class="fas fa-folder-open"></i> 6. TRA CỨU & TIỆN ÍCH DỊCH VỤ CÔNG</strong>
+            <ul style="padding-left: 24px; margin-top: 6px;">
+              <li><a href="{{ url_for('search_student') }}">&bull; Tra cứu bảng điểm & kết quả học tập trực tuyến</a></li>
+              <li><a href="https://vnedu.vn" target="_blank">&bull; Cổng thông tin học sinh vnEdu</a></li>
+              <li><a href="https://elearning.vnpt.vn" target="_blank">&bull; Cổng học trực tuyến LMS</a></li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header"><i class="fas fa-info-circle"></i> Trợ giúp</div>
+      <div class="widget-body" style="font-size:13px; color:#475569;">
+        Nếu bạn cần thêm thông tin hỗ trợ, xin vui lòng gửi tin nhắn qua mục <a href="{{ url_for('feedback_view') }}">Góp ý</a> hoặc gọi điện đến số <strong>{{ settings.phone }}</strong>.
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}

@@ -1,0 +1,127 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}{{ action_title }}{% endblock %}
+{% block page_heading %}{{ action_title }}{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="card-header">
+    <div class="card-title"><i class="fas fa-edit"></i> Thông tin bài viết</div>
+    <a href="{{ url_for('admin_posts') }}" class="btn btn-sm" style="background:#e2e8f0; color:#334155;">
+      <i class="fas fa-arrow-left"></i> Quay lại danh sách
+    </a>
+  </div>
+
+  <div class="card-body">
+    <form method="POST" enctype="multipart/form-data">
+      <div class="form-group">
+        <label class="form-label">Tiêu đề bài viết (*):</label>
+        <input type="text" name="title" value="{{ post.title if post else '' }}" placeholder="Nhập tiêu đề tin tức, thông báo..." required class="form-control" style="font-size: 15px; font-weight: 600;">
+      </div>
+
+      <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-bottom: 18px;">
+        <div>
+          <label class="form-label">Chuyên mục (*):</label>
+          <select name="category_slug" class="form-control" required>
+            {% for c in categories %}
+            <option value="{{ c.slug }}" {% if post and post.category_slug == c.slug %}selected{% endif %}>{{ c.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+
+        <div>
+          <label class="form-label">Tác giả / Ban biên tập:</label>
+          <input type="text" name="author" value="{{ post.author if post else session.get('display_name', 'Ban Biên Tập') }}" class="form-control">
+        </div>
+
+        <div style="display: flex; align-items: center; padding-top: 24px;">
+          <label style="display: inline-flex; align-items: center; gap: 8px; font-weight: 600; cursor: pointer;">
+            <input type="checkbox" name="is_featured" value="1" {% if post and post.is_featured %}checked{% endif %} style="width: 18px; height: 18px;">
+            <span style="color: #b45309;"><i class="fas fa-star"></i> Đặt làm Tin nổi bật (hiển thị trên Slider chính)</span>
+          </label>
+        </div>
+      </div>
+
+      <!-- THUMBNAIL OPTIONS -->
+      <div style="background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 14px; margin-bottom: 18px;">
+        <label class="form-label" style="margin-bottom: 8px;"><i class="fas fa-image"></i> Ảnh đại diện bài viết:</label>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+          <div>
+            <span style="font-size: 12px; color: #64748b;">Cách 1: Nhập link ảnh trực tuyến (URL)</span>
+            <input type="url" name="thumbnail_url" id="thumbUrlInput" value="{{ post.thumbnail if post else '' }}" placeholder="https://..." class="form-control" style="margin-top: 4px;">
+          </div>
+          <div>
+            <span style="font-size: 12px; color: #64748b;">Cách 2: Tải ảnh từ máy tính (Upload)</span>
+            <input type="file" name="thumbnail_file" id="thumbFileInput" accept="image/*" class="form-control" style="margin-top: 4px;">
+          </div>
+        </div>
+        {% if post and post.thumbnail %}
+        <div style="margin-top: 10px; display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 12px; color: #64748b;">Ảnh hiện tại:</span>
+          <img src="{{ post.thumbnail }}" alt="current thumb" style="height: 50px; border-radius: 4px; border: 1px solid #cbd5e1;">
+        </div>
+        {% endif %}
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tóm tắt ngắn (Summary):</label>
+        <textarea name="summary" class="form-control" rows="3" placeholder="Đoạn văn ngắn gọn mô tả nội dung chính sẽ hiển thị ở trang chủ...">{{ post.summary if post else '' }}</textarea>
+      </div>
+
+      <!-- RICH CONTENT EDITOR TOOLBAR -->
+      <div class="form-group">
+        <label class="form-label">Nội dung chi tiết bài viết (HTML / Văn bản đầy đủ) (*):</label>
+        <div style="display: flex; gap: 6px; margin-bottom: 6px; flex-wrap: wrap; background: #e2e8f0; padding: 6px; border-radius: 4px;">
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertTag('p')"><i class="fas fa-paragraph"></i> Đoạn văn</button>
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertTag('strong')"><i class="fas fa-bold"></i> In đậm</button>
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertTag('em')"><i class="fas fa-italic"></i> In nghiêng</button>
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertTag('h3')"><i class="fas fa-heading"></i> Tiêu đề con</button>
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertTable()"><i class="fas fa-table"></i> Bảng biểu</button>
+          <button type="button" class="btn btn-sm" style="background:#fff;" onclick="insertImage()"><i class="fas fa-image"></i> Chèn ảnh</button>
+        </div>
+        <textarea name="content" id="postContentArea" class="form-control" rows="12" required placeholder="Nhập nội dung bài viết ở đây..." style="font-family: monospace; font-size: 13.5px; line-height: 1.5;">{{ post.content if post else '' }}</textarea>
+      </div>
+
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <button type="submit" class="btn btn-primary" style="padding: 10px 24px; font-size: 14px;">
+          <i class="fas fa-save"></i> LƯU VÀ XUẤT BẢN BÀI VIẾT
+        </button>
+        <a href="{{ url_for('admin_posts') }}" class="btn" style="background: #cbd5e1; color: #334155;">Hủy bỏ</a>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function insertTag(tag) {
+  const textarea = document.getElementById('postContentArea');
+  const start = textarea.selectionStart;
+  const end = textarea.selectionEnd;
+  const selectedText = textarea.value.substring(start, end) || 'Nội dung';
+  const replacement = `<${tag}>${selectedText}</${tag}>`;
+  textarea.value = textarea.value.substring(0, start) + replacement + textarea.value.substring(end);
+  textarea.focus();
+}
+
+function insertTable() {
+  const textarea = document.getElementById('postContentArea');
+  const sampleTable = `\n<table class="table table-bordered">\n  <thead>\n    <tr><th>Tiêu đề 1</th><th>Tiêu đề 2</th></tr>\n  </thead>\n  <tbody>\n    <tr><td>Nội dung 1</td><td>Nội dung 2</td></tr>\n  </tbody>\n</table>\n`;
+  const start = textarea.selectionStart;
+  textarea.value = textarea.value.substring(0, start) + sampleTable + textarea.value.substring(start);
+  textarea.focus();
+}
+
+function insertImage() {
+  const url = prompt('Nhập địa chỉ URL của hình ảnh:');
+  if (url) {
+    const textarea = document.getElementById('postContentArea');
+    const imgHtml = `\n<p style="text-align:center;"><img src="${url}" alt="Hình ảnh bài viết" style="max-width:100%; border-radius:4px;" /></p>\n`;
+    const start = textarea.selectionStart;
+    textarea.value = textarea.value.substring(0, start) + imgHtml + textarea.value.substring(start);
+    textarea.focus();
+  }
+}
+</script>
+{% endblock %}

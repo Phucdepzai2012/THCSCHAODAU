@@ -1,0 +1,73 @@
+{% extends 'base.html' %}
+
+{% block title %}Văn bản chỉ đạo - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <span>Văn bản chỉ đạo - điều hành</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-file-signature"></i> Hệ thống Văn bản chỉ đạo & Hướng dẫn
+        </div>
+      </div>
+      <div class="module-body">
+        <div class="admin-table-responsive">
+          <table class="admin-table" style="width: 100%;">
+            <thead>
+              <tr style="background:#f1f5f9;">
+                <th style="width: 120px;">Số / Ký hiệu</th>
+                <th>Trích yếu nội dung</th>
+                <th style="width: 100px;">Ngày ban hành</th>
+                <th style="width: 150px;">Cơ quan ban hành</th>
+                <th style="width: 100px; text-align: center;">Thao tác</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for d in documents %}
+              <tr>
+                <td><strong style="color: #b91c1c;">{{ d.doc_code }}</strong></td>
+                <td>
+                  <strong style="color: #1e293b;">{{ d.title }}</strong>
+                  <div style="font-size: 11.5px; color: #64748b;">Lĩnh vực: {{ d.category }}</div>
+                </td>
+                <td>{{ d.issue_date }}</td>
+                <td>{{ d.signer }}</td>
+                <td style="text-align: center;">
+                  {% if d.file_url and d.file_url != '#' %}
+                  <a href="{{ d.file_url }}" target="_blank" style="background:#2563eb; color:#fff; padding:4px 8px; border-radius:3px; font-size:11px; text-decoration:none;">
+                    <i class="fas fa-download"></i> Tải về
+                  </a>
+                  {% else %}
+                  <span style="color: #94a3b8; font-size: 11px;">Đang cập nhật</span>
+                  {% endif %}
+                </td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-info-circle"></i> Lưu ý tra cứu
+      </div>
+      <div class="widget-body" style="font-size: 13px; color: #475569;">
+        <p>Hệ thống văn bản chỉ đạo của Trường THCS Ngô Văn Sở được số hóa và cập nhật thường xuyên từ Sở GD&ĐT Lào Cai và UBND các cấp.</p>
+        <p style="margin-top: 8px;">Nếu gặp khó khăn trong việc tải tệp tin, quý phụ huynh và giáo viên vui lòng liên hệ Văn thư nhà trường theo số điện thoại: <strong>{{ settings.phone }}</strong>.</p>
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}

@@ -1,0 +1,100 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Quản lý Văn bản{% endblock %}
+{% block page_heading %}Quản lý Văn bản chỉ đạo & Hướng dẫn{% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 340px; gap: 20px;">
+  <!-- DOCUMENTS LIST -->
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-file-alt"></i> Danh sách văn bản hiện hành</div>
+    </div>
+    <div class="card-body" style="padding: 0;">
+      <div class="admin-table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Số hiệu</th>
+              <th>Trích yếu</th>
+              <th>Ngày ban hành</th>
+              <th>Cơ quan</th>
+              <th style="text-align: right;">Thao tác</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for d in documents %}
+            <tr>
+              <td><strong style="color:#b91c1c;">{{ d.doc_code }}</strong></td>
+              <td>
+                <div style="font-weight:600; color:#0f172a;">{{ d.title }}</div>
+                {% if d.file_url and d.file_url != '#' %}
+                <a href="{{ d.file_url }}" target="_blank" style="font-size:11px; color:#2563eb;"><i class="fas fa-paperclip"></i> Tệp đính kèm</a>
+                {% endif %}
+              </td>
+              <td>{{ d.issue_date }}</td>
+              <td>{{ d.signer }}</td>
+              <td style="text-align: right;">
+                <form action="{{ url_for('admin_document_delete', doc_id=d.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa văn bản này không?');" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-danger"><i class="fas fa-trash-alt"></i></button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD DOCUMENT FORM -->
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-plus-circle"></i> Thêm văn bản mới</div>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('admin_documents') }}" method="POST" enctype="multipart/form-data">
+        <div class="form-group">
+          <label class="form-label">Số / Ký hiệu văn bản (*):</label>
+          <input type="text" name="doc_code" placeholder="VD: 1631/QĐ-SGD&ĐT" required class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Trích yếu nội dung (*):</label>
+          <textarea name="title" rows="3" placeholder="QĐ - V/v ban hành bộ quy tắc ứng xử..." required class="form-control"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Ngày ban hành:</label>
+          <input type="text" name="issue_date" value="{{ now.strftime('%d/%m/%Y') }}" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Cơ quan / Người ký ban hành:</label>
+          <input type="text" name="signer" value="Sở GD&ĐT Lào Cai" class="form-control">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Lĩnh vực / Chuyên mục:</label>
+          <select name="category" class="form-control">
+            <option value="Văn bản chỉ đạo các cấp">Văn bản chỉ đạo các cấp</option>
+            <option value="Văn bản trường">Văn bản trường</option>
+            <option value="Chỉ thị điều hành">Chỉ thị điều hành</option>
+            <option value="Dự thảo văn bản">Dự thảo văn bản</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tệp đính kèm (PDF/Word):</label>
+          <input type="file" name="file_upload" class="form-control" style="margin-bottom: 6px;">
+          <input type="text" name="file_url" placeholder="Hoặc nhập liên kết tải trực tiếp..." class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fas fa-upload"></i> LƯU VĂN BẢN
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

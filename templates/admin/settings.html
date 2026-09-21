@@ -1,0 +1,579 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Cài Đặt Cổng Trường & Banners{% endblock %}
+{% block page_heading %}Cài đặt Cổng thông tin & Quản trị Banners{% endblock %}
+
+{% block extra_css %}
+<style>
+.settings-tabs { display:flex; gap:6px; margin-bottom:24px; flex-wrap:wrap; }
+.settings-tab-btn {
+  padding:10px 18px; background:#e2e8f0; color:#475569; border:none;
+  border-radius:6px; font-size:13px; font-weight:600; cursor:pointer;
+  display:inline-flex; align-items:center; gap:8px; transition:all .2s;
+  text-decoration:none;
+}
+.settings-tab-btn:hover { background:#cbd5e1; color:#1e293b; }
+.settings-tab-btn.active { background:#1e40af; color:#fff; box-shadow: 0 2px 6px rgba(30,64,175,0.3); }
+.settings-panel { display:none; }
+.settings-panel.active { display:block; }
+.banner-grid-card {
+  background:#fff; border:1px solid #e2e8f0; border-radius:8px; padding:20px;
+  margin-bottom:24px; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+.banner-header-row {
+  display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;
+  padding-bottom:10px; border-bottom:1px solid #f1f5f9;
+}
+.banner-header-row h3 { font-size:15px; font-weight:700; color:#1e293b; margin:0; display:flex; align-items:center; gap:8px; }
+.banner-preview-box {
+  width:100%; max-height:160px; object-fit:cover; border-radius:6px;
+  border:2px dashed #cbd5e1; margin-top:8px; background:#f8fafc;
+}
+.upload-option { background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:12px; margin-bottom:10px; }
+.upload-option .label { font-size:12px; color:#475569; margin-bottom:4px; font-weight:600; }
+.share-box-highlight {
+  background: linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%);
+  color: white; border-radius: 8px; padding: 24px; margin-bottom: 24px;
+}
+.link-display-row {
+  background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.3);
+  border-radius: 6px; padding: 10px 14px; display: flex; align-items: center;
+  justify-content: space-between; margin-top: 10px; gap: 10px;
+}
+.link-display-row input {
+  background: transparent; border: none; color: #fff; font-family: monospace;
+  font-size: 15px; width: 100%; outline: none; font-weight: bold;
+}
+.link-display-row button {
+  background: #fff; color: #1e3a8a; border: none; border-radius: 4px;
+  padding: 6px 14px; font-weight: 700; cursor: pointer; font-size: 13px;
+  white-space: nowrap; transition: background .2s;
+}
+.link-display-row button:hover { background: #f1f5f9; }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- TAB BUTTONS -->
+<div class="settings-tabs">
+  <a href="#" class="settings-tab-btn active" onclick="switchTab('share',this)">
+    <i class="fas fa-globe"></i> 🌐 Link Cho Cộng Đồng
+  </a>
+  <a href="#" class="settings-tab-btn" onclick="switchTab('banner',this)">
+    <i class="fas fa-images"></i> Quản lý Mọi Banner
+  </a>
+  <a href="#" class="settings-tab-btn" onclick="switchTab('general',this)">
+    <i class="fas fa-school"></i> Thông tin trường
+  </a>
+  <a href="#" class="settings-tab-btn" onclick="switchTab('logo',this)">
+    <i class="fas fa-shield-alt"></i> Logo trường
+  </a>
+  <a href="#" class="settings-tab-btn" onclick="switchTab('media',this)">
+    <i class="fab fa-youtube"></i> Video & Mạng xã hội
+  </a>
+  <a href="#" class="settings-tab-btn" onclick="switchTab('password',this)">
+    <i class="fas fa-key"></i> Đổi mật khẩu Admin
+  </a>
+</div>
+
+<!-- ====== PANEL 0: LINK CHO CỘNG ĐỒNG ====== -->
+<div id="panel-share" class="settings-panel active">
+  
+  <!-- HIGHLIGHT BANNER FOR COMMUNITY LINK -->
+  <div class="share-box-highlight">
+    <div style="display:flex; align-items:center; gap:12px; margin-bottom:12px;">
+      <i class="fas fa-broadcast-tower" style="font-size:28px; color:#60a5fa;"></i>
+      <div>
+        <h2 style="margin:0; font-size:19px; font-weight:700;">Đường Link Truy Cập Cho Cộng Đồng & Mọi Người</h2>
+        <p style="margin:4px 0 0; opacity:0.9; font-size:13px;">Bất kỳ ai (học sinh, phụ huynh, thầy cô) đều có thể vào link này từ điện thoại, máy tính để xem tất cả bài viết bạn đăng.</p>
+      </div>
+    </div>
+
+    <!-- PUBLIC URL -->
+    {% if public_share_url %}
+    <div style="margin-top:16px;">
+      <div style="font-size:13px; font-weight:600; color:#93c5fd;">
+        <i class="fas fa-check-circle" style="color:#4ade80;"></i> LINK TRỰC TUYẾN TOÀN CẦU (PUBLIC INTERNET URL):
+      </div>
+      <div class="link-display-row">
+        <input type="text" id="pubUrlInp" value="{{ public_share_url }}" readonly>
+        <button onclick="copyInput('pubUrlInp', this)"><i class="fas fa-copy"></i> Sao chép Link</button>
+      </div>
+      <p style="font-size:12px; margin-top:6px; opacity:0.85;">
+        Link này hoạt động trên toàn bộ mạng internet 3G/4G/5G, Wi-Fi ở bất kỳ nơi nào.
+      </p>
+    </div>
+    {% else %}
+    <div style="margin-top:16px; background:rgba(0,0,0,0.2); padding:14px; border-radius:6px;">
+      <div style="font-size:13.5px; font-weight:700; color:#fde047; margin-bottom:6px;">
+        <i class="fas fa-info-circle"></i> Cách tạo Link Online Công Khai miễn phí để gửi cho cộng đồng:
+      </div>
+      <p style="font-size:12.5px; line-height:1.6; margin:0 0 10px;">
+        Trong thư mục dự án trường, bạn chỉ cần mở file <strong><code>MO_LINK_CONG_DONG.bat</code></strong> (hoặc chạy Cloudflare / Pinggy). Hệ thống sẽ cấp ngay một đường link HTTPS trực tuyến miễn phí (Ví dụ: <code>https://thcs-ngovanso.a.pinggy.link</code>) để bạn gửi cho mọi người truy cập!
+      </p>
+    </div>
+    {% endif %}
+
+    <!-- LAN LOCAL IP -->
+    <div style="margin-top:18px;">
+      <div style="font-size:13px; font-weight:600; color:#bfdbfe;">
+        <i class="fas fa-wifi"></i> LINK MẠNG NỘI BỘ (Cho mọi thiết bị dùng chung Wi-Fi trường / nhà):
+      </div>
+      <div class="link-display-row">
+        <input type="text" id="lanUrlInp" value="{{ local_share_url }}" readonly>
+        <button onclick="copyInput('lanUrlInp', this)"><i class="fas fa-copy"></i> Sao chép</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-bullhorn"></i> Trạng thái Xuất bản & Hiển thị Nội dung</div>
+    </div>
+    <div class="card-body">
+      <div style="display:grid; grid-template-columns: 1fr 1fr; gap:16px;">
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px;">
+          <h4 style="margin:0 0 8px; color:#1e293b; font-size:14px;"><i class="fas fa-sync-alt" style="color:#059669;"></i> Cập nhật tức thì (Real-time)</h4>
+          <p style="font-size:12.5px; color:#475569; margin:0; line-height:1.5;">
+            Khi bạn thêm bài viết mới, đổi banner, tải lên văn bản hoặc chỉnh sửa thông tin trường, mọi người khi truy cập qua link sẽ nhìn thấy nội dung mới ngay lập tức mà không cần khởi động lại web.
+          </p>
+        </div>
+        <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:6px; padding:14px;">
+          <h4 style="margin:0 0 8px; color:#1e293b; font-size:14px;"><i class="fas fa-shield-alt" style="color:#2563eb;"></i> An toàn & Bảo mật</h4>
+          <p style="font-size:12.5px; color:#475569; margin:0; line-height:1.5;">
+            Người truy cập qua link chỉ có quyền đọc nội dung công khai (bài viết, thông báo, tra cứu điểm). Họ không thể đăng bài, sửa banner hay xem mật khẩu admin nếu không đăng nhập tài khoản quản trị.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PANEL 1: QUẢN LÝ MỌI BANNER ====== -->
+<div id="panel-banner" class="settings-panel">
+  
+  <p style="font-size:13.5px; color:#334155; margin-bottom:18px;">
+    Bạn có thể tùy chỉnh hình ảnh, đường link chuyển hướng và trạng thái hiển thị cho <strong>tất cả các vị trí banner</strong> trên toàn trang web:
+  </p>
+
+  <!-- BANNER 1: BANNER ĐẦU TRANG -->
+  <div class="banner-grid-card">
+    <div class="banner-header-row">
+      <h3><i class="fas fa-heading" style="color:#2563eb;"></i> 1. Banner Chính Đầu Trang (Top Header Banner)</h3>
+      <span class="badge badge-success">Hiển thị toàn trang</span>
+    </div>
+    <p style="font-size:12.5px; color:#64748b; margin-bottom:12px;">Banner hiển thị ở trên cùng mọi trang (Kích thước chuẩn: 1240 × 180px hoặc ảnh GIF động).</p>
+    
+    <div style="margin-bottom:14px;">
+      <img src="{{ settings.get('banner_url','https://storage-edu.vnpt.vn/edu-lci/8428/DUY/banner moi.gif') }}"
+           alt="Banner đầu trang" id="prev_banner" class="banner-preview-box">
+    </div>
+
+    <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="banner">
+      <input type="hidden" name="banner_active" value="1">
+      
+      <div class="upload-option">
+        <div class="label">📁 Cách 1: Tải lên file ảnh mới từ máy tính:</div>
+        <input type="file" name="banner_file" accept="image/*,.gif" class="form-control" onchange="previewFile(this,'prev_banner')">
+      </div>
+
+      <div class="upload-option">
+        <div class="label">🔗 Cách 2: Hoặc nhập đường dẫn URL ảnh trực tuyến:</div>
+        <input type="url" name="banner_url" value="{{ settings.get('banner_url','') }}" class="form-control" placeholder="https://..." oninput="document.getElementById('prev_banner').src=this.value">
+      </div>
+
+      <div class="form-group" style="margin-top:10px;">
+        <label class="form-label"><i class="fas fa-link"></i> Link chuyển hướng khi nhấp chuột vào banner:</label>
+        <input type="text" name="banner_link" value="{{ settings.get('banner_link','/') }}" class="form-control" placeholder="/ hoặc https://...">
+        <small style="color:#64748b; font-size:11px;">Mặc định về trang chủ (<code>/</code>) hoặc link tùy thích.</small>
+      </div>
+
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu Banner Đầu Trang</button>
+    </form>
+  </div>
+
+  <!-- BANNER 2: BANNER TUYÊN TRUYỀN GIỮA TRANG -->
+  <div class="banner-grid-card">
+    <div class="banner-header-row">
+      <h3><i class="fas fa-bullhorn" style="color:#d97706;"></i> 2. Banner Tuyên Truyền Giữa Trang Chủ (Promo Banner)</h3>
+      <span class="badge {% if settings.get('promo_banner_active','1') == '1' %}badge-success{% else %}badge-secondary{% endif %}">
+        {% if settings.get('promo_banner_active','1') == '1' %}Đang Bật{% else %}Đang Tắt{% endif %}
+      </span>
+    </div>
+    <p style="font-size:12.5px; color:#64748b; margin-bottom:12px;">Banner hiển thị nằm ngang giữa trang chủ (Không gian văn hóa Hồ Chí Minh, Sự kiện trọng đại, v.v.).</p>
+
+    <div style="margin-bottom:14px;">
+      <img src="{{ settings.get('promo_banner_url','https://storage-vnportal.vnpt.vn/bcn-khdn/3405/banner/hcm_khoangtrang.png') }}"
+           alt="Banner giữa trang" id="prev_promo_banner" class="banner-preview-box">
+    </div>
+
+    <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data">
+      <input type="hidden" name="action" value="promo_banner">
+
+      <div class="form-group" style="margin-bottom:12px;">
+        <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:600; color:#1e293b;">
+          <input type="checkbox" name="promo_banner_active" value="1" {% if settings.get('promo_banner_active','1') == '1' %}checked{% endif %}>
+          Bật hiển thị banner này trên trang chủ
+        </label>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Tiêu đề Banner / Văn bản chú thích:</label>
+        <input type="text" name="promo_banner_title" value="{{ settings.get('promo_banner_title','Không gian văn hóa Hồ Chí Minh - THCS Ngô Văn Sở') }}" class="form-control">
+      </div>
+
+      <div class="upload-option">
+        <div class="label">📁 Tải lên file ảnh mới:</div>
+        <input type="file" name="promo_banner_file" accept="image/*,.gif" class="form-control" onchange="previewFile(this,'prev_promo_banner')">
+      </div>
+
+      <div class="upload-option">
+        <div class="label">🔗 Hoặc nhập URL ảnh trực tuyến:</div>
+        <input type="url" name="promo_banner_url" value="{{ settings.get('promo_banner_url','') }}" class="form-control" oninput="document.getElementById('prev_promo_banner').src=this.value">
+      </div>
+
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-link"></i> Link chuyển hướng khi nhấp chuột:</label>
+        <input type="text" name="promo_banner_link" value="{{ settings.get('promo_banner_link','/post/ra-mat-khong-gian-van-hoa-ho-chi-minh') }}" class="form-control" placeholder="/post/... hoặc https://...">
+      </div>
+
+      <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> Lưu Banner Tuyên Truyền</button>
+    </form>
+  </div>
+
+  <!-- BANNER 3 & 4: CỘT PHẢI SIDEBAR -->
+  <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+    
+    <!-- SIDEBAR BANNER 1 -->
+    <div class="banner-grid-card">
+      <div class="banner-header-row">
+        <h3><i class="fas fa-columns" style="color:#0891b2;"></i> 3. Banner Cột Phải Vị Trí 1</h3>
+      </div>
+      <p style="font-size:12px; color:#64748b;">Banner cột phải (Chuyển đổi số, Khảo sát trực tuyến...).</p>
+
+      <div style="margin-bottom:12px;">
+        <img src="{{ settings.get('sidebar_banner_1_url','https://storage-vnportal.vnpt.vn/bcn-khdn/3405/banner/cds.png') }}"
+             alt="Sidebar 1" id="prev_sidebar_1" class="banner-preview-box" style="max-height:120px;">
+      </div>
+
+      <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="sidebar_banner_1">
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:600; font-size:12.5px;">
+            <input type="checkbox" name="sidebar_banner_1_active" value="1" {% if settings.get('sidebar_banner_1_active','1') == '1' %}checked{% endif %}>
+            Bật hiển thị
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tiêu đề banner:</label>
+          <input type="text" name="sidebar_banner_1_title" value="{{ settings.get('sidebar_banner_1_title','Chương trình Chuyển đổi số Giáo dục') }}" class="form-control">
+        </div>
+
+        <div class="upload-option">
+          <div class="label">📁 Chọn file ảnh:</div>
+          <input type="file" name="sidebar_banner_1_file" accept="image/*,.gif" class="form-control" onchange="previewFile(this,'prev_sidebar_1')">
+        </div>
+
+        <div class="upload-option">
+          <div class="label">🔗 Hoặc nhập URL ảnh:</div>
+          <input type="url" name="sidebar_banner_1_url" value="{{ settings.get('sidebar_banner_1_url','') }}" class="form-control" oninput="document.getElementById('prev_sidebar_1').src=this.value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Link đích khi click:</label>
+          <input type="text" name="sidebar_banner_1_link" value="{{ settings.get('sidebar_banner_1_link','https://laocai.gov.vn/') }}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-save"></i> Lưu Banner 1</button>
+      </form>
+    </div>
+
+    <!-- SIDEBAR BANNER 2 -->
+    <div class="banner-grid-card">
+      <div class="banner-header-row">
+        <h3><i class="fas fa-columns" style="color:#059669;"></i> 4. Banner Cột Phải Vị Trí 2</h3>
+      </div>
+      <p style="font-size:12px; color:#64748b;">Banner cột phải (Tra cứu điểm, Cuộc thi, Sự kiện...).</p>
+
+      <div style="margin-bottom:12px;">
+        <img src="{{ settings.get('sidebar_banner_2_url','https://storage-vnportal.vnpt.vn/bcn-khdn/3405/banner/khaosat.png') }}"
+             alt="Sidebar 2" id="prev_sidebar_2" class="banner-preview-box" style="max-height:120px;">
+      </div>
+
+      <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="sidebar_banner_2">
+
+        <div class="form-group" style="margin-bottom:10px;">
+          <label style="display:flex; align-items:center; gap:8px; cursor:pointer; font-weight:600; font-size:12.5px;">
+            <input type="checkbox" name="sidebar_banner_2_active" value="1" {% if settings.get('sidebar_banner_2_active','1') == '1' %}checked{% endif %}>
+            Bật hiển thị
+          </label>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Tiêu đề banner:</label>
+          <input type="text" name="sidebar_banner_2_title" value="{{ settings.get('sidebar_banner_2_title','Tra cứu Kết quả học tập') }}" class="form-control">
+        </div>
+
+        <div class="upload-option">
+          <div class="label">📁 Chọn file ảnh:</div>
+          <input type="file" name="sidebar_banner_2_file" accept="image/*,.gif" class="form-control" onchange="previewFile(this,'prev_sidebar_2')">
+        </div>
+
+        <div class="upload-option">
+          <div class="label">🔗 Hoặc nhập URL ảnh:</div>
+          <input type="url" name="sidebar_banner_2_url" value="{{ settings.get('sidebar_banner_2_url','') }}" class="form-control" oninput="document.getElementById('prev_sidebar_2').src=this.value">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Link đích khi click:</label>
+          <input type="text" name="sidebar_banner_2_link" value="{{ settings.get('sidebar_banner_2_link','/search-student') }}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;"><i class="fas fa-save"></i> Lưu Banner 2</button>
+      </form>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- ====== PANEL 2: THÔNG TIN TRƯỜNG ====== -->
+<div id="panel-general" class="settings-panel">
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-university"></i> Thông tin cơ bản của trường</div>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('admin_settings') }}" method="POST">
+        <input type="hidden" name="action" value="general">
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label">Tên trường đầy đủ (*):</label>
+            <input type="text" name="school_name" value="{{ settings.get('school_name','') }}" class="form-control" required placeholder="VD: TRƯỜNG THCS NGÔ VĂN SỞ">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Tên viết tắt / Tên miền ngắn:</label>
+            <input type="text" name="school_short_name" value="{{ settings.get('school_short_name','THCSCHAODAU') }}" class="form-control" placeholder="VD: THCSCHAODAU">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Khẩu hiệu / Slogan trường:</label>
+          <input type="text" name="school_slogan" value="{{ settings.get('school_slogan','') }}" class="form-control" placeholder="Trường học hạnh phúc - Học sinh tài năng">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label">Địa chỉ trụ sở:</label>
+            <input type="text" name="address" value="{{ settings.get('address','') }}" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Số điện thoại liên hệ:</label>
+            <input type="text" name="phone" value="{{ settings.get('phone','') }}" class="form-control">
+          </div>
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label">Email nhà trường:</label>
+            <input type="email" name="email" value="{{ settings.get('email','') }}" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Hiệu trưởng đương nhiệm:</label>
+            <input type="text" name="principal" value="{{ settings.get('principal','') }}" class="form-control">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Dòng chữ thông báo chạy đầu trang (Marquee):</label>
+          <input type="text" name="announcement_marquee" value="{{ settings.get('announcement_marquee','') }}" class="form-control">
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="padding:10px 28px; font-size:14px;">
+          <i class="fas fa-save"></i> LƯU THÔNG TIN TRƯỜNG
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PANEL 3: LOGO ====== -->
+<div id="panel-logo" class="settings-panel">
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-shield-alt"></i> Thay đổi Logo Trường</div>
+    </div>
+    <div class="card-body">
+      <div style="margin-bottom:20px; display:flex; align-items:center; gap:16px;">
+        <img src="{{ settings.get('logo_url','https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png') }}"
+             alt="Logo hiện tại" id="logoPreview" class="logo-preview" style="width:80px;height:80px;border-radius:50%;border:3px solid #2563eb;">
+        <div>
+          <strong>Logo hiện tại</strong>
+          <p style="font-size:12px; color:#64748b; margin:4px 0 0;">Hiển thị trên Top Bar, chân trang và biểu tượng đại diện cổng trường.</p>
+        </div>
+      </div>
+
+      <form action="{{ url_for('admin_settings') }}" method="POST" enctype="multipart/form-data">
+        <input type="hidden" name="action" value="logo">
+
+        <div class="upload-option">
+          <div class="label">📁 Tải lên file logo từ máy tính:</div>
+          <input type="file" name="logo_file" accept="image/*" class="form-control" onchange="previewFile(this,'logoPreview')">
+        </div>
+
+        <div class="upload-option">
+          <div class="label">🔗 Hoặc nhập địa chỉ URL logo:</div>
+          <input type="url" name="logo_url" class="form-control" placeholder="https://..." oninput="document.getElementById('logoPreview').src=this.value">
+        </div>
+
+        <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i> CẬP NHẬT LOGO</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PANEL 4: MEDIA ====== -->
+<div id="panel-media" class="settings-panel">
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fab fa-youtube"></i> Video & Mạng xã hội</div>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('admin_settings') }}" method="POST">
+        <input type="hidden" name="action" value="general">
+
+        <div class="form-group">
+          <label class="form-label"><i class="fab fa-youtube" style="color:#ef4444;"></i> Đường dẫn Video YouTube nhúng (Widget sidebar):</label>
+          <input type="text" name="youtube_video" value="{{ settings.get('youtube_video','') }}" class="form-control" placeholder="https://www.youtube.com/embed/VIDEO_ID">
+        </div>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:16px;">
+          <div class="form-group">
+            <label class="form-label"><i class="fab fa-facebook" style="color:#1877f2;"></i> Fanpage Facebook:</label>
+            <input type="url" name="facebook_url" value="{{ settings.get('facebook_url','') }}" class="form-control">
+          </div>
+          <div class="form-group">
+            <label class="form-label"><i class="fas fa-comment-dots" style="color:#0088cc;"></i> Kênh Zalo Official:</label>
+            <input type="url" name="zalo_url" value="{{ settings.get('zalo_url','') }}" class="form-control">
+          </div>
+        </div>
+
+        <!-- Keep other fields -->
+        <input type="hidden" name="school_name" value="{{ settings.get('school_name','') }}">
+        <input type="hidden" name="school_short_name" value="{{ settings.get('school_short_name','') }}">
+        <input type="hidden" name="school_slogan" value="{{ settings.get('school_slogan','') }}">
+        <input type="hidden" name="address" value="{{ settings.get('address','') }}">
+        <input type="hidden" name="phone" value="{{ settings.get('phone','') }}">
+        <input type="hidden" name="email" value="{{ settings.get('email','') }}">
+        <input type="hidden" name="principal" value="{{ settings.get('principal','') }}">
+        <input type="hidden" name="founded_year" value="{{ settings.get('founded_year','') }}">
+        <input type="hidden" name="announcement_marquee" value="{{ settings.get('announcement_marquee','') }}">
+
+        <button type="submit" class="btn btn-primary"><i class="fas fa-save"></i> LƯU CÀI ĐẶT MEDIA</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- ====== PANEL 5: ĐỔI MẬT KHẨU ====== -->
+<div id="panel-password" class="settings-panel">
+  <div class="admin-card" style="max-width:540px;">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-lock"></i> Đổi mật khẩu tài khoản Admin</div>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('admin_settings') }}" method="POST">
+        <input type="hidden" name="action" value="password">
+
+        <div class="form-group">
+          <label class="form-label">Mật khẩu hiện tại (*):</label>
+          <input type="password" name="old_password" class="form-control" required placeholder="Nhập mật khẩu đang dùng...">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Mật khẩu mới (*):</label>
+          <input type="password" name="new_password" id="newPwd" class="form-control" required
+                 placeholder="Nhập mật khẩu mới (ít nhất 6 ký tự)..."
+                 oninput="checkPwdMatch()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Xác nhận mật khẩu mới (*):</label>
+          <input type="password" name="confirm_password" id="confirmPwd" class="form-control" required
+                 placeholder="Nhập lại mật khẩu mới..."
+                 oninput="checkPwdMatch()">
+          <small id="pwdMatchMsg" style="font-size:12px; margin-top:4px; display:block;"></small>
+        </div>
+
+        <div style="background:#fffbeb; border:1px solid #fde68a; border-radius:6px; padding:12px; margin-bottom:18px; font-size:13px; color:#92400e;">
+          <i class="fas fa-shield-alt"></i> Hãy đặt mật khẩu mạnh để bảo vệ quyền quản trị trang web của trường.
+        </div>
+
+        <button type="submit" class="btn btn-danger" style="padding:10px 28px; font-size:14px;">
+          <i class="fas fa-check"></i> XÁC NHẬN ĐỔI MẬT KHẨU
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function switchTab(tabName, clickedBtn) {
+  document.querySelectorAll('.settings-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.settings-tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tabName).classList.add('active');
+  clickedBtn.classList.add('active');
+  return false;
+}
+
+function previewFile(input, imgId) {
+  const file = input.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      document.getElementById(imgId).src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function copyInput(inputId, btn) {
+  const inp = document.getElementById(inputId);
+  inp.select();
+  inp.setSelectionRange(0, 99999);
+  navigator.clipboard.writeText(inp.value);
+  const oldText = btn.innerHTML;
+  btn.innerHTML = '<i class="fas fa-check"></i> Đã sao chép!';
+  btn.style.background = '#10b981';
+  btn.style.color = '#fff';
+  setTimeout(() => {
+    btn.innerHTML = oldText;
+    btn.style.background = '#fff';
+    btn.style.color = '#1e3a8a';
+  }, 2000);
+}
+
+function checkPwdMatch() {
+  const np = document.getElementById('newPwd').value;
+  const cp = document.getElementById('confirmPwd').value;
+  const msg = document.getElementById('pwdMatchMsg');
+  if (!cp) { msg.textContent = ''; return; }
+  if (np === cp) {
+    msg.textContent = '✅ Mật khẩu khớp';
+    msg.style.color = '#059669';
+  } else {
+    msg.textContent = '❌ Mật khẩu không khớp';
+    msg.style.color = '#dc2626';
+  }
+}
+</script>
+{% endblock %}

@@ -1,0 +1,57 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Hòm Thư Góp Ý{% endblock %}
+{% block page_heading %}Hòm Thư Góp Ý & Phản Hồi Từ Phụ Huynh - Học Sinh{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="card-header">
+    <div class="card-title"><i class="fas fa-envelope-open-text"></i> Danh sách ý kiến đóng góp</div>
+  </div>
+  <div class="card-body" style="padding: 0;">
+    <div class="admin-table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th style="width: 170px;">Người gửi</th>
+            <th style="width: 180px;">Tiêu đề</th>
+            <th>Nội dung đóng góp</th>
+            <th style="width: 130px;">Thời gian</th>
+            <th style="width: 100px;">Trạng thái</th>
+            <th style="width: 100px; text-align: right;">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for fb in feedbacks %}
+          <tr>
+            <td>
+              <strong>{{ fb.sender_name }}</strong>
+              <div style="font-size:11.5px; color:#64748b;">
+                {{ fb.phone }}<br>{{ fb.email }}
+              </div>
+            </td>
+            <td><strong>{{ fb.title }}</strong></td>
+            <td><p style="font-size:13px; color:#334155; line-height:1.4;">{{ fb.content }}</p></td>
+            <td>{{ fb.created_at[:16] }}</td>
+            <td>
+              {% if fb.status == 'Đã đọc' %}
+              <span class="badge badge-success">Đã đọc</span>
+              {% else %}
+              <span class="badge badge-warning">Chưa đọc</span>
+              {% endif %}
+            </td>
+            <td style="text-align: right;">
+              <form action="{{ url_for('admin_feedback_toggle', fb_id=fb.id) }}" method="POST" style="display:inline;">
+                <button type="submit" class="btn btn-sm" style="background:#e2e8f0; color:#334155;" title="Đổi trạng thái">
+                  <i class="fas fa-check"></i>
+                </button>
+              </form>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

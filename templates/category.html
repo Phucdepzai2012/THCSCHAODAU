@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ category.name }} - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <span>{{ category.name }}</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-folder-open"></i> {{ category.name }}
+        </div>
+      </div>
+      <div class="module-body">
+        {% if category.description %}
+        <p style="color: #64748b; font-size: 13px; margin-bottom: 16px; font-style: italic;">
+          {{ category.description }}
+        </p>
+        {% endif %}
+
+        {% if posts %}
+        <div style="display: flex; flex-direction: column; gap: 18px;">
+          {% for post in posts %}
+          <article style="display: flex; gap: 16px; padding-bottom: 16px; border-bottom: 1px solid #eef2f6;">
+            <div style="width: 180px; height: 115px; flex-shrink: 0; border-radius: 4px; overflow: hidden;">
+              <a href="{{ url_for('post_detail', slug_or_id=post.slug) }}">
+                <img src="{{ post.thumbnail }}" alt="{{ post.title }}" style="width: 100%; height: 100%; object-fit: cover;">
+              </a>
+            </div>
+            <div style="flex: 1;">
+              <h3 style="font-size: 15px; font-weight: 700; margin-bottom: 6px;">
+                <a href="{{ url_for('post_detail', slug_or_id=post.slug) }}" style="color: #1e293b;">{{ post.title }}</a>
+              </h3>
+              <div style="font-size: 11.5px; color: #64748b; margin-bottom: 8px;">
+                <i class="far fa-calendar-alt"></i> {{ post.published_at[:10] }} &bull; <i class="far fa-eye"></i> {{ post.views }} lượt xem
+              </div>
+              <p style="font-size: 13px; color: #475569; line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                {{ post.summary }}
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <p style="text-align: center; padding: 40px; color: #94a3b8;">Chuyên mục này hiện chưa có bài viết nào.</p>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-list-ul"></i> Chuyên mục khác
+      </div>
+      <div class="widget-body">
+        <ul class="sub-articles-list">
+          {% for cat in categories %}
+          <li class="sub-article-item">
+            <i class="fas fa-folder"></i>
+            <a href="{{ url_for('category_view', slug=cat.slug) }}">{{ cat.name }}</a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}

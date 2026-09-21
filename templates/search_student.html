@@ -1,0 +1,121 @@
+{% extends 'base.html' %}
+
+{% block title %}Tra cứu kết quả học tập & Điểm thi - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <span>Tra cứu kết quả học tập</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-graduation-cap"></i> Tra cứu Kết quả học tập & Điểm thi học sinh
+        </div>
+      </div>
+      <div class="module-body">
+        <form action="{{ url_for('search_student') }}" method="POST" style="max-width: 600px; margin: 0 auto 30px; background:#f8fafc; padding:20px; border-radius:8px; border:1px solid #e2e8f0;">
+          <label style="display:block; font-weight:600; margin-bottom:8px; font-size:13.5px; color:#1e293b;">
+            Nhập Mã học sinh hoặc Họ và tên học sinh:
+          </label>
+          <div style="display: flex; gap: 10px;">
+            <input type="text" name="student_query" value="{{ query or '' }}" placeholder="Ví dụ: HS202601 hoặc Nguyễn Văn An" required style="flex:1; padding:10px 14px; border:1px solid #cbd5e1; border-radius:4px; font-size:14px; outline:none;">
+            <button type="submit" style="background:#12579b; color:#fff; border:none; padding:10px 20px; border-radius:4px; font-weight:600; cursor:pointer;">
+              <i class="fas fa-search"></i> Tra cứu
+            </button>
+          </div>
+          <div style="font-size:12px; color:#64748b; margin-top:8px;">
+            Gợi ý tra cứu mẫu: <code>HS202601</code> (An), <code>HS202602</code> (Mai), <code>HS202603</code> (Phúc), <code>HS202604</code> (Thảo), <code>HS202605</code> (Quân).
+          </div>
+        </form>
+
+        {% if query %}
+          {% if student %}
+          <!-- REPORT CARD -->
+          <div style="border: 2px solid #12579b; border-radius: 8px; overflow: hidden; max-width: 700px; margin: 0 auto; box-shadow: 0 4px 12px rgba(0,0,0,0.08);">
+            <div style="background: linear-gradient(135deg, #0d4b88, #1e6cb7); color:#fff; padding:16px 20px; text-align:center;">
+              <h3 style="font-size:16px; text-transform:uppercase; letter-spacing:0.5px; margin-bottom:4px;">BẢNG KẾT QUẢ HỌC TẬP HỌC SINH</h3>
+              <p style="font-size:13px; color:#fde047;">Trường THCS Ngô Văn Sở - {{ student.semester }}</p>
+            </div>
+
+            <div style="padding: 20px; background:#fff;">
+              <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; font-size: 13.5px; background:#f8fafc; padding:14px; border-radius:6px;">
+                <div><strong>Họ và tên:</strong> <span style="color:#12579b; font-size:15px; font-weight:700;">{{ student.full_name }}</span></div>
+                <div><strong>Mã học sinh:</strong> <span style="font-family:monospace; font-weight:700;">{{ student.student_code }}</span></div>
+                <div><strong>Lớp:</strong> <span style="font-weight:600;">{{ student.class_name }}</span></div>
+                <div><strong>Ngày sinh:</strong> {{ student.birth_date }}</div>
+              </div>
+
+              <h4 style="font-size:14px; font-weight:700; margin-bottom:10px; color:#334155; border-bottom:1px solid #e2e8f0; padding-bottom:6px;">
+                <i class="fas fa-book"></i> Điểm các môn học
+              </h4>
+              <table class="admin-table" style="width:100%; margin-bottom:20px; border:1px solid #e2e8f0;">
+                <thead>
+                  <tr style="background:#f1f5f9;">
+                    <th style="text-align:center;">Toán</th>
+                    <th style="text-align:center;">Ngữ văn</th>
+                    <th style="text-align:center;">Tiếng Anh</th>
+                    <th style="text-align:center;">KHTN (Lý)</th>
+                    <th style="text-align:center;">KHTN (Hóa)</th>
+                    <th style="text-align:center;">Lịch sử</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr style="text-align:center; font-weight:600; font-size:14px;">
+                    <td style="color:#1e40af;">{{ student.math }}</td>
+                    <td style="color:#1e40af;">{{ student.literature }}</td>
+                    <td style="color:#1e40af;">{{ student.english }}</td>
+                    <td>{{ student.physics }}</td>
+                    <td>{{ student.chemistry }}</td>
+                    <td>{{ student.history }}</td>
+                  </tr>
+                </tbody>
+              </table>
+
+              <!-- SUMMARY RESULTS -->
+              <div style="display: flex; justify-content: space-around; background:#ecfdf5; padding:14px; border-radius:6px; border:1px solid #a7f3d0; text-align:center;">
+                <div>
+                  <div style="font-size:12px; color:#065f46;">Điểm trung bình (ĐTB)</div>
+                  <div style="font-size:20px; font-weight:800; color:#047857;">{{ student.gpa }}</div>
+                </div>
+                <div>
+                  <div style="font-size:12px; color:#065f46;">Xếp loại học lực</div>
+                  <div style="font-size:18px; font-weight:700; color:#047857;">{{ student.rank }}</div>
+                </div>
+                <div>
+                  <div style="font-size:12px; color:#065f46;">Rèn luyện / Hạnh kiểm</div>
+                  <div style="font-size:18px; font-weight:700; color:#047857;">{{ student.conduct }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% else %}
+          <div style="text-align:center; padding:30px; background:#fef2f2; border:1px solid #fecaca; border-radius:6px; color:#991b1b; max-width:600px; margin:0 auto;">
+            <i class="fas fa-exclamation-triangle fa-2x" style="margin-bottom:10px;"></i>
+            <p>Không tìm thấy dữ liệu học sinh với thông tin: "<strong>{{ query }}</strong>". Vui lòng kiểm tra lại Mã học sinh hoặc liên hệ giáo viên chủ nhiệm.</p>
+          </div>
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header">
+        <i class="fas fa-link"></i> Liên kết sổ điểm
+      </div>
+      <div class="widget-body">
+        <a href="https://vnedu.vn" target="_blank" class="lookup-link-btn" style="margin-bottom:8px;">
+          <i class="fas fa-external-link-alt"></i> Tra cứu trên cổng vnEdu
+        </a>
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}

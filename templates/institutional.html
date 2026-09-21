@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ page_title }} - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <a href="#">Giới thiệu</a>
+      <i class="fas fa-angle-right"></i>
+      <span>{{ page_title }}</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-university"></i> {{ page_title }}
+        </div>
+      </div>
+      <div class="module-body" style="font-size:14px; line-height:1.8; color:#1e293b;">
+        {% if page_type == 'bgh' %}
+          <div style="text-align: center; margin-bottom: 24px;">
+            <h3 style="color: #12579b; font-size: 18px; text-transform: uppercase;">BAN GIÁM HIỆU TRƯỜNG THCS NGÔ VĂN SỞ</h3>
+            <p style="color: #64748b; font-size: 13px;">Năm học 2026 - 2027</p>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; text-align:center;">
+              <div style="width:100px; height:100px; margin:0 auto 12px; border-radius:50%; background:#dbeafe; display:flex; align-items:center; justify-content:center; color:#1e40af; font-size:32px;">
+                <i class="fas fa-user-tie"></i>
+              </div>
+              <h4 style="color:#0f172a; font-size:16px; margin-bottom:4px;">Bà Phùng Thị Dung</h4>
+              <p style="color:#2563eb; font-weight:700; font-size:13px; margin-bottom:8px;">Bí thư Chi bộ - Hiệu trưởng</p>
+              <p style="font-size:12.5px; color:#475569;">Phụ trách chung toàn diện các mặt hoạt động của nhà trường; công tác tổ chức cán bộ, tài chính và thi đua khen thưởng.</p>
+            </div>
+
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; border-radius:8px; padding:18px; text-align:center;">
+              <div style="width:100px; height:100px; margin:0 auto 12px; border-radius:50%; background:#fef3c7; display:flex; align-items:center; justify-content:center; color:#d97706; font-size:32px;">
+                <i class="fas fa-user-graduate"></i>
+              </div>
+              <h4 style="color:#0f172a; font-size:16px; margin-bottom:4px;">Phó Hiệu trưởng phụ trách Chuyên môn</h4>
+              <p style="color:#d97706; font-weight:700; font-size:13px; margin-bottom:8px;">Phó Hiệu trưởng</p>
+              <p style="font-size:12.5px; color:#475569;">Chỉ đạo công tác chuyên môn dạy và học, bồi dưỡng học sinh giỏi, nghiên cứu khoa học kỹ thuật và hoạt động chuyển đổi số.</p>
+            </div>
+          </div>
+
+        {% elif page_type == 'doanthe' %}
+          <h3 style="color:#12579b; margin-bottom:12px;">Các Tổ Chức Đoàn Thể Trong Nhà Trường</h3>
+          <ul style="padding-left: 20px; margin-bottom: 16px;">
+            <li><strong>Chi bộ Đảng:</strong> Lãnh đạo toàn diện công tác chính trị, tư tưởng và đường lối phát triển nhà trường.</li>
+            <li><strong>Công đoàn cơ sở:</strong> Chăm lo đời sống vật chất và tinh thần, bảo vệ quyền lợi hợp pháp của cán bộ, giáo viên, nhân viên.</li>
+            <li><strong>Chi đoàn Thanh niên & Liên đội TNTP Hồ Chí Minh:</strong> Tổ chức các phong trào thi đua học tốt, rèn luyện kỹ năng sống, hoạt động văn nghệ - thể thao và công tác Đội.</li>
+            <li><strong>Ban đại diện Cha mẹ học sinh:</strong> Cầu nối đồng hành phối hợp chặt chẽ giữa gia đình và nhà trường trong công tác giáo dục học sinh.</li>
+          </ul>
+
+        {% elif page_type == 'noiquy' %}
+          <h3 style="color:#12579b; margin-bottom:12px;">Nội Quy Học Sinh Trường THCS Ngô Văn Sở</h3>
+          <ol style="padding-left: 20px; margin-bottom: 16px;">
+            <li>Kính trọng, lễ phép với thầy cô giáo, nhân viên nhà trường và người lớn tuổi; đoàn kết, giúp đỡ bạn bè.</li>
+            <li>Đi học đúng giờ, chuyên cần; nghỉ học phải có giấy xin phép của phụ huynh.</li>
+            <li>Mặc đồng phục đúng quy định, đeo khăn quàng đỏ đầy đủ trong các ngày học.</li>
+            <li>Chuẩn bị bài và đồ dùng học tập chu đáo trước khi đến lớp; tích cực phát biểu xây dựng bài.</li>
+            <li>Giữ gìn vệ sinh chung, bảo vệ tài sản của nhà trường và nơi công cộng; không mang chất cấm, đồ chơi bạo lực vào trường.</li>
+            <li>Chấp hành nghiêm luật an toàn giao thông khi đến trường và về nhà.</li>
+          </ol>
+
+        {% elif page_type == 'phong-truyen-thong' %}
+          <h3 style="color:#12579b; margin-bottom:12px;">Phòng Truyền Thống Nhà Trường</h3>
+          <p>Trường THCS Ngô Văn Sở tự hào mang tên người anh hùng dân tộc Ngô Văn Sở - danh tướng kiệt xuất thời Tây Sơn. Tọa lạc tại phường Lào Cai, thành phố Lào Cai, nhà trường là cái nôi ươm mầm tri thức cho nhiều thế hệ học sinh ưu tú của tỉnh nhà.</p>
+          <p style="margin-top:10px;">Qua nhiều năm xây dựng và trưởng thành, trường vinh dự đón nhận nhiều bằng khen của Thủ tướng Chính phủ, Bộ GD&ĐT, UBND tỉnh Lào Cai và đạt chuẩn Quốc gia về chất lượng giáo dục.</p>
+
+        {% elif page_type == 'tai-nguyen' %}
+          <h3 style="color:#12579b; margin-bottom:12px;">Kho Học Liệu & Tài Nguyên Dạy Học Số</h3>
+          <p>Nhà trường đẩy mạnh ứng dụng công nghệ thông tin và chuyển đổi số trong dạy học:</p>
+          <ul style="padding-left: 20px; margin-top: 8px;">
+            <li>Kho bài giảng điện tử E-Learning theo chương trình GDPT 2018.</li>
+            <li>Hệ sinh thái học tập trực tuyến vnEdu LMS.</li>
+            <li>Thư viện số và tài liệu tham khảo các môn Khoa học tự nhiên, Ngữ văn, Toán, Ngoại ngữ.</li>
+          </ul>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header"><i class="fas fa-building"></i> Cơ sở trường</div>
+      <div class="widget-body" style="font-size:13px; color:#475569;">
+        <p><strong>Cơ sở chính:</strong> 428 Nguyễn Huệ, phường Lào Cai</p>
+        <p style="margin-top:6px;"><strong>Phân hiệu 2:</strong> Phường Lào Cai, TP. Lào Cai</p>
+        <p style="margin-top:6px;"><strong>Điện thoại:</strong> {{ settings.phone }}</p>
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}

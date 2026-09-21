@@ -1,0 +1,107 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Quản lý Điểm & Tra cứu học tập{% endblock %}
+{% block page_heading %}Quản lý Hồ sơ & Điểm số học sinh (Dữ liệu Tra cứu){% endblock %}
+
+{% block content %}
+<div style="display: grid; grid-template-columns: 1fr 340px; gap: 20px;">
+  <!-- STUDENTS LIST -->
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-user-graduate"></i> Danh sách học sinh đã có điểm tra cứu</div>
+    </div>
+    <div class="card-body" style="padding: 0;">
+      <div class="admin-table-responsive">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Mã HS</th>
+              <th>Họ và tên</th>
+              <th>Lớp</th>
+              <th>Ngày sinh</th>
+              <th>ĐTB</th>
+              <th>Học lực</th>
+              <th>Hạnh kiểm</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in students %}
+            <tr>
+              <td><code>{{ s.student_code }}</code></td>
+              <td><strong>{{ s.full_name }}</strong></td>
+              <td>{{ s.class_name }}</td>
+              <td>{{ s.birth_date }}</td>
+              <td><strong style="color:#047857;">{{ s.gpa }}</strong></td>
+              <td><span class="badge badge-success">{{ s.rank }}</span></td>
+              <td>{{ s.conduct }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD / UPDATE STUDENT FORM -->
+  <div class="admin-card">
+    <div class="card-header">
+      <div class="card-title"><i class="fas fa-user-plus"></i> Thêm / Cập nhật điểm</div>
+    </div>
+    <div class="card-body">
+      <form action="{{ url_for('admin_students') }}" method="POST">
+        <div class="form-group">
+          <label class="form-label">Mã học sinh (*):</label>
+          <input type="text" name="student_code" placeholder="VD: HS202606" required class="form-control" style="text-transform: uppercase;">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Họ và tên học sinh (*):</label>
+          <input type="text" name="full_name" placeholder="Nguyễn Hoàng Nam" required class="form-control">
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">Lớp học (*):</label>
+            <input type="text" name="class_name" placeholder="9A1" required class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Ngày sinh:</label>
+            <input type="text" name="birth_date" placeholder="15/05/2012" class="form-control">
+          </div>
+        </div>
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-bottom: 14px;">
+          <div>
+            <label class="form-label">Toán:</label>
+            <input type="number" step="0.1" max="10" min="0" name="math" value="8.5" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Ngữ văn:</label>
+            <input type="number" step="0.1" max="10" min="0" name="literature" value="8.0" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Tiếng Anh:</label>
+            <input type="number" step="0.1" max="10" min="0" name="english" value="9.0" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">KHTN (Lý):</label>
+            <input type="number" step="0.1" max="10" min="0" name="physics" value="8.5" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">KHTN (Hóa):</label>
+            <input type="number" step="0.1" max="10" min="0" name="chemistry" value="8.0" class="form-control">
+          </div>
+          <div>
+            <label class="form-label">Lịch sử:</label>
+            <input type="number" step="0.1" max="10" min="0" name="history" value="8.5" class="form-control">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">
+          <i class="fas fa-save"></i> LƯU ĐIỂM HỌC SINH
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+{% endblock %}

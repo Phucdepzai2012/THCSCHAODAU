@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}{{ settings.school_name }}{% endblock %} - Cổng thông tin điện tử</title>
+  <link rel="shortcut icon" href="{{ settings.logo_url or 'https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png' }}" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/portal.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <div class="site-wrapper">
+    <!-- TOP BAR -->
+    <header class="top-bar">
+      <div class="top-bar-left">
+        <div class="top-clock">
+          <i class="far fa-clock"></i>
+          <span id="live-clock">Đang tải thời gian...</span>
+        </div>
+      </div>
+      <div class="top-bar-right">
+        <ul class="top-links">
+          <li><a href="{{ url_for('admin_login') }}"><i class="fas fa-sign-in-alt"></i> Đăng nhập</a></li>
+          <li><a href="{{ url_for('feedback_view') }}"><i class="far fa-comment-dots"></i> Góp ý</a></li>
+          <li><a href="{{ url_for('sitemap') }}"><i class="fas fa-sitemap"></i> Sơ đồ trang</a></li>
+        </ul>
+        <form class="top-search-form" action="{{ url_for('search') }}" method="GET">
+          <input type="text" name="q" placeholder="Tìm kiếm tin tức, văn bản..." required>
+          <button type="submit" title="Tìm kiếm"><i class="fas fa-search"></i></button>
+        </form>
+      </div>
+    </header>
+
+    <!-- BANNER -->
+    <div class="site-banner">
+      <a href="{{ settings.get('banner_link') or url_for('index') }}" title="{{ settings.school_name }}">
+        <img src="{{ settings.banner_url or 'https://storage-edu.vnpt.vn/edu-lci/8428/DUY/banner moi.gif' }}" alt="Banner Cổng thông tin Trường {{ settings.school_name }}">
+      </a>
+    </div>
+
+    <!-- MAIN NAVIGATION -->
+    <nav class="main-nav">
+      <div class="nav-container">
+        <ul class="menu-list" id="mainMenu">
+          <li class="menu-item">
+            <a href="{{ url_for('index') }}" class="menu-link"><i class="fas fa-home"></i> Trang chủ</a>
+          </li>
+
+          <li class="menu-item">
+            <a href="#" class="menu-link">GIỚI THIỆU <i class="fas fa-chevron-down arrow"></i></a>
+            <ul class="dropdown-menu-list">
+              <li class="dropdown-item"><a href="{{ url_for('bgh_view') }}" class="dropdown-link">Ban giám hiệu</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('doanthe_view') }}" class="dropdown-link">Các đoàn thể</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('noiquy_view') }}" class="dropdown-link">Nội quy, quy định</a></li>
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="menu-link">Nội dung công khai <i class="fas fa-chevron-down arrow"></i></a>
+            <ul class="dropdown-menu-list">
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Điều kiện đảm bảo chất lượng</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Thông tin đội ngũ cán bộ - giáo viên</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Cơ sở vật chất nhà trường</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Kết quả đánh giá và kiểm định chất lượng</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Kế hoạch và kết quả hoạt động</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='noi-dung-cong-khai') }}" class="dropdown-link">Thu chi, tài chính & các khoản thu</a></li>
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{{ url_for('documents_view') }}" class="menu-link">Văn bản chỉ đạo <i class="fas fa-chevron-down arrow"></i></a>
+            <ul class="dropdown-menu-list">
+              <li class="dropdown-item"><a href="{{ url_for('documents_view') }}" class="dropdown-link">Văn bản chỉ đạo, tuyên truyền của các cấp</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('documents_view') }}" class="dropdown-link">Văn bản trường</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('documents_view') }}" class="dropdown-link">Lấy ý kiến dự thảo văn bản</a></li>
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{{ url_for('category_view', slug='tin-tuc') }}" class="menu-link">HOẠT ĐỘNG GIÁO DỤC <i class="fas fa-chevron-down arrow"></i></a>
+            <ul class="dropdown-menu-list">
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='su-kien') }}" class="dropdown-link">Sự kiện - Lễ hội</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='tin-tuc') }}" class="dropdown-link">Tin tức giáo dục</a></li>
+              <li class="dropdown-item"><a href="{{ url_for('category_view', slug='tu-van-hoc-duong') }}" class="dropdown-link">Tư vấn học đường & Kỹ năng sống</a></li>
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{{ url_for('timetable_view') }}" class="menu-link">Thời khóa biểu</a>
+          </li>
+
+          <li class="menu-item">
+            <a href="#" class="menu-link">TÀI NGUYÊN <i class="fas fa-chevron-down arrow"></i></a>
+            <ul class="dropdown-menu-list">
+              <li class="dropdown-item"><a href="{{ url_for('tai_nguyen_view') }}" class="dropdown-link">Tài nguyên dạy & học</a></li>
+              <li class="dropdown-item"><a href="https://vnedu.vn" target="_blank" class="dropdown-link"><i class="fas fa-external-link-alt"></i> Hệ thống vnEdu</a></li>
+              <li class="dropdown-item"><a href="https://elearning.vnpt.vn/" target="_blank" class="dropdown-link"><i class="fas fa-external-link-alt"></i> Hệ thống Elearning VNPT</a></li>
+              <li class="dropdown-item"><a href="https://meet.google.com/" target="_blank" class="dropdown-link"><i class="fas fa-external-link-alt"></i> Phòng họp ảo trực tuyến</a></li>
+            </ul>
+          </li>
+
+          <li class="menu-item">
+            <a href="{{ url_for('truyen_thong_view') }}" class="menu-link">Phòng truyền thống</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <!-- RUNNING MARQUEE -->
+    <div class="announcement-bar">
+      <span class="announcement-badge"><i class="fas fa-bullhorn"></i> Thông báo</span>
+      <marquee class="announcement-marquee" behavior="scroll" direction="left" scrollamount="4" onmouseover="this.stop();" onmouseout="this.start();">
+        {{ settings.announcement_marquee }}
+      </marquee>
+    </div>
+
+    <!-- MAIN CONTENT INJECTION -->
+    {% block content %}{% endblock %}
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+      <div class="footer-content">
+        <div class="footer-info">
+          <h4>{{ settings.school_name }}</h4>
+          <p><strong><i class="fas fa-map-marker-alt"></i> Địa chỉ:</strong> {{ settings.address }}</p>
+          <p><strong><i class="fas fa-phone-alt"></i> Điện thoại:</strong> {{ settings.phone }} - <strong><i class="fas fa-envelope"></i> Email:</strong> {{ settings.email }}</p>
+          <p><strong><i class="fas fa-user-tie"></i> Chịu trách nhiệm nội dung:</strong> {{ settings.principal }}</p>
+        </div>
+        <div class="footer-links">
+          <h4>Thông tin hữu ích</h4>
+          <p><a href="{{ url_for('search_student') }}" style="color:#93c5fd;"><i class="fas fa-graduation-cap"></i> Tra cứu điểm thi & Kết quả học tập</a></p>
+          <p><a href="{{ url_for('feedback_view') }}" style="color:#93c5fd;"><i class="fas fa-envelope-open-text"></i> Hòm thư góp ý xây dựng nhà trường</a></p>
+          <p><a href="{{ url_for('admin_login') }}" style="color:#fde047;"><i class="fas fa-lock"></i> Đăng nhập hệ thống Quản trị CMS</a></p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        &copy; 2026 Bản quyền thuộc về Trường THCS Ngô Văn Sở - Thành phố Lào Cai. Phát triển trên nền tảng Cổng giáo dục điện tử chuẩn.
+      </div>
+    </footer>
+  </div>
+
+  <!-- BACK TO TOP BUTTON -->
+  <div class="back-to-top" id="backToTop" title="Lên đầu trang">
+    <i class="fas fa-chevron-up"></i>
+  </div>
+
+  <script src="{{ url_for('static', filename='js/portal.js') }}"></script>
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

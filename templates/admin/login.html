@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng nhập Hệ thống Quản trị - THCSCHAODAU</title>
+  <link rel="shortcut icon" href="https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+</head>
+<body class="login-page">
+  <div class="login-box">
+    <div class="login-header">
+      <img src="https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png" alt="Logo THCSCHAODAU" style="width:64px;height:64px;border-radius:50%;border:3px solid #1e40af;">
+      <h2>THCSCHAODAU</h2>
+      <p>Hệ thống Quản lý Nội dung (Admin CMS)</p>
+    </div>
+
+    <!-- FLASH MESSAGES -->
+    {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert alert-{{ category }}">
+            <i class="fas fa-exclamation-circle"></i> {{ message }}
+          </div>
+        {% endfor %}
+      {% endif %}
+    {% endwith %}
+
+    <form action="{{ url_for('admin_login', next=request.args.get('next')) }}" method="POST">
+      <div class="form-group">
+        <label class="form-label"><i class="fas fa-user"></i> Tên đăng nhập:</label>
+        <input type="text" name="username" class="form-control" placeholder="Nhập tên đăng nhập..." required autocomplete="username" autofocus>
+      </div>
+
+      <div class="form-group" style="position:relative;">
+        <label class="form-label"><i class="fas fa-lock"></i> Mật khẩu:</label>
+        <input type="password" name="password" id="loginPassword" class="form-control" placeholder="Nhập mật khẩu..." required autocomplete="current-password" style="padding-right:42px;">
+        <span onclick="togglePwd()" style="position:absolute;right:12px;top:36px;cursor:pointer;color:#94a3b8;padding:2px 4px;">
+          <i class="fas fa-eye" id="eyeIcon"></i>
+        </span>
+      </div>
+
+      <button type="submit" class="btn btn-primary" style="width:100%;justify-content:center;padding:11px;font-size:14px;margin-top:10px;">
+        <i class="fas fa-sign-in-alt"></i> ĐĂNG NHẬP HỆ THỐNG
+      </button>
+    </form>
+
+    <div style="text-align:center;margin-top:24px;font-size:12.5px;">
+      <a href="{{ url_for('index') }}" style="color:#64748b;text-decoration:none;">
+        <i class="fas fa-arrow-left"></i> Quay lại trang chủ Cổng thông tin
+      </a>
+    </div>
+  </div>
+
+  <script>
+    function togglePwd() {
+      const pwd = document.getElementById('loginPassword');
+      const icon = document.getElementById('eyeIcon');
+      if (pwd.type === 'password') {
+        pwd.type = 'text';
+        icon.className = 'fas fa-eye-slash';
+      } else {
+        pwd.type = 'password';
+        icon.className = 'fas fa-eye';
+      }
+    }
+  </script>
+</body>
+</html>

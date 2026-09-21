@@ -1,0 +1,78 @@
+{% extends 'admin/layout.html' %}
+
+{% block title %}Quản lý Bài viết{% endblock %}
+{% block page_heading %}Quản lý Bài viết & Tin tức cổng trường{% endblock %}
+
+{% block content %}
+<div class="admin-card">
+  <div class="card-header">
+    <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+      <a href="{{ url_for('admin_post_new') }}" class="btn btn-primary">
+        <i class="fas fa-plus"></i> Viết bài mới
+      </a>
+
+      <!-- FILTER BY CATEGORY -->
+      <form method="GET" action="{{ url_for('admin_posts') }}" style="display: flex; gap: 8px;">
+        <select name="category" onchange="this.form.submit()" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
+          <option value="">-- Tất cả chuyên mục --</option>
+          {% for c in categories %}
+          <option value="{{ c.slug }}" {% if current_cat == c.slug %}selected{% endif %}>{{ c.name }}</option>
+          {% endfor %}
+        </select>
+        <input type="text" name="q" value="{{ query or '' }}" placeholder="Tìm theo tiêu đề..." class="form-control" style="width: 200px; padding: 6px 10px; font-size: 13px;">
+        <button type="submit" class="btn btn-sm" style="background:#475569; color:#fff;">Tìm</button>
+      </form>
+    </div>
+  </div>
+
+  <div class="card-body" style="padding: 0;">
+    <div class="admin-table-responsive">
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th style="width: 60px;">Ảnh</th>
+            <th>Tiêu đề bài viết</th>
+            <th style="width: 140px;">Chuyên mục</th>
+            <th style="width: 110px;">Tác giả</th>
+            <th style="width: 90px;">Ngày đăng</th>
+            <th style="width: 80px;">Lượt xem</th>
+            <th style="width: 90px;">Nổi bật</th>
+            <th style="width: 130px; text-align: right;">Thao tác</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in posts %}
+          <tr>
+            <td>
+              <img src="{{ p.thumbnail }}" alt="thumb" style="width: 44px; height: 32px; object-fit: cover; border-radius: 3px;">
+            </td>
+            <td>
+              <strong><a href="{{ url_for('post_detail', slug_or_id=p.slug) }}" target="_blank" style="color:#0f172a;">{{ p.title }}</a></strong>
+            </td>
+            <td><span class="badge badge-info">{{ p.category_name or p.category_slug }}</span></td>
+            <td>{{ p.author }}</td>
+            <td>{{ p.published_at[:10] }}</td>
+            <td>{{ p.views }}</td>
+            <td>
+              {% if p.is_featured %}
+              <span class="badge badge-warning"><i class="fas fa-star"></i> Nổi bật</span>
+              {% else %}
+              <span style="color:#94a3b8; font-size:11px;">Thường</span>
+              {% endif %}
+            </td>
+            <td style="text-align: right;">
+              <div style="display: inline-flex; gap: 4px;">
+                <a href="{{ url_for('admin_post_edit', post_id=p.id) }}" class="btn btn-sm btn-primary" title="Sửa"><i class="fas fa-edit"></i></a>
+                <form action="{{ url_for('admin_post_delete', post_id=p.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');" style="display:inline;">
+                  <button type="submit" class="btn btn-sm btn-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
+                </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+{% endblock %}

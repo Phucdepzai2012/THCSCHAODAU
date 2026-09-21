@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{% block title %}Bảng Quản Trị{% endblock %} - Cổng THCS Ngô Văn Sở</title>
+  <link rel="shortcut icon" href="https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png" type="image/png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body class="admin-body">
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-brand">
+      <img src="https://storage-vnportal.vnpt.vn/edu-lci/8428/DUY/logo-2024.png" alt="Logo THCS Ngô Văn Sở">
+      <div class="sidebar-brand-text">
+        THCS Ngô Văn Sở
+        <span>Hệ thống Quản trị CMS</span>
+      </div>
+    </div>
+
+    <ul class="sidebar-menu">
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_dashboard') }}" class="sidebar-link {% if request.endpoint == 'admin_dashboard' %}active{% endif %}">
+          <i class="fas fa-tachometer-alt"></i> Tổng quan (Dashboard)
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_posts') }}" class="sidebar-link {% if 'post' in request.endpoint %}active{% endif %}">
+          <i class="fas fa-newspaper"></i> Quản lý Bài viết & Tin
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_post_new') }}" class="sidebar-link {% if request.endpoint == 'admin_post_new' %}active{% endif %}">
+          <i class="fas fa-pen-fancy"></i> Đăng bài viết mới
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_documents') }}" class="sidebar-link {% if request.endpoint == 'admin_documents' %}active{% endif %}">
+          <i class="fas fa-file-contract"></i> Quản lý Văn bản
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_students') }}" class="sidebar-link {% if request.endpoint == 'admin_students' %}active{% endif %}">
+          <i class="fas fa-user-graduate"></i> Quản lý Điểm & Tra cứu
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_feedback') }}" class="sidebar-link {% if request.endpoint == 'admin_feedback' %}active{% endif %}">
+          <i class="fas fa-envelope-open-text"></i> Hòm thư góp ý
+        </a>
+      </li>
+      <li class="sidebar-item">
+        <a href="{{ url_for('admin_settings') }}" class="sidebar-link {% if request.endpoint == 'admin_settings' %}active{% endif %}">
+          <i class="fas fa-cogs"></i> Cài đặt cổng trường
+        </a>
+      </li>
+    </ul>
+
+    <div class="sidebar-footer">
+      <span>Phiên bản v2.4</span>
+      <a href="{{ url_for('admin_logout') }}" style="color:#ef4444;"><i class="fas fa-power-off"></i></a>
+    </div>
+  </aside>
+
+  <!-- MAIN AREA -->
+  <div class="admin-main">
+    <header class="admin-header">
+      <div class="admin-header-title">
+        <h2>{% block page_heading %}Quản trị Hệ thống{% endblock %}</h2>
+      </div>
+      <div class="admin-user-nav">
+        <a href="{{ url_for('index') }}" target="_blank" class="admin-view-site-btn">
+          <i class="fas fa-globe"></i> Xem Cổng thông tin
+        </a>
+        <div class="user-badge">
+          <div class="user-avatar">P</div>
+          <div>
+            <div class="user-name">{{ session.get('display_name', 'Quản trị viên') }}</div>
+            <a href="{{ url_for('admin_logout') }}" class="btn-logout"><i class="fas fa-sign-out-alt"></i> Đăng xuất</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-content">
+      <!-- FLASH MESSAGES -->
+      {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+          {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+              <i class="fas {% if category == 'success' %}fa-check-circle{% elif category == 'danger' %}fa-exclamation-circle{% else %}fa-info-circle{% endif %}"></i>
+              {{ message }}
+            </div>
+          {% endfor %}
+        {% endif %}
+      {% endwith %}
+
+      {% block content %}{% endblock %}
+    </main>
+  </div>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>

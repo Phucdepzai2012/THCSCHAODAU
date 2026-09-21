@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Kết quả tìm kiếm cho "{{ query }}" - {{ settings.school_name }}{% endblock %}
+
+{% block content %}
+<main class="content-wrapper">
+  <section class="main-column">
+    <div class="breadcrumb">
+      <a href="{{ url_for('index') }}"><i class="fas fa-home"></i> Trang chủ</a>
+      <i class="fas fa-angle-right"></i>
+      <span>Kết quả tìm kiếm</span>
+    </div>
+
+    <div class="portal-module">
+      <div class="module-header">
+        <div class="module-title">
+          <i class="fas fa-search"></i> Kết quả tìm kiếm cho từ khóa: "{{ query }}"
+        </div>
+      </div>
+      <div class="module-body">
+        {% if results %}
+        <p style="font-size: 13px; color: #64748b; margin-bottom: 16px;">Tìm thấy {{ results|length }} bài viết phù hợp:</p>
+        <div style="display: flex; flex-direction: column; gap: 16px;">
+          {% for r in results %}
+          <article style="display: flex; gap: 14px; padding-bottom: 14px; border-bottom: 1px solid #e2e8f0;">
+            <div style="width: 140px; height: 95px; flex-shrink: 0; border-radius: 4px; overflow: hidden;">
+              <a href="{{ url_for('post_detail', slug_or_id=r.slug) }}">
+                <img src="{{ r.thumbnail }}" alt="{{ r.title }}" style="width:100%; height:100%; object-fit:cover;">
+              </a>
+            </div>
+            <div style="flex: 1;">
+              <h4 style="font-size: 14px; font-weight: 700; margin-bottom: 4px;">
+                <a href="{{ url_for('post_detail', slug_or_id=r.slug) }}">{{ r.title }}</a>
+              </h4>
+              <div style="font-size: 11px; color: #94a3b8; margin-bottom: 6px;">
+                <i class="far fa-calendar-alt"></i> {{ r.published_at[:10] }}
+              </div>
+              <p style="font-size: 12.5px; color: #475569; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                {{ r.summary }}
+              </p>
+            </div>
+          </article>
+          {% endfor %}
+        </div>
+        {% else %}
+        <div style="text-align: center; padding: 40px; color: #94a3b8;">
+          <i class="fas fa-search fa-3x" style="margin-bottom: 12px; color: #cbd5e1;"></i>
+          <p>Không tìm thấy bài viết hoặc tài liệu nào phù hợp với từ khóa "<strong>{{ query }}</strong>".</p>
+        </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar-column">
+    <div class="sidebar-widget">
+      <div class="widget-header"><i class="fas fa-filter"></i> Tìm kiếm nâng cao</div>
+      <div class="widget-body">
+        <form action="{{ url_for('search') }}" method="GET" class="lookup-quick-box">
+          <input type="text" name="q" value="{{ query }}" placeholder="Nhập từ khóa..." required>
+          <button type="submit">Tìm</button>
+        </form>
+      </div>
+    </div>
+  </aside>
+</main>
+{% endblock %}
