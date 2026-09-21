@@ -3,6 +3,114 @@
 {% block title %}Quản lý Bài viết{% endblock %}
 {% block page_heading %}Quản lý Bài viết & Tin tức cổng trường{% endblock %}
 
+{% block extra_css %}
+<style>
+/* ===== QUICK VIEW OVERLAY ===== */
+#quickOverlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(4px);
+  animation: fadeIn .2s ease;
+}
+#quickOverlay.active { display: flex; }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(40px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+#quickModal {
+  background: #1e293b;
+  border: 1px solid #334155;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 780px;
+  max-height: 85vh;
+  overflow-y: auto;
+  box-shadow: 0 25px 60px rgba(0,0,0,0.6);
+  animation: slideUp .25s ease;
+  position: relative;
+}
+#quickModal .qm-header {
+  display: flex;
+  align-items: flex-start;
+  gap: 16px;
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #334155;
+}
+#quickModal .qm-thumb {
+  width: 120px; height: 80px;
+  object-fit: cover; border-radius: 8px; flex-shrink: 0;
+}
+#quickModal .qm-title {
+  font-size: 18px; font-weight: 700; color: #f1f5f9;
+  line-height: 1.4; margin: 0 0 8px;
+}
+#quickModal .qm-meta {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  font-size: 12px; color: #94a3b8;
+}
+#quickModal .qm-badge {
+  background: #0f766e; color: #ccfbf1;
+  padding: 2px 8px; border-radius: 20px; font-weight: 600;
+}
+#quickModal .qm-body { padding: 20px 24px; color: #cbd5e1; font-size: 14px; line-height: 1.7; }
+#quickModal .qm-summary {
+  background: #0f172a; border-left: 3px solid #0ea5e9;
+  padding: 12px 16px; border-radius: 0 8px 8px 0;
+  margin-bottom: 16px; font-style: italic; color: #94a3b8;
+}
+#quickModal .qm-content { color: #e2e8f0; max-height: 300px; overflow-y: auto; padding-right: 4px; }
+#quickModal .qm-footer {
+  display: flex; gap: 10px; justify-content: flex-end;
+  padding: 16px 24px; border-top: 1px solid #334155;
+}
+#quickModal .qm-close {
+  position: absolute; top: 14px; right: 16px;
+  background: #334155; border: none; color: #94a3b8;
+  width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+  font-size: 16px; display: flex; align-items: center; justify-content: center;
+  transition: background .2s;
+}
+#quickModal .qm-close:hover { background: #ef4444; color: #fff; }
+
+/* ===== DELETE CONFIRM MODAL ===== */
+#deleteOverlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,0.7); z-index: 10000;
+  align-items: center; justify-content: center; backdrop-filter: blur(3px);
+}
+#deleteOverlay.active { display: flex; }
+#deleteModal {
+  background: #1e293b; border: 1px solid #ef4444; border-radius: 14px;
+  padding: 32px; max-width: 420px; width: 90%; text-align: center;
+  box-shadow: 0 20px 50px rgba(239,68,68,0.3); animation: slideUp .2s ease;
+}
+#deleteModal .dm-icon { font-size: 48px; margin-bottom: 12px; }
+#deleteModal h3 { color: #f1f5f9; margin: 0 0 8px; font-size: 18px; }
+#deleteModal p { color: #94a3b8; font-size: 14px; margin-bottom: 24px; }
+#deleteModal .dm-post-title {
+  color: #fbbf24; font-weight: 600; font-size: 14px;
+  background: #0f172a; padding: 8px 12px; border-radius: 8px;
+  margin-bottom: 20px; display: block;
+}
+#deleteModal .dm-buttons { display: flex; gap: 12px; justify-content: center; }
+#deleteModal .dm-cancel {
+  background: #334155; color: #cbd5e1; border: none;
+  padding: 10px 24px; border-radius: 8px; cursor: pointer;
+  font-size: 14px; transition: background .2s;
+}
+#deleteModal .dm-cancel:hover { background: #475569; }
+#deleteModal .dm-confirm {
+  background: #ef4444; color: #fff; border: none;
+  padding: 10px 24px; border-radius: 8px; cursor: pointer;
+  font-size: 14px; font-weight: 600; transition: background .2s;
+}
+#deleteModal .dm-confirm:hover { background: #dc2626; }
+</style>
+{% endblock %}
+
 {% block content %}
 <div class="admin-card">
   <div class="card-header">
@@ -10,8 +118,6 @@
       <a href="{{ url_for('admin_post_new') }}" class="btn btn-primary">
         <i class="fas fa-plus"></i> Viết bài mới
       </a>
-
-      <!-- FILTER BY CATEGORY -->
       <form method="GET" action="{{ url_for('admin_posts') }}" style="display: flex; gap: 8px;">
         <select name="category" onchange="this.form.submit()" class="form-control" style="width: auto; padding: 6px 12px; font-size: 13px;">
           <option value="">-- Tất cả chuyên mục --</option>
@@ -37,17 +143,28 @@
             <th style="width: 90px;">Ngày đăng</th>
             <th style="width: 80px;">Lượt xem</th>
             <th style="width: 90px;">Nổi bật</th>
-            <th style="width: 130px; text-align: right;">Thao tác</th>
+            <th style="width: 160px; text-align: right;">Thao tác</th>
           </tr>
         </thead>
         <tbody>
           {% for p in posts %}
+          {% set post_title = p.title | replace("'", "\\'") | replace('"', '&quot;') %}
+          {% set post_summary = (p.summary or '') | replace("'", "\\'") | replace('"', '&quot;') %}
           <tr>
             <td>
-              <img src="{{ p.thumbnail }}" alt="thumb" style="width: 44px; height: 32px; object-fit: cover; border-radius: 3px;">
+              <img src="{{ p.thumbnail }}" alt="thumb"
+                style="width: 44px; height: 32px; object-fit: cover; border-radius: 3px; cursor:pointer;"
+                onclick="openQuickView({{ p.id }}, '{{ post_title }}', '{{ p.thumbnail }}', '{{ post_summary }}', '{{ p.category_name or p.category_slug }}', '{{ p.author }}', '{{ p.published_at[:10] }}', {{ p.views }}, '{{ url_for('post_detail', slug_or_id=p.slug) }}')"
+              >
             </td>
             <td>
-              <strong><a href="{{ url_for('post_detail', slug_or_id=p.slug) }}" target="_blank" style="color:#0f172a;">{{ p.title }}</a></strong>
+              <strong>
+                <a href="#"
+                  style="color:#0f172a;"
+                  title="Bấm để xem nhanh bài viết"
+                  onclick="openQuickView({{ p.id }}, '{{ post_title }}', '{{ p.thumbnail }}', '{{ post_summary }}', '{{ p.category_name or p.category_slug }}', '{{ p.author }}', '{{ p.published_at[:10] }}', {{ p.views }}, '{{ url_for('post_detail', slug_or_id=p.slug) }}'); return false;"
+                >{{ p.title }}</a>
+              </strong>
             </td>
             <td><span class="badge badge-info">{{ p.category_name or p.category_slug }}</span></td>
             <td>{{ p.author }}</td>
@@ -62,10 +179,17 @@
             </td>
             <td style="text-align: right;">
               <div style="display: inline-flex; gap: 4px;">
+                <button
+                  onclick="openQuickView({{ p.id }}, '{{ post_title }}', '{{ p.thumbnail }}', '{{ post_summary }}', '{{ p.category_name or p.category_slug }}', '{{ p.author }}', '{{ p.published_at[:10] }}', {{ p.views }}, '{{ url_for('post_detail', slug_or_id=p.slug) }}')"
+                  class="btn btn-sm" style="background:#0f766e; color:#fff;" title="Xem nhanh">
+                  <i class="fas fa-eye"></i>
+                </button>
                 <a href="{{ url_for('admin_post_edit', post_id=p.id) }}" class="btn btn-sm btn-primary" title="Sửa"><i class="fas fa-edit"></i></a>
-                <form action="{{ url_for('admin_post_delete', post_id=p.id) }}" method="POST" onsubmit="return confirm('Bạn có chắc chắn muốn xóa bài viết này không?');" style="display:inline;">
-                  <button type="submit" class="btn btn-sm btn-danger" title="Xóa"><i class="fas fa-trash-alt"></i></button>
-                </form>
+                <button
+                  onclick="openDeleteConfirm({{ p.id }}, '{{ post_title }}')"
+                  class="btn btn-sm btn-danger" title="Xóa">
+                  <i class="fas fa-trash-alt"></i>
+                </button>
               </div>
             </td>
           </tr>
@@ -75,4 +199,104 @@
     </div>
   </div>
 </div>
+
+<!-- QUICK VIEW OVERLAY -->
+<div id="quickOverlay" onclick="if(event.target===this)closeQuickView()">
+  <div id="quickModal">
+    <button class="qm-close" onclick="closeQuickView()"><i class="fas fa-times"></i></button>
+    <div class="qm-header">
+      <img id="qm-thumb" class="qm-thumb" src="" alt="">
+      <div style="flex:1; min-width:0;">
+        <h2 id="qm-title" class="qm-title"></h2>
+        <div class="qm-meta">
+          <span class="qm-badge" id="qm-cat"></span>
+          <span><i class="fas fa-user"></i> <span id="qm-author"></span></span>
+          <span><i class="fas fa-calendar"></i> <span id="qm-date"></span></span>
+          <span><i class="fas fa-eye"></i> <span id="qm-views"></span> lượt xem</span>
+        </div>
+      </div>
+    </div>
+    <div class="qm-body">
+      <div class="qm-summary" id="qm-summary"></div>
+      <div class="qm-content" id="qm-content"></div>
+    </div>
+    <div class="qm-footer">
+      <button class="btn btn-sm" style="background:#334155; color:#cbd5e1;" onclick="closeQuickView()">
+        <i class="fas fa-times"></i> Đóng
+      </button>
+      <a id="qm-link" href="#" target="_blank" class="btn btn-sm btn-primary">
+        <i class="fas fa-external-link-alt"></i> Xem trang web
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- DELETE CONFIRM MODAL -->
+<div id="deleteOverlay" onclick="if(event.target===this)closeDeleteConfirm()">
+  <div id="deleteModal">
+    <div class="dm-icon">🗑️</div>
+    <h3>Xác nhận xóa bài viết</h3>
+    <p>Hành động này không thể hoàn tác. Bạn có chắc chắn?</p>
+    <span class="dm-post-title" id="dm-title"></span>
+    <div class="dm-buttons">
+      <button class="dm-cancel" onclick="closeDeleteConfirm()">
+        <i class="fas fa-times"></i> Hủy
+      </button>
+      <button class="dm-confirm" onclick="submitDelete()">
+        <i class="fas fa-trash-alt"></i> Xóa ngay
+      </button>
+    </div>
+  </div>
+</div>
+
+<form id="deleteForm" method="POST" style="display:none;"></form>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function openQuickView(id, title, thumb, summary, cat, author, date, views, link) {
+  document.getElementById('qm-thumb').src = thumb;
+  document.getElementById('qm-title').textContent = title;
+  document.getElementById('qm-cat').textContent = cat;
+  document.getElementById('qm-author').textContent = author;
+  document.getElementById('qm-date').textContent = date;
+  document.getElementById('qm-views').textContent = views;
+  document.getElementById('qm-summary').textContent = summary || 'Không có tóm tắt.';
+  document.getElementById('qm-content').innerHTML = '<em style="color:#64748b">Bấm nút "Xem trang web" bên dưới để đọc nội dung đầy đủ.</em>';
+  document.getElementById('qm-link').href = link;
+  document.getElementById('quickOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeQuickView() {
+  document.getElementById('quickOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+}
+
+var _deletePostId = null;
+
+function openDeleteConfirm(postId, postTitle) {
+  _deletePostId = postId;
+  document.getElementById('dm-title').textContent = postTitle;
+  document.getElementById('deleteOverlay').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeDeleteConfirm() {
+  document.getElementById('deleteOverlay').classList.remove('active');
+  document.body.style.overflow = '';
+  _deletePostId = null;
+}
+
+function submitDelete() {
+  if (!_deletePostId) return;
+  var form = document.getElementById('deleteForm');
+  form.action = '/admin/posts/delete/' + _deletePostId;
+  form.submit();
+}
+
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { closeQuickView(); closeDeleteConfirm(); }
+});
+</script>
 {% endblock %}
